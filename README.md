@@ -189,10 +189,10 @@ AI 매일 3분 영어 서비스
 ## :clipboard: Documents
 > [📜 API 명세서 예시](https://docs.google.com/spreadsheets/d/1XODUQC8tFNQjoZS7I4rcyaQpin6WzuuruZIVmdMwmeU/edit#gid=0)
 > 
-> [📜 요구사항 정의서 예시]([https://docs.google.com/spreadsheets/d/1BaDEpeytl_rQ_vckIXGJtCL4NcmPvemCSnXJnhckzLU/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1OP0FVODe2idKG4V0u2JSUjmSk9_bUywuGgOMqm4-iiY/edit?usp=sharing))
+> [📜 요구사항 정의서 예시](https://docs.google.com/spreadsheets/d/1OP0FVODe2idKG4V0u2JSUjmSk9_bUywuGgOMqm4-iiY/edit?usp=sharing)
 > 
 > [📜 ERD 예시](https://drive.google.com/file/d/1jvaFIwfOkKLRriFZxzOwJTE-FJ7H3IFe/view?usp=sharing)
 > 
 > [📜 테이블 명세서 예시](https://docs.google.com/spreadsheets/d/13y8xi67UQYCzX1xgSORtlA1_vXRFq6OQuVDG2o7fhO0/edit#gid=0)
 >
-> [📜 화면 정의서 예시]([https://docs.google.com/spreadsheets/d/1vud5xV8rB9Y6akOIma49hSzdZsoj8DVG0-fYE4NdP_g/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1daq_bs2pmQbQrh9cqzmJV0fwpu7whxbSlVItOoDLAHc/edit?usp=sharing)https://docs.google.com/spreadsheets/d/1daq_bs2pmQbQrh9cqzmJV0fwpu7whxbSlVItOoDLAHc/edit?usp=sharing)
+> [📜 화면 정의서 예시](https://docs.google.com/spreadsheets/d/1daq_bs2pmQbQrh9cqzmJV0fwpu7whxbSlVItOoDLAHc/edit?usp=sharing)
