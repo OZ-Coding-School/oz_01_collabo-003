@@ -2,7 +2,7 @@ import "./App.css";
 
 function App() {
   return <>
-    <div>안녕?</div>
+    <div>배고파잉</div>
   </>;
 }
 
