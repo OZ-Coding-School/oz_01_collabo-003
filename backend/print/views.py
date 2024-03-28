@@ -6,5 +6,5 @@ from rest_framework.views import APIView
 class HelloWorld(APIView):
 
     def get(self,request):
-        data = {'message': 'Hello World!ab'}
+        data = {'message': 'Hello World!abw'}
         return Response(data)
