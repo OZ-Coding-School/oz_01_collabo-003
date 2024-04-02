@@ -1,4 +1,8 @@
 /* ===================== 메뉴바 =====================*/
+.app_bar_main_container{
+  position: relative;
+}
+
 .nav {
   position: absolute;
   z-index: 999;

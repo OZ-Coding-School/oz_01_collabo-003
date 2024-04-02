@@ -18,8 +18,7 @@ function Router() {
       <Route path="/" element={<MainPage />} />
       <Route path="/" element={<Layout />}>
         <Route path="/level" element={<LevelPage />} />
-        {/* <Route path="/tils/:tilId" element={<TilDetailPage />} />
-        <Route path="/auth/sign-up" element={<SignUpPage />} />
+        {/* <Route path="/auth/sign-up" element={<SignUpPage />} />
         <Route path="/auth/log-in" element={<LogInPage />} /> */}
       </Route>
     </Routes>

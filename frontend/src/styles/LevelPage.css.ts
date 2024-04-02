@@ -11,11 +11,14 @@ export const level_page_main_container = style({
 });
 
 export const level_page_top_menu = style({
+  marginTop: "40px",
+  position: "absolute",
   boxSizing: "border-box",
   padding: "0 50px 30px 200px",
   display: "flex",
   justifyContent: "space-between",
   width: "100%",
+  zIndex: 900,
 });
 
 export const level_page_logo = style({
@@ -91,6 +94,10 @@ export const level_page_button_one = style({
   ":hover": {
     transform: "scale(1.03)",
     boxShadow: "5px 5px 0 0 #F4F8F1",
+  },
+  ":active": {
+    transform: "scale(1)",
+    boxShadow: "none",
   },
 });
 
