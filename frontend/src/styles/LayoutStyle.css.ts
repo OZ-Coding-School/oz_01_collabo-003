@@ -5,7 +5,7 @@ export const layout = style({
   width: "100%",
   position: "relative",
 });
-export const logoDiv = style({
+export const logoLayout = style({
   width: "50%",
   display: "flex",
   position: "relative",
@@ -13,7 +13,7 @@ export const logoDiv = style({
   justifyContent: "center",
   alignItems: "center",
 });
-export const TextDiv = style({
+export const textLayout = style({
   width: "50%",
   display: "flex",
   position: "relative",
@@ -40,4 +40,14 @@ export const logoYel = style({
   width: "auto",
   // bottom: "20",
   right: "1%",
+});
+
+export const logoFont = style({
+  fontFamily: "Swanky and Moo Moo",
+  color: "#988888",
+  zIndex: "999",
+  fontSize: "18rem",
+  letterSpacing: "10px",
+  stroke: "#ffa5d8",
+  strokeWidth: 3,
 });
