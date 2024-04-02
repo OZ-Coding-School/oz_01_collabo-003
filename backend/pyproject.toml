@@ -17,6 +17,7 @@ mysqlclient = "^2.2.4"
 django-cors-headers = "^4.3.1"
 rest-framework-simplejwt = "^0.0.2"
 drf-spectacular = "^0.27.1"
+openai = "^1.16.0"
 
 
 [build-system]
