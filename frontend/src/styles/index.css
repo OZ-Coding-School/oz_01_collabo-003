@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "kingSejongBoldFont";
+  font-weight: normal;
+  src: url("fonts/KingSejongInstitute-Bold.otf") format("truetype");
+}
+@font-face {
+  font-family: "kingSejongRegularFont";
+  font-weight: normal;
+  src: url("fonts/KingSejongInstitute-Regular.otf") format("truetype");
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "kingSejongRegularFont";
+}
