@@ -108,3 +108,7 @@ class refreshToken(TokenRefreshView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         
+
+class modify(TokenModifyView):
+    def post(self, request):
+        pass
