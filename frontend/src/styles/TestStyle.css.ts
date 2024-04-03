@@ -19,7 +19,7 @@ export const signUpContainer = style({
   opacity: "0",
   zIndex: "1",
   selectors: {
-    [`&[data-signIn="true"]`]: {
+    [`&[data-signin="true"]`]: {
       transform: "translateX(0%)",
       opacity: "1",
       zIndex: "5",
@@ -29,20 +29,19 @@ export const signUpContainer = style({
 
 export const signInContainer = style({
   position: "absolute",
-  top: "0",
+  top: 0,
   height: "100%",
   transition: "all 0.6s ease-in-out",
-  left: "0",
+  left: 0,
   width: "50%",
-  zIndex: "2",
+  zIndex: 2,
   selectors: {
-    [`&[data-signIn="true"]`]: {
-      transform: "translateX(0%)",
+    [`&[data-signin="false"]`]: {
+      transform: "translateX(100%)",
     },
   },
 });
-
-export const form = style({
+export const formContainer = style({
   backgroundColor: "#ffffff",
   display: "flex",
   alignItems: "center",
@@ -51,6 +50,7 @@ export const form = style({
   padding: "0 50px",
   height: "100%",
   textAlign: "center",
+  width: "100%",
 });
 
 export const title = style({
@@ -59,7 +59,8 @@ export const title = style({
 });
 
 export const input = style({
-  width: "100%",
+  width: "30%",
+  marginBottom: "2rem",
   border: "none",
   borderRadius: "12px",
   backgroundColor: "#efefef",
@@ -68,8 +69,8 @@ export const input = style({
 
 export const button = style({
   borderRadius: "20px",
-  border: "1px solid #ff4b2b",
-  backgroundColor: "#ff4b2b",
+  border: "1px solid #838ade9d;",
+  backgroundColor: "#838ade9d;",
   color: "#ffffff",
   fontSize: "12px",
   fontWeight: "bold",
@@ -77,31 +78,45 @@ export const button = style({
   letterSpacing: "1px",
   textTransform: "uppercase",
   transition: "transform 80ms ease-in",
+  selectors: {
+    "&:active": {
+      transform: "scale(0.95)",
+    },
+    "&:focus": {
+      outline: "none",
+    },
+  },
 });
 
-export const ghostButton = style({
-  backgroundColor: "transparent",
-  borderColor: "#ffffff",
-});
-
+export const ghostButton = style([
+  button,
+  {
+    backgroundColor: "#ffffff",
+    color: "black",
+    borderColor: "#838ade9d;",
+  },
+]);
 export const anchor = style({
   color: "#333",
   fontSize: "14px",
   textDecoration: "none",
   margin: "15px 0",
 });
-
 export const overlayContainer = style({
   position: "absolute",
-  top: "0",
+  top: 0,
   left: "50%",
   width: "50%",
   height: "100%",
   overflow: "hidden",
   transition: "transform 0.6s ease-in-out",
-  zIndex: "100",
+  zIndex: 100,
+  selectors: {
+    "&:not([data-signin])": {
+      transform: "translateX(-100%)",
+    },
+  },
 });
-
 export const overlay = style({
   backgroundPosition: "0 0",
   color: "#988888",
@@ -111,8 +126,12 @@ export const overlay = style({
   width: "200%",
   transform: "translateX(0)",
   transition: "transform 0.6s ease-in-out",
+  selectors: {
+    "&:not([data-signin])": {
+      transform: "translateX(50%)",
+    },
+  },
 });
-
 export const overlayPanel = style({
   position: "absolute",
   display: "flex",
@@ -133,8 +152,12 @@ export const leftOverlayPanel = style({
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   transform: "translateX(-20%)",
+  selectors: {
+    [`&[data-signin="false"]`]: {
+      transform: "translateX(0)",
+    },
+  },
 });
-
 export const rightOverlayPanel = style({
   backgroundImage: "url('../public/img/bg3.png')",
   backgroundRepeat: "no-repeat",

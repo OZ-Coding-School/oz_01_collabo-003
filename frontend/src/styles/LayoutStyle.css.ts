@@ -33,13 +33,13 @@ export const logoPink = style({
   height: "63%",
   bottom: "20",
   width: "auto",
+  zIndex: 1,
 });
 export const logoYel = style({
   position: "absolute",
   height: "63%",
   width: "auto",
   // bottom: "20",
-  right: "1%",
 });
 
 export const logoFont = style({

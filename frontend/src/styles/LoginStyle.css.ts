@@ -19,10 +19,16 @@ export const formContainer = style({
   position: "relative",
 });
 export const input = style({
-  width: "100%",
+  //   width: "100%",
+  //   border: "none",
+  //   borderRadius: "12px",
+  //   backgroundColor: "#EFEFEF",
+  //   padding: "1rem",
+  width: "80%",
+  marginBottom: "2rem",
   border: "none",
   borderRadius: "12px",
-  backgroundColor: "#EFEFEF",
+  backgroundColor: "#efefef",
   padding: "1rem",
 });
 export const duplicateInputDiv = style({

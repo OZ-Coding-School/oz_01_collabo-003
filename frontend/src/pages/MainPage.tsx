@@ -1,10 +1,13 @@
 // import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Logo from "../components/Logo";
 import { iconBlue, layout, textLayout } from "../styles/LayoutStyle.css";
 import "../styles/MainTextStyle.css";
 function Main() {
+  const navigate = useNavigate();
   const handleClick = () => {
+    navigate("/auth/login-signup");
     console.log("버튼누르면 로그인 페이지로 이동");
   };
   return (
