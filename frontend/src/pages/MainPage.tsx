@@ -8,7 +8,6 @@ function Main() {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/auth/login-signup");
-    console.log("버튼누르면 로그인 페이지로 이동");
   };
   return (
     <div className={layout}>
