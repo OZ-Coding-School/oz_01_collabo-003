@@ -67,6 +67,16 @@ export const week_select_box = style({
   height: "230px",
   backgroundColor: "#EFE1D6",
   borderRadius: "80px 80px 80px 0",
+  cursor: "pointer",
+  transition: "all 0.3s",
+  ":hover": {
+    transform: "scale(1.03)",
+    boxShadow: "5px 5px 0 0 #F4F8F1",
+  },
+  ":active": {
+    transform: "none",
+    boxShadow: "none",
+  },
 });
 
 export const week_select_text = style({
