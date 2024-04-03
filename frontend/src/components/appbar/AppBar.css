@@ -17,7 +17,7 @@
   display: flex;
   position: relative;
   justify-content: center;
-  width: 113px;
+  width: 90px;
   height: 100vh;
   background-color: #D4D8FF;
 }
@@ -92,7 +92,7 @@
   align-items: center;
   position: absolute;
   width: 0px;
-  left: 113px;
+  left: 90px;
   height: 100vh;
   background-color: #FFFFFF;
   visibility: hidden;

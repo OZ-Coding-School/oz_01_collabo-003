@@ -1,14 +1,19 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import { nav } from '../../styles/AppBar.css';
 import { level_page_logo, level_page_top_button, level_page_top_menu } from '../../styles/LevelPage.css';
 import './AppBar.css';
 
 const AppBar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.pathname);
   return (
     <div className='app_bar_main_container'>
       <div className={level_page_top_menu}>
         <img className={level_page_logo} src='images/logo.png' alt='로고' />
-        <div className={level_page_top_button}>
-          <p>나의 학습공간</p>
+        <div className={level_page_top_button} onClick={() => navigate(
+          location.pathname === '/learning' ? '/week' : '/learning')}>
+          <p>{location.pathname === '/learning' ? '메인페이지로' : '나의 학습공간'}</p>
         </div>
       </div>
       <div className={nav}>
