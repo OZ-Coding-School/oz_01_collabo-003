@@ -5,7 +5,7 @@ import MainPage from "../pages/MainPage";
 
 const Layout = () => {
   return (
-    <div className="app_layout">
+    <div>
       <AppBar />
       <Outlet />
     </div>
