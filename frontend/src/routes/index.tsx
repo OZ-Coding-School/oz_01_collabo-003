@@ -1,6 +1,7 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import AppBar from "../components/appbar/AppBar";
 import LevelPage from "../pages/LevelPage";
+import LoginPage from "../pages/LoginPage";
 import MainPage from "../pages/MainPage";
 
 const Layout = () => {
@@ -16,10 +17,9 @@ function Router() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
+      <Route path="/auth/login" element={<LoginPage />} />
       <Route path="/" element={<Layout />}>
         <Route path="/level" element={<LevelPage />} />
-        {/* <Route path="/auth/sign-up" element={<SignUpPage />} />
-        <Route path="/auth/log-in" element={<LogInPage />} /> */}
       </Route>
     </Routes>
   );
