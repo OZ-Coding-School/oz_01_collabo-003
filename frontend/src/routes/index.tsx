@@ -1,18 +1,26 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
+import AppBar from "../components/appbar/AppBar";
+import LevelPage from "../pages/LevelPage";
 import LoginPage from "../pages/LoginPage";
 import MainPage from "../pages/MainPage";
+
+const Layout = () => {
+  return (
+    <div>
+      <AppBar />
+      <Outlet />
+    </div>
+  )
+}
 
 function Router() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/auth/login" element={<LoginPage />} />
-      {/* <Route path="/" element={<HomPage />} />
-        <Route path="/tils/write" element={<WriteTilPage />} />
-        <Route path="/tils/:tilId" element={<TilDetailPage />} />
-        <Route path="/auth/sign-up" element={<SignUpPage />} />
-        <Route path="/auth/log-in" element={<LogInPage />} /> */}
-      {/* </Route> */}
+      <Route path="/" element={<Layout />}>
+        <Route path="/level" element={<LevelPage />} />
+      </Route>
     </Routes>
   );
 }
