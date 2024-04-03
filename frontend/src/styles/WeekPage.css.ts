@@ -40,7 +40,7 @@ export const week_page_title_container = style({
 
 export const week_page_title = style({
   fontSize: "48px",
-  color: "#485935",
+  color: "#222222",
   fontWeight: "bold",
 });
 
