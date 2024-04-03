@@ -1,4 +1,6 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+
+import { Route, Routes,Outlet } from "react-router-dom";
+import Auth from "../pages/Auth";
 import AppBar from "../components/appbar/AppBar";
 import LevelPage from "../pages/LevelPage";
 import LoginPage from "../pages/LoginPage";
@@ -19,7 +21,7 @@ function Router() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
-      <Route path="/auth/login" element={<LoginPage />} />
+      <Route path="/auth/login-signup" element={<Auth />} />
       <Route path="/" element={<Layout />}>
         <Route path="/level" element={<LevelPage />} />
         <Route path="/week" element={<WeekPage />} />
@@ -28,5 +30,4 @@ function Router() {
     </Routes>
   );
 }
-
 export default Router;

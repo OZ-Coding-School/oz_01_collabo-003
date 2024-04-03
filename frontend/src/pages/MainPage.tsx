@@ -7,8 +7,7 @@ import "../styles/MainTextStyle.css";
 function Main() {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/level');
-    console.log("버튼누르면 로그인 페이지로 이동");
+    navigate("/auth/login-signup");
   };
   return (
     <div className={layout}>
