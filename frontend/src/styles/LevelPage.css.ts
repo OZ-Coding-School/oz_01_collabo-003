@@ -91,12 +91,13 @@ export const level_page_button_one = style({
   borderRadius: "80px",
   cursor: "pointer",
   boxShadow: "none",
+  transition: "all 0.3s",
   ":hover": {
     transform: "scale(1.03)",
     boxShadow: "5px 5px 0 0 #F4F8F1",
   },
   ":active": {
-    transform: "scale(1)",
+    transform: "none",
     boxShadow: "none",
   },
 });
@@ -112,9 +113,14 @@ export const level_page_button_two = style({
   borderRadius: "80px",
   cursor: "pointer",
   boxShadow: "none",
+  transition: "all 0.3s",
   ":hover": {
     transform: "scale(1.03)",
     boxShadow: "5px 5px 0 0 #F4F8F1",
+  },
+  ":active": {
+    transform: "none",
+    boxShadow: "none",
   },
 });
 
