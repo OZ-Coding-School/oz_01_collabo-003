@@ -25,9 +25,10 @@ SECRET = json.loads(config_scret_common_str)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = SECRET["SECRET_KEY_NAME"]
-
+OPENAI_API_KEY = SECRET["OPENAI_API_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,16 +40,22 @@ DJANGO_SYSTEM_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
 ]
 
 THIRD_PARTY_APPS = [
     'corsheaders',
     'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
 
 OWN_APPS = [
-    'print.apps.PrintConfig'
+    'users.apps.UsersConfig',
+    'gpt.apps.GptConfig',
+    'quizs',
+    'quizlevels',
+    'feedbacks',
 ]
 
 
@@ -92,8 +99,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': SECRET["db"]["ENGINE"],
+        'NAME': SECRET["db"]["NAME"],
+        'USER': SECRET["db"]["USER"],
+        'PASSWORD': SECRET["db"]["PASSWORD"],
+        'HOST': SECRET["db"]["HOST"],
+        'PORT': SECRET["db"]["PORT"],
     }
 }
 
@@ -139,8 +150,38 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:5173', 'http://127.0.0.1:8000']
+# CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:5173', 'http://127.0.0.1:8000']
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True 
+
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+AUTH_USER_MODEL = 'users.User'
+
+REST_FRAMEWORK = {
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
+
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
+    "SIGNING_KEY": "SECRET",
+    "ALGORITHM": "HS256",
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+# HTTP 응답 헤더에 X-XSS-Protection: 1: mode=block 를 포함하여 브라우저의  XSS를 필터를 활성화
+SECURE_BROWSER_XSS_FILTER = True
+

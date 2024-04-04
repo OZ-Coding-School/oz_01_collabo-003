@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PrintConfig(AppConfig):
+class QuizlevelsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'print'
+    name = 'quizlevels'
