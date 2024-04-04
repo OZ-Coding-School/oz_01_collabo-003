@@ -47,8 +47,8 @@ class LoginAPIView(APIView):
 
 # 로그아웃 기능  
 class LogoutAPIvie(APIView):
-    permission_classes = [IsAuthenticated]
     def post(self, request):
+        request.user.auth_token.delete()
         logout(request)
         return Response(
             {
@@ -59,9 +59,6 @@ class LogoutAPIvie(APIView):
 
 # 유저 정보 업데이트
 class MyInfo(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
-
     def get(self, request):
         user = request.user
         serializer = UserSerializer(user)
