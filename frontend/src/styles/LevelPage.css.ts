@@ -11,10 +11,14 @@ export const level_page_main_container = style({
 });
 
 export const level_page_top_menu = style({
-  marginTop: "40px",
-  position: "absolute",
+  // marginTop: "40px",
+  // position: "fixed",
+  top: "0px",
   boxSizing: "border-box",
-  padding: "0 50px 30px 200px",
+  padding: "0px 50px 0px 150px",
+  // alignItems: "center",
+  alignItems: "flex-end",
+  height: "60px",
   display: "flex",
   justifyContent: "space-between",
   width: "100%",
@@ -23,6 +27,7 @@ export const level_page_top_menu = style({
 
 export const level_page_logo = style({
   width: "100px",
+  flexShrink: 0,
 });
 
 export const level_page_top_button = style({
@@ -32,10 +37,10 @@ export const level_page_top_button = style({
   color: "rgba(0, 0, 0, 0.3)",
   top: "20px",
   right: "50px",
-  width: "156px",
-  height: "61px",
+  width: "120px",
+  height: "45px",
   borderRadius: "12px",
-  fontSize: "22px",
+  fontSize: "17px",
   border: "1px solid rgba(0, 0, 0, 0.3)",
   cursor: "pointer",
   ":hover": {

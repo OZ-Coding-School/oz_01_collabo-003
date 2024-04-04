@@ -20,8 +20,7 @@ function UserUpdatePage() {
     console.log("");
   };
   return (
-    <div>
-      {" "}
+    <div style={{ zIndex: "1000" }}>
       <img
         className={week_background_01}
         src="images/week_background_01.png"

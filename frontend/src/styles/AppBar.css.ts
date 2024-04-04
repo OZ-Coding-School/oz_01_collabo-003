@@ -3,6 +3,7 @@ import { style } from "@vanilla-extract/css";
 export const nav = style({
   position: "absolute",
   zIndex: 999,
+  top: 0,
 });
 
 export const container = style({
