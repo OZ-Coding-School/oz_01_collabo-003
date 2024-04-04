@@ -54,7 +54,8 @@ OWN_APPS = [
     'users.apps.UsersConfig',
     'gpt.apps.GptConfig',
     'quizs',
-    'feedbacks.apps.FeedbacksConfig',
+    'quizlevels',
+    'feedbacks',
 ]
 
 
