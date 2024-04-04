@@ -4,6 +4,7 @@ import Auth from "../pages/Auth";
 import LevelPage from "../pages/LevelPage";
 import MainPage from "../pages/MainPage";
 import MyLearningPage from "../pages/MyLearningPage";
+import QuizPage from "../pages/QuizPage";
 import UserUpdatePage from "../pages/UserUpdatePage";
 import WeekPage from "../pages/WeekPage";
 
@@ -26,6 +27,7 @@ function Router() {
         <Route path="/week" element={<WeekPage />} />
         <Route path="/learning" element={<MyLearningPage />} />
         <Route path="/user-update" element={<UserUpdatePage />} />
+        <Route path="/quiz" element={<QuizPage />} />
       </Route>
     </Routes>
   );
