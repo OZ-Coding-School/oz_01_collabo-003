@@ -1,12 +1,17 @@
 # from django.shortcuts import render
 from rest_framework.views import APIView, Response, status
-from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
+from .serializers import RegisterSerializer, UserSerializer
 from django.contrib.auth import authenticate, logout
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
 from rest_framework_simplejwt.views import TokenRefreshView
+from .models import User
+from quizs.models import Quiz
+from feedbacks.models import Feedback
+from .serializers import UserSerializer
+from quizs.serializers import QuizSerializer
+from feedbacks.serializers import FeedbackSerializer
+
 
 
 # 회원가입 기능
@@ -95,3 +100,36 @@ class refreshToken(TokenRefreshView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        
+class GetUserDataAPIView(APIView):
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # 해당 유저의 퀴즈와 피드백을 가져옴
+        quizzes = Quiz.objects.filter(user=user).order_by('orderNum')[:5]
+        feedbacks = Feedback.objects.filter(quiz__user=user).order_by('-createdAt')[:5]
+
+        user_serializer = UserSerializer(user)
+        quiz_serializer = QuizSerializer(quizzes, many=True)
+        feedback_serializer = FeedbackSerializer(feedbacks, many=True)
+
+        # 퀴즈와 피드백을 합친 데이터 생성
+        combined_data = []
+        for quiz, feedback in zip(quiz_serializer.data, feedback_serializer.data):
+            combined_data.append({
+                "content": quiz["content"],
+                "answer": quiz["answer"],
+                "feedback": feedback["content"],
+                "score": feedback["score"],
+                "createdAt": feedback["createdAt"]
+            })
+
+        data = {
+            "user": user_serializer.data,
+            "quizzes": combined_data,
+        }
+
+        return Response(data,status=status.HTTP_200_OK,)
