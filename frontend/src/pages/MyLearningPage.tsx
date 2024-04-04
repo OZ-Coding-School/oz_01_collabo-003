@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ReviewComponent from "../components/ReviewComponent";
-import { learning_box_01_content, learning_box_01_content_box, learning_box_01_content_container, learning_box_01_content_title, learning_box_01_title, learning_box_01_title_container, learning_box_03_graph_box, learning_box_03_title, learning_box_03_title_container, my_learning_page_content_box01, my_learning_page_content_box02, my_learning_page_content_box03, my_learning_page_content_container, my_learning_page_main_container, my_learning_page_title } from "../styles/MyLearningPage.css";
+import { learningBox01Content, learningBox01ContentBox, learningBox01ContentContainer, learningBox01ContentTitle, learningBox01Title, learningBox01TitleContainer, learningBox03GraphBox, learningBox03Title, learningBox03TitleContainer, myLearningPageContentBox01, myLearningPageContentBox02, myLearningPageContentBox03, myLearningPageContentContainer, myLearningPageMainContainer, myLearningPageTitle } from "../styles/MyLearningPage.css";
 
 type dataType = {
   date: string,
@@ -67,21 +67,21 @@ const MyLearningPage = () => {
   ];
 
   return (
-    <div className={my_learning_page_main_container}>
-      <div className={my_learning_page_title}>
+    <div className={myLearningPageMainContainer}>
+      <div className={myLearningPageTitle}>
         <p>하염빵님의 학습 공간</p>
       </div>
-      <div className={my_learning_page_content_container}>
-        <div className={my_learning_page_content_box01}>
-          <div className={learning_box_01_title_container}>
-            <p className={learning_box_01_title}>내가 푼 문제 수</p>
-            <p className={learning_box_01_title}>13문제</p>
+      <div className={myLearningPageContentContainer}>
+        <div className={myLearningPageContentBox01}>
+          <div className={learningBox01TitleContainer}>
+            <p className={learningBox01Title}>내가 푼 문제 수</p>
+            <p className={learningBox01Title}>13문제</p>
           </div>
-          <div className={learning_box_01_content_container}>
-            <p className={learning_box_01_content_title}>내가 푼 문제</p>
-            <div className={learning_box_01_content_box}>
+          <div className={learningBox01ContentContainer}>
+            <p className={learningBox01ContentTitle}>내가 푼 문제</p>
+            <div className={learningBox01ContentBox}>
               {getData.map((data, index) => (
-                <div key={index} className={learning_box_01_content} onClick={() => handleCheckAndGetData(data)}>
+                <div key={index} className={learningBox01Content} onClick={() => handleCheckAndGetData(data)}>
                   <p>{data.date} | {data.grade} | {data.score}</p>
                 </div>
               ))
@@ -89,15 +89,15 @@ const MyLearningPage = () => {
             </div>
           </div>
         </div>
-        <div className={my_learning_page_content_box02}></div>
+        <div className={myLearningPageContentBox02}></div>
         {isClicked ? <ReviewComponent data={data} /> :
-          <div className={my_learning_page_content_box03}>
-            <div className={learning_box_03_graph_box}>
+          <div className={myLearningPageContentBox03}>
+            <div className={learningBox03GraphBox}>
               구래~ 푸
             </div>
-            <div className={learning_box_03_title_container}>
-              <p className={learning_box_03_title}>평균점수</p>
-              <p className={learning_box_03_title}>85점</p>
+            <div className={learningBox03TitleContainer}>
+              <p className={learningBox03Title}>평균점수</p>
+              <p className={learningBox03Title}>85점</p>
             </div>
           </div>}
       </div>
