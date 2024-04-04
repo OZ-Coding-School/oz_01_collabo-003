@@ -8,9 +8,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework_simplejwt.views import TokenRefreshView
 
-def setRefreshTokenCookie(response, refreshToken):
-    response.set_cookie('refreshToken', str(refreshToken), max_age=86400, secure=False, samesite=None, httponly=False, domain="localhost")
-    return response
 
 # 회원가입 기능
 class RegisterAPIView(APIView):
@@ -23,27 +20,22 @@ class RegisterAPIView(APIView):
 
 # 로그인 기능
 class LoginAPIView(APIView):
-
     def post(self, request):
         user = authenticate(
             userId = request.data.get('userId'),
             password = request.data.get('password')
         )
         if user is not None:
-            serializer = LoginSerializer(user)
             accessToken = TokenObtainPairSerializer().get_token(user)
             refreshToken = RefreshToken.for_user(user)
             res = Response(
                 {
                     "message": "login success",
                     "accessToken": str(accessToken),
+                    "refreshToken": str(refreshToken),
                 },
                 status=status.HTTP_200_OK,
             )
-            # 임시 쿠키에 accessToken, refresh token 저장
-            # res.set_cookie('accessToken', str(access_token) , expires=datetime.now()+timedelta(days=1), secure=True, samesite='None') # 서버에서 httpsonly=True
-            setRefreshTokenCookie(res, refreshToken)
-            # res.set_cookie('refreshToken', str(refresh_token), max_age=86400, secure=False, samesite=None, httponly=False, domain="localhost") 
             return res
         else:
             return Response(
@@ -97,7 +89,6 @@ class refreshToken(TokenRefreshView):
                 },
                 status=status.HTTP_200_OK,
             )
-            setRefreshTokenCookie(res,refreshToken)
             return res
             
         except Exception:
