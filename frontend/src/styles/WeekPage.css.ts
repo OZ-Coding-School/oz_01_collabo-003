@@ -1,13 +1,28 @@
 import { style } from "@vanilla-extract/css";
+import { calc } from "@vanilla-extract/css-utils";
 
-export const week_container = style({
+export const weekContainer = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: "100vh",
+  height: calc.add("100vh", "-60px"),
 });
 
-export const week_main_content_container = style({
+export const weekBackgroundImage01 = style({
+  position: "absolute",
+  width: "280px",
+  right: "0",
+  top: "120px",
+});
+
+export const weekBackgroundImage02 = style({
+  position: "absolute",
+  width: "350px",
+  left: "20px",
+  bottom: "50px",
+});
+
+export const weekMainContentContainer = style({
   position: "relative",
   display: "flex",
   flexDirection: "column",
@@ -16,21 +31,7 @@ export const week_main_content_container = style({
   width: "100%",
 });
 
-export const week_background_01 = style({
-  position: "absolute",
-  width: "280px",
-  right: "0",
-  top: "120px",
-});
-
-export const week_background_02 = style({
-  position: "absolute",
-  width: "350px",
-  left: "100px",
-  bottom: "30px",
-});
-
-export const week_page_title_container = style({
+export const weekPageTitleContainer = style({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -38,18 +39,18 @@ export const week_page_title_container = style({
   marginBottom: "100px",
 });
 
-export const week_page_title = style({
+export const weekPageTitle = style({
   fontSize: "48px",
   color: "#222222",
   fontWeight: "bold",
 });
 
-export const week_page_subtitle_date = style({
+export const weekPageSubtitleDate = style({
   fontSize: "40px",
   color: "#202020",
 });
 
-export const week_select_box_container = style({
+export const weekSelectBoxContainer = style({
   width: "80%",
   display: "flex",
   justifyContent: "space-between",
@@ -57,7 +58,7 @@ export const week_select_box_container = style({
   marginBottom: "100px",
 });
 
-export const week_select_box = style({
+export const weekSelectBox = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -79,7 +80,7 @@ export const week_select_box = style({
   },
 });
 
-export const week_select_text = style({
+export const weekSelectText = style({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
