@@ -1,0 +1,79 @@
+#container {
+  color: #999;
+  /* text-transform: uppercase; */
+  font-size: 3.5rem;
+  font-weight: bold;
+  /* position: fixed; */
+  /* width: 100%; */
+  bottom: 45%;
+  display: block;
+  line-height: 2;
+}
+
+#flip {
+  height: 5rem;
+  overflow: hidden;
+}
+
+#flip > div > div {
+  color: #fff;
+  padding: 4px 12px;
+
+  text-align: center;
+  margin-bottom: 35px;
+  display: inline-block;
+}
+
+#flip div:first-child {
+  animation: show 5s linear infinite;
+}
+
+#flip div div {
+  /* background: #42c58a60; */
+  color: #2fa66c88;
+  /* color: #42c58a60; */
+}
+
+#flip div:first-child div {
+  /* background: #dfefcf; */
+  color: #7982c8;
+  /* color: #dc143c53; */
+  /* color: #46b3db92; */
+  /* color: #4ec7f3; */
+}
+#flip div:last-child div {
+  /* background: #dc143c53; */
+  /* color: #42c58a; */
+  color: #dc143c53;
+}
+@keyframes show {
+  0% {
+    margin-top: -400px;
+  } /* 처음 시작 */
+  5% {
+    margin-top: -320px;
+  } /* 재밌는 공부 */
+  33% {
+    margin-top: -320px;
+  }
+  38% {
+    margin-top: -165px;
+    /* margin-top: -25px; */
+  } /* 새로운 퀴즈 */
+  66% {
+    margin-top: -165px;
+    /* margin-top: -25px; */
+  }
+  71% {
+    margin-top: -15px;
+    /* margin-top: 270px; */
+  } /* 새로운 하루. */
+  99.99% {
+    margin-top: -15px;
+    /* margin-top: 270px; */
+  }
+  100% {
+    margin-top: -500px;
+    /* margin-top: -270px; */
+  }
+}

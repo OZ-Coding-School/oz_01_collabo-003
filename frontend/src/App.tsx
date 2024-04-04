@@ -1,11 +1,14 @@
-import './App.css'
+import { BrowserRouter } from "react-router-dom";
+import Router from "./routes";
+
+// import axios from "./api/axios"; => axios로 불러오기!
 
 function App() {
   return (
-    <div>
-      <h1>test</h1>
-    </div>
-  )
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Swanky+and+Moo+Moo&display=swap");
+@font-face {
+  font-family: "kingSejongBoldFont";
+  font-weight: normal;
+  src: url("fonts/KingSejongInstitute-Bold.otf") format("truetype");
+}
+@font-face {
+  font-family: "kingSejongRegularFont";
+  font-weight: normal;
+  src: url("fonts/KingSejongInstitute-Regular.otf") format("truetype");
+}
+.swanky-and moo moo-regular {
+  font-family: "Swanky and Moo Moo", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "kingSejongRegularFont";
+}
