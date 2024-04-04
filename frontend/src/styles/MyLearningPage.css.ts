@@ -1,33 +1,34 @@
 import { style } from "@vanilla-extract/css";
+import { calc } from "@vanilla-extract/css-utils";
 
-export const my_learning_page_main_container = style({
+export const myLearningPageMainContainer = style({
   width: "100%",
-  height: "100vh",
+  height: calc.add("100vh", "-60px"),
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
 });
 
-export const my_learning_page_title = style({
+export const myLearningPageTitle = style({
   fontSize: "40px",
   color: "#7982E8",
   margin: "20px 0 30px 0",
 });
 
-export const my_learning_page_content_container = style({
+export const myLearningPageContentContainer = style({
   display: "flex",
   justifyContent: "space-evenly",
   alignItems: "center",
   marginLeft: "50px",
   width: "1600px",
-  height: "75%",
+  height: "80%",
   padding: "40px 0",
   backgroundColor: "#F6F4FF",
   borderRadius: "50px",
 });
 
-export const my_learning_page_content_box01 = style({
+export const myLearningPageContentBox01 = style({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -36,7 +37,7 @@ export const my_learning_page_content_box01 = style({
   height: "100%",
 });
 
-export const learning_box_01_title_container = style({
+export const learningBox01TitleContainer = style({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -47,13 +48,13 @@ export const learning_box_01_title_container = style({
   borderRadius: "50px",
 });
 
-export const learning_box_01_title = style({
+export const learningBox01Title = style({
   fontSize: "45px",
   color: "#828390",
   margin: "0",
 });
 
-export const learning_box_01_content_container = style({
+export const learningBox01ContentContainer = style({
   boxSizing: "border-box",
   display: "flex",
   flexDirection: "column",
@@ -67,7 +68,13 @@ export const learning_box_01_content_container = style({
   padding: "40px 40px 0 40px",
 });
 
-export const learning_box_01_content_box = style({
+export const learningBox01ContentTitle = style({
+  fontSize: "45px",
+  color: "#828390",
+  margin: "0",
+});
+
+export const learningBox01ContentBox = style({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -77,13 +84,7 @@ export const learning_box_01_content_box = style({
   scrollbarWidth: "none",
 });
 
-export const learning_box_01_content_title = style({
-  fontSize: "45px",
-  color: "#828390",
-  margin: "0",
-});
-
-export const learning_box_01_content = style({
+export const learningBox01Content = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -98,13 +99,13 @@ export const learning_box_01_content = style({
   cursor: "pointer",
 });
 
-export const my_learning_page_content_box02 = style({
+export const myLearningPageContentBox02 = style({
   width: "1px",
   height: "100%",
   backgroundColor: "#C9CDC5",
 });
 
-export const my_learning_page_content_box03 = style({
+export const myLearningPageContentBox03 = style({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -113,7 +114,7 @@ export const my_learning_page_content_box03 = style({
   height: "100%",
 });
 
-export const learning_box_03_graph_box = style({
+export const learningBox03GraphBox = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -124,7 +125,7 @@ export const learning_box_03_graph_box = style({
   fontSize: "45px",
 });
 
-export const learning_box_03_title_container = style({
+export const learningBox03TitleContainer = style({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -135,7 +136,7 @@ export const learning_box_03_title_container = style({
   borderRadius: "50px",
 });
 
-export const learning_box_03_title = style({
+export const learningBox03Title = style({
   fontSize: "45px",
   color: "#828390",
   margin: "0",
