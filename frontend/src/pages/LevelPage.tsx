@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import LevelSelectButtonOne from '../components/levelpagebutton/LevelSelectButtonOne';
 import LevelSelectButtonTwo from '../components/levelpagebutton/LevelSelectButtonTwo';
-import { level_page_background_image, level_page_button_container_one, level_page_button_container_two, level_page_container, level_page_main_container, level_page_title } from '../styles/LevelPage.css';
+import { levelPageBackgroundImage, levelPageButtonContainerOne, levelPageButtonContainerTwo, levelPageContainer, levelPageMainContainer, levelPageTitle } from '../styles/LevelPage.css';
 // import './LevelPage.css';
 
 const LevelPage = () => {
@@ -10,17 +10,16 @@ const LevelPage = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <div className={level_page_main_container}>
-
-        <img className={level_page_background_image} src='/images/level_background.png' alt='배경이미지' />
-        <div className={level_page_container}>
-          <h1 className={level_page_title}>Choose your level!</h1>
-          <div className={level_page_button_container_one}>
+      <div className={levelPageMainContainer}>
+        <img className={levelPageBackgroundImage} src='/images/level_background.png' alt='배경이미지' />
+        <div className={levelPageContainer}>
+          <h1 className={levelPageTitle}>Choose your level!</h1>
+          <div className={levelPageButtonContainerOne}>
             {levelOneList.map((level, index) => (
               <LevelSelectButtonOne key={`menu_one${index}`} name={level} onClick={() => navigate('/week', { state: level })} />
             ))}
           </div>
-          <div className={level_page_button_container_two}>
+          <div className={levelPageButtonContainerTwo}>
             {levelTwoList.map((level, index) => (
               <LevelSelectButtonTwo key={`menu_two${index}`} name={level} onClick={!level ? undefined : () => navigate('/week', { state: level })} />
             ))}

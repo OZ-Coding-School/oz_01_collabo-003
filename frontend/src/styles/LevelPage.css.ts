@@ -1,16 +1,17 @@
 import { style } from "@vanilla-extract/css";
+import { calc } from "@vanilla-extract/css-utils";
 
-export const level_page_main_container = style({
+export const levelPageMainContainer = style({
   display: "flex",
   position: "relative",
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  height: "100vh",
+  height: calc.add("100vh", "-60px"),
   zIndex: 1,
 });
 
-export const level_page_top_menu = style({
+export const levelPageTopMenu = style({
   // marginTop: "40px",
   // position: "fixed",
   top: "0px",
@@ -25,12 +26,12 @@ export const level_page_top_menu = style({
   zIndex: 900,
 });
 
-export const level_page_logo = style({
+export const levelPageLogo = style({
   width: "100px",
   flexShrink: 0,
 });
 
-export const level_page_top_button = style({
+export const levelPageTopButton = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -46,11 +47,12 @@ export const level_page_top_button = style({
   ":hover": {
     backgroundColor: "#7982E8",
     color: "#FFFFFF",
+    border: "none",
   },
 });
 
-export const level_page_background_image = style({
-  top: "130px",
+export const levelPageBackgroundImage = style({
+  top: "50px",
   right: 0,
   position: "absolute",
   width: "400px",
@@ -58,7 +60,7 @@ export const level_page_background_image = style({
   zIndex: -1,
 });
 
-export const level_page_container = style({
+export const levelPageContainer = style({
   width: "100%",
   maxWidth: "1263px",
   display: "flex",
@@ -67,25 +69,25 @@ export const level_page_container = style({
   alignItems: "center",
 });
 
-export const level_page_title = style({
+export const levelPageTitle = style({
   marginBottom: "36px",
 });
 
-export const level_page_button_container_one = style({
+export const levelPageButtonContainerOne = style({
   display: "flex",
   justifyContent: "space-evenly",
   width: "100%",
   flexWrap: "wrap",
 });
 
-export const level_page_button_container_two = style({
+export const levelPageButtonContainerTwo = style({
   display: "flex",
   justifyContent: "space-evenly",
   width: "100%",
   flexWrap: "wrap",
 });
 
-export const level_page_button_one = style({
+export const levelPageButtonOne = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -107,7 +109,7 @@ export const level_page_button_one = style({
   },
 });
 
-export const level_page_button_two = style({
+export const levelPageButtonTwo = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -129,7 +131,7 @@ export const level_page_button_two = style({
   },
 });
 
-export const level_page_button_text = style({
+export const levelPageButtonText = style({
   fontSize: "64px",
   color: "#595959",
 });

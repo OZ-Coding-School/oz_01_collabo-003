@@ -1,4 +1,4 @@
-import { level_page_button_one, level_page_button_text } from "../../styles/LevelPage.css"
+import { levelPageButtonOne, levelPageButtonText } from "../../styles/LevelPage.css"
 
 type Props = {
   name: string
@@ -7,8 +7,8 @@ type Props = {
 
 const LevelSelectButtonOne = ({ name, onClick }: Props) => {
   return (
-    <div className={level_page_button_one} onClick={onClick}>
-      <p className={level_page_button_text}>{name}</p>
+    <div className={levelPageButtonOne} onClick={onClick}>
+      <p className={levelPageButtonText}>{name}</p>
     </div>
   )
 }
