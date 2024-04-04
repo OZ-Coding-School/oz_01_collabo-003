@@ -25,7 +25,7 @@ const DuplicateInput = ({ children, value, onChange, type }: InputProps) => {
             type={type}
             required
           ></input>
-          <button className={duplicateCheckBtn}>증복 확인</button>
+          <button className={duplicateCheckBtn}>중복 확인</button>
         </div>
       </label>
     </div>

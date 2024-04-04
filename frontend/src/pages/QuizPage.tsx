@@ -59,29 +59,29 @@ function QuizPage() {
           />
         </div>
         <p className={TodayQuiz}>TODAY QUIZ</p>
-
-        {/* {quizs.map((quiz, index) => ( */}
-        <>
-          <p className={questionNumbers}>1/5</p>
-          <p className={question}>
-            {" "}
-            다음 문장을 읽고, 'Why did Sarah go to the park?'라는 질문에
-            대답하세요
-          </p>
-
-          <div className={quizAnswerDiv}>
-            <div className={questionInput}>
-              Sarah went to the park to play with her friends
-            </div>
-            <input
-              className={quizInput}
-              type="text"
-              placeholder="정답을 입력하세요"
-            ></input>
-          </div>
-        </>
-        {/* ))} */}
       </div>
+      {/* {quizs.map((quiz, index) => ( */}
+      <>
+        <p className={questionNumbers}>1/5</p>
+        <p className={question}>
+          {" "}
+          다음 문장을 읽고, 'Why did Sarah go to the park?'라는 질문에
+          대답하세요
+        </p>
+
+        <div className={quizAnswerDiv}>
+          <div className={questionInput}>
+            Sarah went to the park to play with her friends
+          </div>
+          <input
+            className={quizInput}
+            type="text"
+            placeholder="정답을 입력하세요"
+          ></input>
+        </div>
+      </>
+      {/* ))} */}
+
       <div className={quizbuttonDiv}>
         <button className={quizButton}>PREV</button>
         <button className={quizButton}>NEXT</button>
