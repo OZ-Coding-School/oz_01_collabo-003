@@ -34,3 +34,13 @@ export const formButton = style([
   buttonStyle,
   { left: "50%", transform: "translateX(-50%)", top: "75%" },
 ]);
+export const userUpdateButton = style([
+  buttonStyle,
+  {
+    width: "100%",
+    height: "50px",
+    fontSize: "1.8rem",
+    position: "relative",
+    textAlign: "center",
+  },
+]);
