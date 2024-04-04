@@ -12,7 +12,7 @@ import {
   userLogoLayout,
   userName,
 } from "../styles/UserUpdateStyle.css";
-import { week_background_01, week_background_02 } from "../styles/WeekPage.css";
+import { weekBackgroundImage01, weekBackgroundImage02 } from "../styles/WeekPage.css";
 
 function UserUpdatePage() {
   // 로그인 상태 가져와서 수정해야함
@@ -22,12 +22,12 @@ function UserUpdatePage() {
   return (
     <div style={{ zIndex: "1000" }}>
       <img
-        className={week_background_01}
+        className={weekBackgroundImage01}
         src="images/week_background_01.png"
         alt="week 배경01"
       />
       <img
-        className={week_background_02}
+        className={weekBackgroundImage02}
         src="images/week_background_02.png"
         alt="week 배경02"
       />
