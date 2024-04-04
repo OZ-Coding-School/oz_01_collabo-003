@@ -12,7 +12,7 @@ const AppBar = () => {
       <div className={levelPageTopMenu}>
         <img className={levelPageLogo} src='images/logo.png' alt='로고' />
         <div className={levelPageTopButton} onClick={() => navigate(
-          location.pathname === '/learning' ? '/week' : '/learning')}>
+          location.pathname === '/learning' ? '/level' : '/learning')}>
           <p>{location.pathname === '/learning' ? '메인페이지로' : '나의 학습공간'}</p>
         </div>
       </div>
@@ -32,10 +32,10 @@ const AppBar = () => {
               <p className='user_nickname'>닉네임</p>
             </div>
             <div className='menu_list'>
-              <div className='menu_list_item'>메뉴 1</div>
-              <div className='menu_list_item'>메뉴 2</div>
-              <div className='menu_list_item'>메뉴 3</div>
-              <div className='menu_list_item'>메뉴 4</div>
+              <div className='menu_list_item' onClick={() => navigate('/level')}>메인페이지</div>
+              <div className='menu_list_item' onClick={() => navigate('/learning')}>나의 학습공간</div>
+              <div className='menu_list_item' onClick={() => navigate('/user-update')}>정보수정</div>
+              <div className='menu_list_item'>로그아웃</div>
             </div>
           </div>
         </div>
