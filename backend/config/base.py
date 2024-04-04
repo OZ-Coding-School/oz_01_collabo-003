@@ -53,6 +53,7 @@ THIRD_PARTY_APPS = [
 OWN_APPS = [
     'users.apps.UsersConfig',
     'gqt.apps.GptConfig',
+    'quizs',
 ]
 
 
