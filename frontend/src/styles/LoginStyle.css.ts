@@ -24,7 +24,7 @@ export const input = style({
   //   borderRadius: "12px",
   //   backgroundColor: "#EFEFEF",
   //   padding: "1rem",
-  width: "80%",
+  width: "100%",
   marginBottom: "2rem",
   border: "none",
   borderRadius: "12px",

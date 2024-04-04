@@ -3,8 +3,8 @@ import { input } from "../styles/LoginStyle.css";
 
 type InputProps = {
   children: React.ReactNode;
-  value: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   type: HTMLInputTypeAttribute;
 };
 const Input = ({ children, value, onChange, type }: InputProps) => {
