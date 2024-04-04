@@ -28,4 +28,5 @@ urlpatterns = [
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/v1/quiz/',include('quizs.urls')),
+    path('api/v1/quizlevel/',include('quizlevels.urls')),
 ]
