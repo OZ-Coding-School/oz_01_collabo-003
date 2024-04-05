@@ -1,8 +1,16 @@
+import { useState } from "react";
 import { quizTitleContainer } from "../styles/QuizStyle.css";
+
 import {
+  FlippedContainer,
+  back,
+  card,
+  flip,
+  flipped,
+  front,
+  qiuzDiv,
   resultAgainButton,
   resultBg,
-  resultBoxbg,
   resultButtonDiv,
   resultCongratulation,
   resultContainer,
@@ -13,8 +21,13 @@ import {
   score,
   yourScoreTitle,
 } from "../styles/ResultStyle.css";
+import { quizs } from "./ResultDetail";
 
 function ResultPage() {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const handleDetailButtonClick = () => {
+    setIsFlipped(!isFlipped);
+  };
   return (
     <div className={resultContainer}>
       <div>
@@ -33,21 +46,37 @@ function ResultPage() {
           상세보기를 눌러 정답을 확인하세요!
         </p>
       </div>
-      <div className={resultScoreBox}>
-        {/* <img src="../../public/images/resultDog.png" className={resultDogImg} /> */}
-        <div className={resultBoxbg}>
-          <img src="../../public/images/resultBg.png" className={resultImg} />
-          <div>
-            {" "}
-            <p className={yourScoreTitle}>Your Score</p>
-            <p className={score}>80</p>
-          </div>
-
-          <div className={resultButtonDiv}>
-            <button className={resultAgainButton}>AGAIN</button>
-            <button className={resultDetailButton}>상세보기</button>
+      <div className={flip}>
+        <div className={resultScoreBox}>
+          <div className={isFlipped ? `${card} ${flipped}` : card}>
+            <img src="../../public/images/resultBg.png" className={resultImg} />
+            <div className={front}>
+              <p className={yourScoreTitle}>Your Score</p>
+              <p className={score}>80</p>
+            </div>
+            <div className={back}>
+              <div className={FlippedContainer}>
+                {quizs.map((quiz, index) => (
+                  <div className={qiuzDiv} key={index}>
+                    <p>{quiz.question}</p>
+                    <p>답변: {quiz.userAnswer}</p>
+                    <p>정답: {quiz.correctAnswer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+
+      <div className={resultButtonDiv}>
+        <button className={resultAgainButton}>AGAIN</button>
+        <button
+          className={resultDetailButton}
+          onClick={handleDetailButtonClick}
+        >
+          {isFlipped ? "점수보기" : "상세보기"}
+        </button>
       </div>
     </div>
   );

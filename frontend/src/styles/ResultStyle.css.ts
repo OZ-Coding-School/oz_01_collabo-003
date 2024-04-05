@@ -1,34 +1,19 @@
 import { style } from "@vanilla-extract/css";
+import { calc } from "@vanilla-extract/css-utils";
 export const resultContainer = style({
-    width: "100%",
- 
-  
-    padding: "20px 100px ",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  });
-export const resultPageDetail = style({
   width: "100%",
-  textAlign: "center",
-  zIndex: 1,
-  fontSize: "1.2rem",
-  marginBottom: "1.2rem",
-});
-export const resultScoreBox = style({
+  height: calc.add("100vh", "-60px"),
+  padding: "20px 100px 0 100px",
   display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  width: "70%",
-  height: "400px",
-  zIndex: 1,
-  position: "relative",
 });
 export const resultBg = style({
   width: "180px",
   marginLeft: "30px",
 });
+
 export const resultCongratulation = style({
   fontSize: "2.3rem",
   position: "absolute",
@@ -36,28 +21,59 @@ export const resultCongratulation = style({
   left: "0px",
   width: "250px",
 });
-export const resultDogImg = style({
-  position: "absolute",
-  zIndex: 999,
-  transform: "rotate(5deg)",
-  width: "350px",
-  top: -180,
-  left: 530,
+export const resultPageDetail = style({
+  width: "100%",
+  textAlign: "center",
+  zIndex: 1,
+  fontSize: "1.2rem",
+  marginBottom: "1.2rem",
 });
-export const resultImg = style({
-  width: "75%",
+export const flip = style({
+  width: "1000px",
+  position: "relative",
+  perspective: "1100px",
+  zIndex: 1,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+export const resultScoreBox = style({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "60%",
   height: "400px",
-  zIndex: 10,
+  zIndex: 1,
+  position: "relative",
+});
+export const flipped = style({
+  transform: "rotateY(180deg)",
+});
+export const card = style({
+  width: "100%",
+  height: "100%",
+  position: "relative",
+  transition: "0.4s",
+  transformStyle: "preserve-3d",
+});
+
+export const resultImg = style({
+  width: "100%",
+  height: "400px",
+
   position: "absolute",
 });
 
-export const resultBoxbg = style({
-  width: "95%",
+export const front = style({
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  backfaceVisibility: "hidden",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  position: "relative",
 });
 export const yourScoreTitle = style({
   fontSize: "2rem",
@@ -74,11 +90,41 @@ export const score = style({
   zIndex: 999,
   fontFamily: "Aladin",
 });
+export const back = style({
+  transform: "rotateY(180deg)",
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  backfaceVisibility: "hidden",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+export const FlippedContainer = style({
+  overflowY: "scroll",
+  overflowX: "hidden",
+  width: "100%",
+  textAlign: "center",
+  height: "280px",
+  //   background: "red",
+  zIndex: 999,
+  position: "absolute",
+  top: "30px",
+  //   "::-webkit-scrollbar": {
+  //     borderRadius: "5px",
+  //   },
+});
+export const qiuzDiv = style({
+  textAlign: "center",
+  marginBottom: "2rem",
+});
+
 export const resultButtonDiv = style({
-  marginTop: "3rem",
+  position: "relative",
+  top: -80,
   width: "50%",
   display: "flex",
-  justifyContent: "space-evenly",
+  justifyContent: "space-around",
 });
 export const resultAgainButton = style({
   position: "relative",
@@ -97,3 +143,12 @@ export const resultDetailButton = style([
   resultAgainButton,
   { border: "2px solid #647BDF", backgroundColor: "white", color: "#647BDF" },
 ]);
+
+// export const resultDogImg = style({
+//   position: "absolute",
+//   zIndex: 999,
+//   transform: "rotate(5deg)",
+//   width: "350px",
+//   top: -180,
+//   left: 530,
+// });
