@@ -53,8 +53,7 @@ class LoginAPIView(APIView):
 # 로그아웃 기능  
 class LogoutAPIvie(APIView):
     def post(self, request):
-        request.user.auth_token.delete()
-        logout(request)
+            # 토큰을 따로 DB에 저장을 안 하기 때문에 블랙리스트방식을 못 써서 클라이언트측에서 토큰을 삭제하는 방식으로 해야함
         return Response(
             {
                 "message": "logout success",
