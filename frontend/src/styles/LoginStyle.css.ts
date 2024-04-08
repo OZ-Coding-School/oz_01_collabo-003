@@ -36,9 +36,9 @@ export const duplicateInputDiv = style({
 });
 export const duplicateCheckBtn = style({
   position: "absolute",
-  top: "50%",
-  right: "0",
-  transform: "translateY(-50%)",
+  width: "80px",
+  right: "10px",
+  transform: "translateY(54%)",
   backgroundColor: "#D9D9D9",
   color: "#8C8888",
   border: "none",
