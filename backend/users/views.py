@@ -1,7 +1,6 @@
-# from django.shortcuts import render
 from rest_framework.views import APIView, Response, status
 from .serializers import RegisterSerializer, UserSerializer
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -11,11 +10,13 @@ from feedbacks.models import Feedback
 from .serializers import UserSerializer
 from quizs.serializers import QuizSerializer
 from feedbacks.serializers import FeedbackSerializer
+from rest_framework.permissions import AllowAny
 
 
 
 # 회원가입 기능
 class RegisterAPIView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -25,9 +26,10 @@ class RegisterAPIView(APIView):
 
 # 로그인 기능
 class LoginAPIView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         user = authenticate(
-            userId = request.data.get('userId'),
+            email = request.data.get('email'),
             password = request.data.get('password')
         )
         if user is not None:
@@ -35,7 +37,7 @@ class LoginAPIView(APIView):
             refreshToken = RefreshToken.for_user(user)
             res = Response(
                 {
-                    "message": "login success",
+                    "message": "로그인 성공",
                     "accessToken": str(accessToken),
                     "refreshToken": str(refreshToken),
                 },
@@ -43,20 +45,16 @@ class LoginAPIView(APIView):
             )
             return res
         else:
-            return Response(
-                {
-                    "message": "login failed",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-                )
-
+            # 사용자가 인증되지 않았을 경우 이메일 또는 비밀번호가 잘못되었음을 클라이언트에게 알려줍니다.
+            return Response({"message": "이메일 또는 비밀번호가 잘못되었습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
 # 로그아웃 기능  
 class LogoutAPIvie(APIView):
     def post(self, request):
             # 토큰을 따로 DB에 저장을 안 하기 때문에 블랙리스트방식을 못 써서 클라이언트측에서 토큰을 삭제하는 방식으로 해야함
         return Response(
             {
-                "message": "logout success",
+                "message": "로그아웃 성공",
             },
             status=status.HTTP_200_OK,
         )
@@ -77,35 +75,42 @@ class MyInfo(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # refresh 토큰 재발급 커스텀 유효성 실패시 다시 발급 
-class refreshToken(TokenRefreshView):
-    def post(self, request):
+class RefreshTokenView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        # 클라이언트로부터 refresh 토큰을 받습니다.
+        refresh_token = request.data.get('refresh')
+        
+        # refresh 토큰이 제공되지 않은 경우
+        if not refresh_token:
+            return Response({"message": "Refresh token이 없습니다"}, status=status.HTTP_400_BAD_REQUEST)
+        
         try:
-            refreshToken = request.COOKIES.get("refreshToken")
-            token = RefreshToken(refreshToken)
-            accessToken = token.access_token
+            # refresh 토큰을 검증하여 유효성을 확인합니다.
+            token = RefreshToken(refresh_token)
+            token_payload = token.payload
             
-            res = Response(
-                {
-                    "accessToken": str(accessToken),
-                },
-                status=status.HTTP_200_OK,
-            )
-            return res
+            # 새로운 액세스 토큰 발급
+            access_token = token.access_token
             
-        except Exception:
-            return Response(
-                {
-                    "message": "Invalid refresh token",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            # 새로운 리프레시 토큰 발급
+            new_refresh_token = RefreshToken.for_user(token_payload['user'])
+            
+            # 새로운 액세스 토큰과 리프레시 토큰을 클라이언트에게 반환합니다.
+            return Response({
+                'access': str(access_token),
+                'refresh': str(new_refresh_token),
+            }, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            # refresh 토큰이 유효하지 않은 경우
+            return Response({"message": "유효하지 않는 토큰입니다"}, status=status.HTTP_400_BAD_REQUEST)
         
 class GetUserDataAPIView(APIView):
     def get(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "유저가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
         
         # 해당 유저의 퀴즈와 피드백을 가져옴
         quizzes = Quiz.objects.filter(user=user).order_by('orderNum')[:5]
