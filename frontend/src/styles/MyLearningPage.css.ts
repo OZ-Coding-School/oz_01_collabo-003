@@ -14,6 +14,15 @@ export const myLearningPageTitle = style({
   fontSize: "40px",
   color: "#7982E8",
   margin: "20px 0 30px 0",
+  "@media": {
+    "screen and (max-width: 700px)": {
+      fontSize: "30px",
+      margin: "20px 0 40px 30px",
+    },
+    "screen and (max-height:680px)": {
+      fontSize: "30px",
+    },
+  },
 });
 
 export const myLearningPageContentContainer = style({
@@ -21,11 +30,45 @@ export const myLearningPageContentContainer = style({
   justifyContent: "space-evenly",
   alignItems: "center",
   marginLeft: "50px",
-  width: "1600px",
+  flexWrap: "wrap",
+  width: "75%",
   height: "80%",
-  padding: "40px 0",
+  padding: "2.7% 0",
   backgroundColor: "#F6F4FF",
   borderRadius: "50px",
+});
+
+export const widthAnimation = style({
+  display: "flex",
+  justifyContent: "space-evenly",
+  alignItems: "center",
+  flexWrap: "wrap",
+  width: "100%",
+  height: "100%",
+  borderRadius: "50px",
+  transformStyle: "preserve-3d",
+  transition: "transform 0.5s",
+  "@media": {
+    "screen and (max-width: 1540px)": {
+      position: "relative",
+      display: "block",
+      padding: "none",
+      width: "0",
+      borderRadius: "50px",
+    },
+  },
+});
+
+export const rotate = style({
+  "@media": {
+    "screen and (max-width: 1540px)": {
+      selectors: {
+        "&[data-clicked='true']": {
+          transform: "rotateY(180deg)",
+        },
+      },
+    },
+  },
 });
 
 export const myLearningPageContentBox01 = style({
@@ -33,8 +76,23 @@ export const myLearningPageContentBox01 = style({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  width: "600px",
+  width: "576px",
   height: "100%",
+  "@media": {
+    "screen and (max-width: 1540px)": {
+      position: "absolute",
+      top: "0",
+      left: "50%",
+      transform: "translateX(-50%)",
+      backfaceVisibility: "hidden",
+    },
+    "screen and (max-width: 830px)": {
+      width: "500px",
+    },
+    "screen and (max-width: 700px)": {
+      width: "370px",
+    },
+  },
 });
 
 export const learningBox01TitleContainer = style({
@@ -43,7 +101,7 @@ export const learningBox01TitleContainer = style({
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "150px",
+  height: "26%",
   backgroundColor: "#FFFFFF",
   borderRadius: "50px",
 });
@@ -52,6 +110,14 @@ export const learningBox01Title = style({
   fontSize: "45px",
   color: "#828390",
   margin: "0",
+  "@media": {
+    "screen and (max-width: 700px)": {
+      fontSize: "35px",
+    },
+    "screen and (max-height:680px)": {
+      fontSize: "35px",
+    },
+  },
 });
 
 export const learningBox01ContentContainer = style({
@@ -61,7 +127,7 @@ export const learningBox01ContentContainer = style({
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "390px",
+  height: "67.5%",
   backgroundColor: "#FFFFFF",
   borderRadius: "50px",
   overflow: "hidden",
@@ -72,6 +138,14 @@ export const learningBox01ContentTitle = style({
   fontSize: "45px",
   color: "#828390",
   margin: "0",
+  "@media": {
+    "screen and (max-width: 700px)": {
+      fontSize: "35px",
+    },
+    "screen and (max-height:680px)": {
+      fontSize: "35px",
+    },
+  },
 });
 
 export const learningBox01ContentBox = style({
@@ -89,7 +163,7 @@ export const learningBox01Content = style({
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "65px",
+  height: "22.5%",
   backgroundColor: "#EDECEC",
   borderRadius: "20px",
   margin: "10px 0",
@@ -97,12 +171,31 @@ export const learningBox01Content = style({
   color: "#000000",
   fontSize: "25px",
   cursor: "pointer",
+  selectors: {
+    [`&[data-click="true"]`]: {
+      backgroundColor: "#D4D8FF",
+      color: "#FFFFFF",
+    },
+  },
+  "@media": {
+    "screen and (max-width: 700px)": {
+      fontSize: "20px",
+    },
+    "screen and (max-height:680px)": {
+      fontSize: "20px",
+    },
+  },
 });
 
 export const myLearningPageContentBox02 = style({
   width: "1px",
   height: "100%",
   backgroundColor: "#C9CDC5",
+  "@media": {
+    "screen and (max-width: 1550px)": {
+      display: "none",
+    },
+  },
 });
 
 export const myLearningPageContentBox03 = style({
@@ -110,8 +203,21 @@ export const myLearningPageContentBox03 = style({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  width: "600px",
+  width: "576px",
   height: "100%",
+  "@media": {
+    "screen and (max-width: 1540px)": {
+      position: "absolute",
+      top: "0",
+      left: "50%",
+      transform: "translateX(-50%) rotateY(180deg)",
+      zIndex: -1,
+      backfaceVisibility: "hidden",
+    },
+    "screen and (max-width: 700px)": {
+      width: "300px",
+    },
+  },
 });
 
 export const learningBox03GraphBox = style({
@@ -119,7 +225,7 @@ export const learningBox03GraphBox = style({
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "390px",
+  height: "67.5%",
   backgroundColor: "#FFFFFF",
   borderRadius: "50px",
   fontSize: "45px",
@@ -131,7 +237,7 @@ export const learningBox03TitleContainer = style({
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-  height: "150px",
+  height: "26%",
   backgroundColor: "#FFFFFF",
   borderRadius: "50px",
 });
@@ -140,6 +246,14 @@ export const learningBox03Title = style({
   fontSize: "45px",
   color: "#828390",
   margin: "0",
+  "@media": {
+    "screen and (max-width: 700px)": {
+      fontSize: "35px",
+    },
+    "screen and (max-height:680px)": {
+      fontSize: "35px",
+    },
+  },
 });
 
 export const myLearningPageContentComponent = style({
@@ -147,12 +261,28 @@ export const myLearningPageContentComponent = style({
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  width: "600px",
+  width: "576px",
   height: "100%",
   padding: "80px 40px",
   borderRadius: "50px",
   backgroundColor: "#FFFFFF",
   overflow: "hidden",
+  boxShadow: "0 2px 5px 0 rgba(0, 0, 0, 0.1)",
+  "@media": {
+    "screen and (max-width: 1540px)": {
+      position: "absolute",
+      top: "0",
+      left: "50%",
+      transform: "translateX(-50%)",
+      backfaceVisibility: "hidden",
+    },
+    "screen and (max-width: 830px)": {
+      width: "500px",
+    },
+    "screen and (max-width: 700px)": {
+      width: "370px",
+    },
+  },
 });
 
 export const reviewItemContainer = style({
@@ -212,6 +342,11 @@ export const userAnswer = style({
   border: "0.5px solid #000",
   paddingLeft: "10px",
   outline: "none",
+  "@media": {
+    "screen and (max-width: 700px)": {
+      width: "300px",
+    },
+  },
 });
 
 export const reviewItemAnswerTextContainer = style({
