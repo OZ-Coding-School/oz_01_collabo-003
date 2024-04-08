@@ -1,10 +1,5 @@
 import { HTMLInputTypeAttribute } from "react";
-import {
-  input,
-  inputLabel,
-  inputMessage,
-  inputdiv,
-} from "../styles/LoginStyle.css";
+import { input, inputLabel, inputMessage } from "../styles/LoginStyle.css";
 
 type InputProps = {
   children: React.ReactNode;
@@ -19,11 +14,10 @@ const Input = ({
   value,
   onChange,
   type,
-  required,
   ErrorMessage,
 }: InputProps) => {
   return (
-    <div className={inputdiv}>
+    <div>
       <label className={inputLabel}>
         {children}
         <input
@@ -31,7 +25,7 @@ const Input = ({
           value={value}
           onChange={onChange}
           type={type}
-          required={required}
+          required
         ></input>
       </label>
       <p className={inputMessage}>{ErrorMessage}</p>
