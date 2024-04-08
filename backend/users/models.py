@@ -30,9 +30,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    userId = models.CharField(max_length=100, unique=True)
-    nickName = models.CharField(max_length=100)
-    imgUrl = models.TextField(max_length=255)
+    nickName = models.CharField(max_length=100, unique=True)
+    email = models.CharField(max_length=100,unique=True) 
+    imgUrl = models.TextField()
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
     deletedAt = models.DateTimeField(null=True, blank=True)
@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'userId'
+    USERNAME_FIELD = 'email'
 
 
     class Meta:
