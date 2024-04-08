@@ -51,11 +51,12 @@ THIRD_PARTY_APPS = [
 ]
 
 OWN_APPS = [
-    'users.apps.UsersConfig',
-    'gpt.apps.GptConfig',
+    'users',
+    'gpt',
     'quizs',
     'quizlevels',
     'feedbacks',
+    'graph',
 ]
 
 
