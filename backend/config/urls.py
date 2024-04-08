@@ -29,4 +29,5 @@ urlpatterns = [
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/v1/quiz/',include('quizs.urls')),
     path('api/v1/quizlevel/',include('quizlevels.urls')),
+    path('api/v1/graph/',include('graph.urls')),
 ]
