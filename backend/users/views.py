@@ -11,8 +11,11 @@ from .serializers import UserSerializer
 from quizs.serializers import QuizSerializer
 from feedbacks.serializers import FeedbackSerializer
 from rest_framework.permissions import AllowAny
-
-
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+from django.urls import reverse
 
 # 회원가입 기능
 class RegisterAPIView(APIView):
@@ -137,3 +140,33 @@ class GetUserDataAPIView(APIView):
         }
 
         return Response(data,status=status.HTTP_200_OK,)
+
+# 비밀번호 찾기 (초기화)
+class PasswordResetAPIView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if email:
+            # 이메일 주소에 해당하는 사용자 찾기
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({"error": "해당 이메일 주소를 가진 사용자를 찾을 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 비밀번호 재설정 토큰 생성
+            token = default_token_generator.make_token(user)
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            
+            # 비밀번호 재설정 이메일 보내기
+            reset_link = reverse('password_reset_confirm', kwargs={'uidb64': uidb64, 'token': token})
+            reset_url = request.build_absolute_uri(reset_link)
+            message = f"비밀번호를 재설정하려면 다음 링크를 클릭하세요: {reset_url}"
+            send_mail(
+                "비밀번호 재설정",
+                message,
+                None,
+                [email],
+                fail_silently=False,
+            )
+            return Response({"message": "비밀번호 재설정 이메일을 보냈습니다."}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "이메일 주소를 제출해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)

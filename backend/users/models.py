@@ -4,21 +4,21 @@ from django.contrib.auth.models import Group, Permission
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, userId, nickName, password=None):
-        if not userId:
+    def create_user(self, email, nickName, password=None):
+        if not email:
             raise ValueError('User ID must be provided')
 
         user = self.model(
-            userId=userId,
+            email=email,
             nickName=nickName,
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, userId, nickName, password):
+    def create_superuser(self, email, nickName, password):
         superuser = self.create_user(
-            userId=userId,
+            email=email,
             nickName=nickName,
             password=password,
         )

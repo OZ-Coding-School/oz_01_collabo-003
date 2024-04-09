@@ -189,3 +189,11 @@ SIMPLE_JWT = {
 # HTTP 응답 헤더에 X-XSS-Protection: 1: mode=block 를 포함하여 브라우저의  XSS를 필터를 활성화
 SECURE_BROWSER_XSS_FILTER = True
 
+# gmail stmp 설정
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # SMTP 서버 호스트 이름
+EMAIL_PORT = 587  # SMTP 서버 포트
+EMAIL_USE_TLS = True  # TLS 사용 여부 (SSL을 사용하는 경우 EMAIL_USE_SSL = True로 설정)
+EMAIL_HOST_USER = SECRET["EMAIL_HOST_USER"]  # SMTP 서버 계정 이메일
+EMAIL_HOST_PASSWORD = SECRET["EMAIL_HOST_PASSWORD"]  # SMTP 서버 계정 비밀번호
+
