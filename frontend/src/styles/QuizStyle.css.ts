@@ -81,4 +81,6 @@ export const quizButton = style({
   width: "6rem",
   padding: "1rem",
   borderRadius: "15px",
+  cursor: "pointer",
+  
 });
