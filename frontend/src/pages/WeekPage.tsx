@@ -1,11 +1,13 @@
-import { weekBackgroundImage01, weekBackgroundImage02, weekContainer, weekMainContentContainer, weekPageSubtitleDate, weekPageTitle, weekPageTitleContainer, weekSelectBox, weekSelectBoxContainer, weekSelectText } from "../styles/WeekPage.css"
+import { useNavigate } from "react-router-dom";
+import { weekBackgroundImage01, weekBackgroundImage02, weekContainer, weekMainContentContainer, weekPageSubtitleDate, weekPageTitle, weekPageTitleContainer, weekSelectBox, weekSelectBoxContainer, weekSelectText } from "../styles/WeekPage.css";
 
 const WeekPage = () => {
+  const navigate = useNavigate();
   return (
     <div className={weekContainer}>
       <img className={weekBackgroundImage01} src="images/week_background_01.png" alt="week 배경01" />
       <img className={weekBackgroundImage02} src="images/week_background_02.png" alt="week 배경02" />
-      <div className={weekMainContentContainer}>
+      <div className={weekMainContentContainer} onClick={() => navigate('/quiz')}>
         <div className={weekPageTitleContainer}>
           <div className={weekPageTitle}>
             <p>QUIZ OF THIS WEEK</p>

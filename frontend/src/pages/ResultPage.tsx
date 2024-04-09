@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { quizTitleContainer } from "../styles/QuizStyle.css";
 
+import { useNavigate } from "react-router-dom";
 import {
   FlippedContainer,
   back,
@@ -25,6 +26,7 @@ import { quizs } from "./ResultDetail";
 
 function ResultPage() {
   const [isFlipped, setIsFlipped] = useState(false);
+  const navigate = useNavigate();
   const handleDetailButtonClick = () => {
     setIsFlipped(!isFlipped);
   };
@@ -70,7 +72,7 @@ function ResultPage() {
       </div>
 
       <div className={resultButtonDiv}>
-        <button className={resultAgainButton}>AGAIN</button>
+        <button className={resultAgainButton} onClick={() => navigate('/level')}>AGAIN</button>
         <button
           className={resultDetailButton}
           onClick={handleDetailButtonClick}
