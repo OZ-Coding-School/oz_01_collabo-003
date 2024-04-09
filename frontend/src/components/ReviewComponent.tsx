@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useOnclickOutside from "../hooks/useOnClickOutSide";
 import { line, myLearningPageContentComponent, reviewInputContainer, reviewItem, reviewItemAnswerText, reviewItemAnswerTextContainer, reviewItemContainer, reviewItemText, reviewQuestion, reviewScreen, userAnswer, userAnswerButton } from "../styles/MyLearningPage.css";
 
 type ReviewComponentProps = {
@@ -8,12 +9,14 @@ type ReviewComponentProps = {
     quiz: undefined | { qId: number, question: string, answer: string }[]
   }
   selectedDataIndex: number | null;
+  setIsClicked: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ReviewComponent = ({ data, selectedDataIndex }: ReviewComponentProps) => {
+const ReviewComponent = ({ data, selectedDataIndex, setIsClicked }: ReviewComponentProps) => {
   const [inputValues, setInputValues] = useState<string[]>(Array(data?.quiz?.length || 0).fill(''));
   const [errors, setErrors] = useState<string[]>(Array(data?.quiz?.length).fill(''));
   const [counts, setCounts] = useState<number[]>(Array(data?.quiz?.length).fill(0));
+  const ref = useRef(null);
   console.log(counts);
 
   useEffect(() => {
@@ -23,6 +26,9 @@ const ReviewComponent = ({ data, selectedDataIndex }: ReviewComponentProps) => {
 
   }, [selectedDataIndex])
 
+  useOnclickOutside(ref, () => {
+    setIsClicked(false);
+  });
 
   const handleAnswerCheck = (index: number) => {
 
@@ -52,16 +58,14 @@ const ReviewComponent = ({ data, selectedDataIndex }: ReviewComponentProps) => {
     setInputValues(newInputValues);
   }
 
-  const handleClicked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation();
-  };
-
   if (!data) {
     return <div>No data available</div>; // 데이터가 없는 경우 처리
   }
 
+
+
   return (
-    <div className={myLearningPageContentComponent} onClick={(e) => handleClicked(e)}>
+    <div className={myLearningPageContentComponent} ref={ref} >
       <div className={reviewItemContainer}>
         {data.quiz?.map((data, index) => (
           <div className={reviewItem} key={index}>

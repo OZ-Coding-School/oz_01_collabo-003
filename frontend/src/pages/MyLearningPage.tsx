@@ -35,19 +35,12 @@ const MyLearningPage = () => {
 
   console.log("카드 클릭", onCardClicked);
   const handleCheckAndGetData = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, getData: dataType, index: number) => {
-    e.stopPropagation(); // 이벤트 버블링 막기
     setIsClicked(true);
     setData(getData);
     setSelectedDataIndex(index);
     console.log('1111');
 
   }
-
-  const handleParentClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation(); // 이벤트 버블링 막기
-    setIsClicked(false);
-    console.log('2222');
-  };
 
   const handleCardClick = () => {
     if (window.innerWidth < 1310) {
@@ -99,7 +92,7 @@ const MyLearningPage = () => {
   ];
 
   return (
-    <div className={myLearningPageMainContainer} onClick={(e) => handleParentClick(e)}>
+    <div className={myLearningPageMainContainer}>
       <div className={myLearningPageTitle}>
         <p>하염빵님의 학습 공간</p>
       </div>
@@ -126,7 +119,7 @@ const MyLearningPage = () => {
             </div>
           </div>
           <div className={myLearningPageContentBox02}></div>
-          {isClicked ? <ReviewComponent data={data} selectedDataIndex={selectedDataIndex} /> :
+          {isClicked ? <ReviewComponent data={data} selectedDataIndex={selectedDataIndex} setIsClicked={setIsClicked} /> :
             <div className={myLearningPageContentBox03}>
               <div className={learningBox03GraphBox}>
                 구래~ 푸
