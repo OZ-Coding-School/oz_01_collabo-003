@@ -25,6 +25,8 @@ function Auth() {
   const [logInEmail, setLogInEmail] = useState<string>("");
   const [logInPw, setLogInPw] = useState<string>("");
 
+  // const [isLoggedIN, setisLoggedIN] = useState('')
+
   //회원가입
   const email = useRef<string>("");
   const userName = useRef<string>("");
@@ -37,12 +39,17 @@ function Auth() {
   const [passwordMessage, setPasswordMessage] = useState<string>("");
   const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>("");
   const [loginErrorMessage, setLoginErrorMessage] = useState<string>("");
+
+  // 이메일이 조건에 충족해야 중복확인 버튼이 활성회되도록, 이메일 중복확인 완료 시, 버튼 비활성화 되도록..  -> state 하나 더 생성
+
   //유효성검사
   const [isEmail, setIsEmail] = useState<boolean>(false);
+  const [isUserName, setIsUserName] = useState<boolean>(false);
   const [isPassword, setIsPassword] = useState<boolean>(false);
   const [isPasswordCheck, setIsPasswordCheck] = useState<boolean>(false);
-  const [isUserName, setIsUserName] = useState<boolean>(false);
 
+  const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
+  const [isUserNameChecked, setIsUserNameChecked] = useState<boolean>(false);
   // css용 state
   const [signin, setSignIn] = React.useState(true);
 
@@ -59,53 +66,38 @@ function Auth() {
       setIsEmail(false);
     } else {
       setEmailMessage("이메일 중복확인을 해주세요.");
-      // setIsEmail(true);
+      setIsEmail(true);
     }
   };
 
   // 이메일 중복확인
-
   async function fetchEmailDoubleCheck() {
-    try {
-      const response = await axios.post("/api/v1/user/register/", {
-        userEmail: email,
-      });
-      console.log(response.data);
-      // 중복이면
-      if (response.status === 400) {
-        setEmailMessage("이미 존재하는 이메일입니다");
-        //중복 아니면
-      } else if (response.status === 201) {
-        setEmailMessage("사용가능한 이메일입니다");
-        setIsEmail(true);
-      } else {
-        setEmailMessage("이메일 확인 중 오류가 발생했습니다");
-      }
-    } catch (err) {
-      console.log("err:", err);
-    }
-  }
+    setIsEmailChecked(true);
+    setEmailMessage("");
+    setIsEmail(false);
+    alert("이메일 유효성 검증 중");
 
-  // 닉네임 중복확인
-  async function fetchUserNameDoubleCheck() {
-    try {
-      const response = await axios.post("/api/v1/user/register/", {
-        userName: userName,
-      });
-      console.log(response.data);
-      // 중복이면
-      if (response.status === 400) {
-        setUserNameMessage("이미 존재하는 이메일입니다");
-        //중복 아니면
-      } else if (response.status === 201) {
-        setUserNameMessage("사용가능한 이메일입니다");
-        setIsUserName(true);
-      } else {
-        setUserNameMessage("이메일 확인 중 오류가 발생했습니다");
-      }
-    } catch (err) {
-      console.log("err:", err);
-    }
+    // 서버 켜지면 아래 코드 주석 풀기
+    // try {
+    //   const response = await axios.post("/api/v1/user/register/", {
+    //     userEmail: email,
+    //   });
+    //   console.log(response.data);
+    //   // 중복이면
+    //   if (response.status === 400) {
+    //     setEmailMessage("이미 존재하는 이메일입니다");
+    //     //중복 아니면
+    //   } else if (response.status === 201) {
+    // setIsEmailChecked(true);
+    // setEmailMessage("");
+    // setIsEmail(false);
+
+    //   } else {
+    //     setEmailMessage("이메일 확인 중 오류가 발생했습니다");
+    //   }
+    // } catch (err) {
+    //   console.log("err:", err);
+    // }
   }
 
   //닉네임 유효성 검증
@@ -118,8 +110,38 @@ function Auth() {
       setIsUserName(false);
     } else {
       setUserNameMessage("닉네임 중복확인을 해주세요.");
+      //중복확인하면 오류메시지 없어짐
+      setIsUserName(true);
     }
   };
+  // 닉네임 중복확인
+  async function fetchUserNameDoubleCheck() {
+    alert("닉네임 유효성 검증 중");
+    setIsUserNameChecked(true);
+    setUserNameMessage("");
+    setIsUserName(false);
+
+    // 서버 켜지면 아래 코드 주석 풀기
+    // try {
+    //   const response = await axios.post("/api/v1/user/register/", {
+    //     userName: userName,
+    //   });
+    //   console.log(response.data);
+    //   // 중복이면
+    //   if (response.status === 400) {
+    //     setUserNameMessage("이미 존재하는 이메일입니다");
+    //     //중복 아니면
+    //   } else if (response.status === 201) {
+    //      setUserNameMessage("");
+    //     setIsUserName(true);
+    // setIsUserName(false);
+    //   } else {
+    //     setUserNameMessage("이메일 확인 중 오류가 발생했습니다");
+    //   }
+    // } catch (err) {
+    //   console.log("err:", err);
+    // }
+  }
 
   //비밀번호 유효성 검증
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -133,7 +155,7 @@ function Auth() {
       );
       setIsPassword(false);
     } else {
-      setPasswordMessage("안전한 비밀번호 입니다.");
+      setPasswordMessage("");
       setIsPassword(true);
     }
   };
@@ -159,7 +181,7 @@ function Auth() {
     e.preventDefault();
 
     //회원가입 버튼 클릭 시, 모든 유효성 검사가 참이어야 실행되도록
-    if (isEmail && isUserName && isPassword && isPasswordCheck) {
+    if (isEmailChecked && isUserNameChecked && isPassword && isPasswordCheck) {
       console.log(
         "email :",
         email,
@@ -170,9 +192,10 @@ function Auth() {
         "/passwordCheck:",
         passwordCheck
       );
+      setSignIn(false);
       // fetchSignUp();
     } else {
-      //값 확인하라는 오류메시지~~넣기
+      alert("오류메시지를 확인해주세요!!");
     }
     // 데이터 전송 후 값 초기화 코드 _ test 후 주석 풀 예정!
     // setEmail("");
@@ -191,6 +214,7 @@ function Auth() {
         console.log(response.data);
         if (response.status === 201) {
           console.log("회원가입 성공!");
+          setSignIn(false);
         } else {
           console.log("회원가입을 하는 도중에 오류 발생 ~");
         }
@@ -204,11 +228,12 @@ function Auth() {
   const handleLogin: React.MouseEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     console.log("id :", logInEmail, "/password:", logInPw);
+    // navigate("/level");
     // setLogInEmail("");
     // setLogInPw("");
     // setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
     // if (logInEmail && logInPw) {
-    FetchLogin();
+    // FetchLogin();
     //   setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
     // } else {
     //   //
@@ -257,17 +282,19 @@ function Auth() {
               required
               ErrorMessage={emailMessage}
               onClick={fetchEmailDoubleCheck}
+              // isEmail={isEmail}
+              disabled={!isEmail}
             >
               Email
             </DuplicateInput>
             <DuplicateInput
               type="text"
               // value={userName}
-
               onChange={onChangeUserName}
               required
               ErrorMessage={userNameMessage}
               onClick={fetchUserNameDoubleCheck}
+              disabled={!isUserName}
             >
               User Name
             </DuplicateInput>
