@@ -16,6 +16,7 @@ import {
 interface QuizDetail {
   문제설명: string;
   문제: string;
+  답변: string;
 }
 interface Quiz {
   [key: string]: QuizDetail;
@@ -24,11 +25,13 @@ interface Quiz {
 function QuizPage() {
   const navigate = useNavigate();
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
+  const [answers, setAnswers] = useState<string[]>(Array(5).fill("")); // 답변을 저장할 상태 추가
   const quizs: Quiz[] = [
     {
       문제1: {
         문제설명: "다음 단어의 한글 뜻을 쓰시오",
         문제: "Apple",
+        답변: "",
       },
     },
     {
@@ -36,18 +39,21 @@ function QuizPage() {
         문제설명:
           "Choose the correct form of the verb: She __ to the store yesterday.",
         문제: "go, goes, went, gone",
+        답변: "",
       },
     },
     {
       문제3: {
         문제설명: "What was the weather like?",
         문제: "Read the following passage and answer the question below: \n\nThe sun was shining brightly in the clear blue sky. Birds were chirping happily in the trees. What was the weather like?",
+        답변: "",
       },
     },
     {
       문제4: {
         문제설명: "다음 단어의 영어단어를 쓰시오",
         문제: "사과",
+        답변: "",
       },
     },
     {
@@ -55,6 +61,7 @@ function QuizPage() {
         문제설명:
           "다음 문장을 읽고, 'Why did Sarah go to the park?'라는 질문에 대답하세요",
         문제: "Sarah went to the park to play with her friends.",
+        답변: "",
       },
     },
   ];
@@ -77,7 +84,11 @@ function QuizPage() {
     //백에 보내는 로직
     navigate("/result");
   };
-
+  const handleAnswerChange = (index: number, answer: string) => {
+    const updatedAnswers = [...answers];
+    updatedAnswers[index] = answer;
+    setAnswers(updatedAnswers);
+  };
   {
     return (
       <div className={quizContainer}>
@@ -107,6 +118,10 @@ function QuizPage() {
                     className={quizInput}
                     type="text"
                     placeholder="정답을 입력하세요"
+                    value={answers[currentQuizIndex]}
+                    onChange={(e) =>
+                      handleAnswerChange(currentQuizIndex, e.target.value)
+                    }
                   />
                 </div>
               </>
