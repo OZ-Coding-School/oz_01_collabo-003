@@ -9,3 +9,4 @@ class FeedbackSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return Feedback.objects.create(**validated_data)
+    

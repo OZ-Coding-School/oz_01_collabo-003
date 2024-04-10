@@ -5,6 +5,7 @@ import openai
 from django.views.decorators.csrf import csrf_exempt
 import json
 from quizs.models import Quiz
+
 # OpenAI API 키 설정
 client = OpenAI(
     # api_key = settings.OPENAI_API_KEY
@@ -23,7 +24,7 @@ def quiz(request):
             )
 
             # GPT 모델을 사용하여 새로운 질문을 생성합니다.
-            res: Completion = client.chat.completions.create(
+            res = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {
@@ -104,40 +105,47 @@ def quiz(request):
             return JsonResponse({"error": f"알 수 없는 오류가 발생했습니다.{e}"}, status=500)
     else:
         return JsonResponse({"error": "POST 요청이 필요합니다."}, status=400)
-# def feedback(request):
-#     if request.method == "POST":
-#         # POST 요청에서 데이터 추출
-#         data = request.POST
+    
+@csrf_exempt
+def feedback(request):
+    if request.method == "POST":
+        # POST 요청에서 데이터 추출
+        data = json.loads(request.body)
 
-#         # Serializer를 사용하여 데이터 직렬화
-#         serializer = FeedbackSerializer(data=data)
+        question = data.get('question')
+        answer = data.get('answer')
+        
+        # OpenAI에 데이터 전송
+        try:
+            res = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {
+                        "role" : "system",
+                        "content" : f'''
+                        질문: {question}\n답변: {answer}\n피드백과 점수를 json 형식으로 점수는 20점 만점으로 생성해주세요.
+                        정답이면 정답이라고만 적어주고 틀리면 자세하게 알려주고 정답도 알려줘,
+                        점수 기준은 
 
-#         if serializer.is_valid():
-#             # Serializer가 유효한 경우, 데이터 추출
-#             question = serializer.validated_data.get('question')
-#             answer = serializer.validated_data.get('answer')
+                        형식은
+                        "feedback": "피드백"
+                        "score": 20
+                        
+                        '''
+                    }
+                ],
+                temperature=0.5,
+                max_tokens=1000
+            )
 
-#             # OpenAI에 데이터 전송
-#             try:
-#                 response = openai.Completion.create(
-#                     engine="text-davinci-002",  # 사용할 GPT 엔진 선택
-#                     prompt=f"질문: {question}\n답변: {answer}\n피드백과 점수를 생성해주세요.",
-#                     temperature=0.7,
-#                     max_tokens=150,
-#                     n=1
-#                 )
+            # OpenAI의 응답에서 피드백 및 점수 추출
+            
 
-#                 # OpenAI의 응답에서 피드백 및 점수 추출
-                
+            # 피드백 및 점수를 JSON 응답으로 반환
+            return JsonResponse(json.loads(res.choices[0].message.content), status=200)
+        except Exception as e:
+            # OpenAI API 요청 중 오류가 발생한 경우 에러 응답 반환
+            return JsonResponse({"error": str(e)}, status=500)
 
-#                 # 피드백 및 점수를 JSON 응답으로 반환
-#                 return JsonResponse(json.loads(response.choices[0].text), status=200)
-#             except Exception as e:
-#                 # OpenAI API 요청 중 오류가 발생한 경우 에러 응답 반환
-#                 return JsonResponse({"error": str(e)}, status=500)
-#         else:
-#             # Serializer가 유효하지 않은 경우, 오류 응답 반환
-#             return JsonResponse(serializer.errors, status=400)
-
-#     # POST 요청이 아닌 경우에는 에러 응답 반환
-#     return JsonResponse({"error": "POST 요청이 필요합니다."}, status=400)
+    # POST 요청이 아닌 경우에는 에러 응답 반환
+    return JsonResponse({"error": "POST 요청이 필요합니다."}, status=400)
