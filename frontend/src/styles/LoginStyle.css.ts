@@ -53,7 +53,12 @@ export const duplicateCheckBtn = style({
   padding: "0.5rem",
   cursor: "pointer",
 });
-
+export const duplicateCheckBtnChecked = style([
+  duplicateCheckBtn,
+  {
+    backgroundColor: "#D4D8FF",
+  },
+]);
 export const container = style({
   width: "100%",
   height: "100vh",

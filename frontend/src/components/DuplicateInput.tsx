@@ -1,6 +1,7 @@
 import { HTMLInputTypeAttribute, MouseEventHandler } from "react";
 import {
   duplicateCheckBtn,
+  duplicateCheckBtnChecked,
   duplicateInputDiv,
   input,
   inputLabel,
@@ -15,6 +16,9 @@ type InputProps = {
   required?: boolean;
   ErrorMessage?: string;
   onClick?: MouseEventHandler;
+  isEmail?: boolean;
+  isUserName?: boolean;
+  disabled?: boolean;
 };
 const DuplicateInput = ({
   children,
@@ -24,6 +28,8 @@ const DuplicateInput = ({
   required,
   ErrorMessage,
   onClick,
+
+  disabled,
 }: InputProps) => {
   return (
     <div>
@@ -37,7 +43,12 @@ const DuplicateInput = ({
             type={type}
             required={required}
           ></input>
-          <button className={duplicateCheckBtn} onClick={onClick}>
+          {/* disabled 이면 버튼 색 없어지게 */}
+          <button
+            disabled={disabled}
+            className={disabled ? duplicateCheckBtn : duplicateCheckBtnChecked}
+            onClick={onClick}
+          >
             중복 확인
           </button>
           <p className={inputMessage}>{ErrorMessage}</p>
