@@ -58,6 +58,10 @@ const ReviewComponent = ({ data, selectedDataIndex, setIsClicked }: ReviewCompon
     setInputValues(newInputValues);
   }
 
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+  };
+
   if (!data) {
     return <div>No data available</div>; // 데이터가 없는 경우 처리
   }
@@ -65,7 +69,7 @@ const ReviewComponent = ({ data, selectedDataIndex, setIsClicked }: ReviewCompon
 
 
   return (
-    <div className={myLearningPageContentComponent} ref={ref} >
+    <div className={myLearningPageContentComponent} ref={ref} onClick={(e) => handleCardClick(e)}>
       <div className={reviewItemContainer}>
         {data.quiz?.map((data, index) => (
           <div className={reviewItem} key={index}>

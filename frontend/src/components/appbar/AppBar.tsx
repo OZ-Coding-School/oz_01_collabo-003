@@ -10,7 +10,7 @@ const AppBar = () => {
   return (
     <div className='app_bar_main_container'>
       <div className={levelPageTopMenu}>
-        <img className={levelPageLogo} src='images/logo.png' alt='로고' />
+        <img className={levelPageLogo} src='/images/logo.png' alt='로고' />
         <div className={levelPageTopButton} onClick={() => navigate(
           location.pathname === '/learning' ? '/level' : '/learning')}>
           <p>{location.pathname === '/learning' ? '메인페이지로' : '나의 학습공간'}</p>

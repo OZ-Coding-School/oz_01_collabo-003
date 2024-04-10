@@ -16,12 +16,12 @@ const LevelPage = () => {
           <h1 className={levelPageTitle}>Choose your level!</h1>
           <div className={levelPageButtonContainerOne}>
             {levelOneList.map((level, index) => (
-              <LevelSelectButtonOne key={`menu_one${index}`} name={level} onClick={() => navigate('/week', { state: level })} />
+              <LevelSelectButtonOne key={`menu_one${index}`} name={level} onClick={() => navigate(`/week/${level}`, { state: level })} />
             ))}
           </div>
           <div className={levelPageButtonContainerTwo}>
             {levelTwoList.map((level, index) => (
-              <LevelSelectButtonTwo key={`menu_two${index}`} name={level} onClick={!level ? undefined : () => navigate('/week', { state: level })} />
+              <LevelSelectButtonTwo key={`menu_two${index}`} name={level} onClick={!level ? undefined : () => navigate(`/week/${level}`, { state: level })} />
             ))}
           </div>
         </div>

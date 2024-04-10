@@ -35,6 +35,7 @@ const MyLearningPage = () => {
 
   console.log("카드 클릭", onCardClicked);
   const handleCheckAndGetData = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, getData: dataType, index: number) => {
+    e.stopPropagation();
     setIsClicked(true);
     setData(getData);
     setSelectedDataIndex(index);
@@ -43,7 +44,7 @@ const MyLearningPage = () => {
   }
 
   const handleCardClick = () => {
-    if (window.innerWidth < 1310) {
+    if (window.innerWidth < 1540) {
       setOnCardClicked(!onCardClicked);
     }
   }
