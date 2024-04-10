@@ -21,10 +21,12 @@ export const input = style({
   border: "none",
   borderRadius: "12px",
   backgroundColor: "#efefef",
+
   padding: "1rem",
   fontSize: "1rem",
   paddingLeft: "1.5rem",
   marginTop: "0.5rem",
+  outlineColor: "#AFAFAF",
 });
 export const inputLabel = style({
   color: "#8D9188",
@@ -40,8 +42,13 @@ export const duplicateCheckBtn = style({
   right: "10px",
   transform: "translateY(54%)",
   backgroundColor: "#D9D9D9",
+  // backgroundColor: "white",
+  // backgroundColor: "#D4D8FF",
   color: "#8C8888",
+  // border: "1px solid #D4D8FF",
   border: "none",
+
+  // borderColor: "#D4D8FF",
   borderRadius: "50px",
   padding: "0.5rem",
   cursor: "pointer",
