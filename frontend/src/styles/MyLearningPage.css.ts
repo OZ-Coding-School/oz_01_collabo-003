@@ -268,6 +268,7 @@ export const myLearningPageContentComponent = style({
   backgroundColor: "#FFFFFF",
   overflow: "hidden",
   boxShadow: "0 2px 5px 0 rgba(0, 0, 0, 0.1)",
+  zIndex: 999,
   "@media": {
     "screen and (max-width: 1540px)": {
       position: "absolute",
