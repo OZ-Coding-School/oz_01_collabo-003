@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import DuplicateInput from "../components/DuplicateInput";
+import PassWordModal from "../components/PasswordModal";
 import {
   anchor,
   button,
@@ -20,6 +21,7 @@ import {
 } from "../styles/LoginStyle.css";
 
 function Auth() {
+  const [passWordModalOpen, setPassWordModalOpen] = useState(false);
   //로그인
   const navigate = useNavigate();
   const [logInEmail, setLogInEmail] = useState<string>("");
@@ -79,7 +81,7 @@ function Auth() {
 
     // 서버 켜지면 아래 코드 주석 풀기
     // try {
-    //   const response = await axios.post("/api/v1/user/register/", {
+    //   const response = await axios.post("/api/v1/user/emailvalid/", {
     //     userEmail: email,
     //   });
     //   console.log(response.data);
@@ -123,7 +125,7 @@ function Auth() {
 
     // 서버 켜지면 아래 코드 주석 풀기
     // try {
-    //   const response = await axios.post("/api/v1/user/register/", {
+    //   const response = await axios.post("/api/v1/user/nickNamevaild/", {
     //     userName: userName,
     //   });
     //   console.log(response.data);
@@ -270,6 +272,10 @@ function Auth() {
   return (
     // 전체 컨테이너
     <div className={container}>
+      <PassWordModal
+        passWordModalOpen={passWordModalOpen}
+        setPassWordModalOpen={setPassWordModalOpen}
+      />
       {/* 회원가입 */}
       <div className={signUpContainer} data-signin={signin}>
         <form className={formContainer} onSubmit={handleSignUp}>
@@ -343,9 +349,9 @@ function Auth() {
             Password
           </Input>
           <p className={inputMessage}>{loginErrorMessage}</p>
-          <a className={anchor} href="#">
+          <p className={anchor} onClick={() => setPassWordModalOpen(true)}>
             Forgot your password?
-          </a>
+          </p>
 
           <button className={button}>Sign In</button>
         </form>

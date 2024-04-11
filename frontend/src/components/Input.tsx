@@ -8,6 +8,7 @@ type InputProps = {
   type: HTMLInputTypeAttribute;
   required?: boolean;
   ErrorMessage?: string;
+  placeholder?: string;
 };
 const Input = ({
   children,
@@ -15,6 +16,7 @@ const Input = ({
   onChange,
   type,
   ErrorMessage,
+
 }: InputProps) => {
   return (
     <div>
