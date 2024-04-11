@@ -21,6 +21,6 @@ export const passwordModal = style({
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -45%)",
-  // borderRadius: "10px",
+  borderRadius: "20px",
   zIndex: 2,
 });
