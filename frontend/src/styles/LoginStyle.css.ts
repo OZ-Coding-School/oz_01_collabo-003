@@ -56,6 +56,8 @@ export const duplicateCheckBtn = style({
 export const duplicateCheckBtnChecked = style([
   duplicateCheckBtn,
   {
+    // color: "white",
+    // backgroundColor: "#7982E8",
     backgroundColor: "#D4D8FF",
   },
 ]);
@@ -167,6 +169,7 @@ export const anchor = style({
   fontSize: "14px",
   textDecoration: "none",
   margin: "15px 0",
+  cursor: "pointer",
 });
 export const overlayContainer = style({
   position: "absolute",
