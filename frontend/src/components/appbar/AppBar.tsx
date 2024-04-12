@@ -7,6 +7,12 @@ const AppBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   console.log(location.pathname);
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    navigate('/');
+  };
+
   return (
     <div className='app_bar_main_container'>
       <div className={levelPageTopMenu}>
@@ -35,7 +41,7 @@ const AppBar = () => {
               <div className='menu_list_item' onClick={() => navigate('/level')}>메인페이지</div>
               <div className='menu_list_item' onClick={() => navigate('/learning')}>나의 학습공간</div>
               <div className='menu_list_item' onClick={() => navigate('/user-update')}>정보수정</div>
-              <div className='menu_list_item'>로그아웃</div>
+              <div className='menu_list_item' onClick={handleLogout}>로그아웃</div>
             </div>
           </div>
         </div>
