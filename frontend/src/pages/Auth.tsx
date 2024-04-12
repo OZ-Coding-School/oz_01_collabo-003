@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import * as Components from "../Components";
 import Input from "../components/Input";
 
@@ -27,13 +27,11 @@ function Auth() {
   const [logInEmail, setLogInEmail] = useState<string>("");
   const [logInPw, setLogInPw] = useState<string>("");
 
-  // const [isLoggedIN, setisLoggedIN] = useState('')
-
   //회원가입
-  const email = useRef<string>("");
-  const userName = useRef<string>("");
-  const password = useRef<string>("");
-  const passwordCheck = useRef<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordCheck, setPasswordCheck] = useState<string>("");
 
   //오류메시지 상태
   const [emailMessage, setEmailMessage] = useState<string>("");
@@ -58,7 +56,7 @@ function Auth() {
   //회원입시 이메일 검증
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const currentEmail = e.target.value;
-    email.current = currentEmail;
+    setEmail(currentEmail);
 
     const emailRegExp =
       /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
@@ -74,38 +72,37 @@ function Auth() {
 
   // 이메일 중복확인
   async function fetchEmailDoubleCheck() {
-    setIsEmailChecked(true);
-    setEmailMessage("");
-    setIsEmail(false);
-    alert("이메일 유효성 검증 중");
-
-    // 서버 켜지면 아래 코드 주석 풀기
-    // try {
-    //   const response = await axios.post("/api/v1/user/emailvalid/", {
-    //     userEmail: email,
-    //   });
-    //   console.log(response.data);
-    //   // 중복이면
-    //   if (response.status === 400) {
-    //     setEmailMessage("이미 존재하는 이메일입니다");
-    //     //중복 아니면
-    //   } else if (response.status === 201) {
     // setIsEmailChecked(true);
     // setEmailMessage("");
     // setIsEmail(false);
+    alert("이메일 유효성 검증 중");
 
-    //   } else {
-    //     setEmailMessage("이메일 확인 중 오류가 발생했습니다");
-    //   }
-    // } catch (err) {
-    //   console.log("err:", err);
-    // }
+    // 서버 켜지면 아래 코드 주석 풀기
+    try {
+      const response = await axios.post("/api/v1/user/emailvalid/", {
+        email: email,
+      });
+      console.log(response.data);
+      // 중복이면
+      if (response.status === 400) {
+        setEmailMessage("이미 존재하는 이메일입니다");
+        //중복 아니면
+      } else if (response.status === 200) {
+        setIsEmailChecked(true);
+        setEmailMessage("");
+        setIsEmail(false);
+      } else {
+        setEmailMessage("이메일 확인 중 오류가 발생했습니다");
+      }
+    } catch (err) {
+      console.log("err:", err);
+    }
   }
 
   //닉네임 유효성 검증
   const onChangeUserName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const currentName = e.target.value;
-    userName.current = currentName;
+    setUserName(currentName);
 
     if (currentName.length < 2 || currentName.length > 6) {
       setUserNameMessage("닉네임은 2글자 이상 6글자 이하여야합니다.");
@@ -119,36 +116,33 @@ function Auth() {
   // 닉네임 중복확인
   async function fetchUserNameDoubleCheck() {
     alert("닉네임 유효성 검증 중");
-    setIsUserNameChecked(true);
-    setUserNameMessage("");
-    setIsUserName(false);
 
     // 서버 켜지면 아래 코드 주석 풀기
-    // try {
-    //   const response = await axios.post("/api/v1/user/nickNamevaild/", {
-    //     userName: userName,
-    //   });
-    //   console.log(response.data);
-    //   // 중복이면
-    //   if (response.status === 400) {
-    //     setUserNameMessage("이미 존재하는 이메일입니다");
-    //     //중복 아니면
-    //   } else if (response.status === 201) {
-    //      setUserNameMessage("");
-    //     setIsUserName(true);
-    // setIsUserName(false);
-    //   } else {
-    //     setUserNameMessage("이메일 확인 중 오류가 발생했습니다");
-    //   }
-    // } catch (err) {
-    //   console.log("err:", err);
-    // }
+    try {
+      const response = await axios.post("/api/v1/user/nickNamevalid/", {
+        nickName: userName,
+      });
+      console.log(response.data);
+      // 중복이면
+      if (response.status === 400) {
+        setUserNameMessage("이미 존재하는 이메일입니다");
+        //중복 아니면
+      } else if (response.status === 200) {
+        setIsUserNameChecked(true);
+        setUserNameMessage("");
+        setIsUserName(false);
+      } else {
+        setUserNameMessage("이메일 확인 중 오류가 발생했습니다");
+      }
+    } catch (err) {
+      console.log("err:", err);
+    }
   }
 
   //비밀번호 유효성 검증
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const currentPassword = e.target.value;
-    password.current = currentPassword;
+    setPassword(currentPassword);
     const passwordRegExp =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     if (!passwordRegExp.test(currentPassword)) {
@@ -167,9 +161,9 @@ function Auth() {
     e
   ) => {
     const currentPasswordConfirm = e.target.value;
-    passwordCheck.current = currentPasswordConfirm;
+    setPasswordCheck(currentPasswordConfirm);
 
-    if (password.current !== currentPasswordConfirm) {
+    if (password !== currentPasswordConfirm) {
       setPasswordCheckMessage("비밀번호가 일치하지않습니다");
       setIsPasswordCheck(false);
     } else {
@@ -195,7 +189,7 @@ function Auth() {
         passwordCheck
       );
       setSignIn(false);
-      // fetchSignUp();
+      fetchSignUp();
     } else {
       alert("오류메시지를 확인해주세요!!");
     }
@@ -206,10 +200,11 @@ function Auth() {
     // setPassword("");
 
     // 회원가입 데이터 전송 코드
+
     async function fetchSignUp() {
       try {
-        const response = await axios.post("api/v1/user/register/", {
-          userEmail: email,
+        const response = await axios.post("/api/v1/user/register/", {
+          email: email,
           nickName: userName,
           password: password,
         });
@@ -230,16 +225,16 @@ function Auth() {
   const handleLogin: React.MouseEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     console.log("id :", logInEmail, "/password:", logInPw);
-    // navigate("/level");
+
     // setLogInEmail("");
     // setLogInPw("");
-    // setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
-    // if (logInEmail && logInPw) {
-    // FetchLogin();
-    //   setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
-    // } else {
-    //   //
-    // }
+    setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
+    if (logInEmail && logInPw) {
+      FetchLogin();
+      setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
+    } else {
+      //
+    }
 
     //로그인 데이터 전송 코드
     async function FetchLogin() {
@@ -247,7 +242,7 @@ function Auth() {
         const response = await axios.post(
           "/api/v1/user/login/",
           {
-            userId: logInEmail,
+            email: logInEmail,
             password: logInPw,
           },
           {
@@ -260,10 +255,12 @@ function Auth() {
           console.log("로그인 성공!");
           navigate("/level");
           //로컬스토리지에 엑세스토큰 넣기
-          const { accessToken } = response.data.token.accessToken;
+          const accessToken = response.data.accessToken;
+          const userId = response.data.userdata.id;
           console.log("Access Token:", accessToken);
           localStorage.setItem("accessToken", accessToken);
-        } else if (response.status === 400) {
+          localStorage.setItem("userId", userId);
+        } else {
           setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
         }
       } catch (error) {
@@ -285,7 +282,7 @@ function Auth() {
           <div className={inputContainer}>
             <DuplicateInput
               type="text"
-              // value={email}
+              value={email}
               onChange={onChangeEmail}
               required
               ErrorMessage={emailMessage}
@@ -297,7 +294,7 @@ function Auth() {
             </DuplicateInput>
             <DuplicateInput
               type="text"
-              // value={userName}
+              value={userName}
               onChange={onChangeUserName}
               required
               ErrorMessage={userNameMessage}
@@ -308,7 +305,7 @@ function Auth() {
             </DuplicateInput>
             <Input
               type="password"
-              // value={password}
+              value={password}
               onChange={onChangePassword}
               required
               ErrorMessage={passwordMessage}
@@ -317,7 +314,7 @@ function Auth() {
             </Input>
             <Input
               type="password"
-              // value={passwordCheck}
+              value={passwordCheck}
               onChange={onChangePasswordConfirm}
               required
               ErrorMessage={passwordCheckMessage}

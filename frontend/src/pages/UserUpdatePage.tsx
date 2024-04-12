@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axios";
+
 import Input from "../components/Input";
 import { userUpdateButton } from "../styles/ButtonStyle.css";
 import { layout } from "../styles/LayoutStyle.css";
 
+import axios from "../api/axios";
 import {
   userImgDiv,
   userImgNameDiv,
@@ -28,8 +29,9 @@ function UserUpdatePage() {
     const loggedInUserId = localStorage.getItem("userId");
     setUserId(loggedInUserId);
   }, []);
+
   useEffect(() => {
-    if (userId) {
+    if (userId !== null) {
       FetchUserUpdate();
     }
   }, [userId]);
@@ -37,16 +39,11 @@ function UserUpdatePage() {
   // userdata가져오기
   async function FetchUserUpdate() {
     try {
-      const response = await axios.get(
-        `/api/v1/user/myinfo/${userId}`,
-
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(`/api/v1/user/myinfo/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       console.log(response.data);
       if (response.status === 200) {
@@ -54,7 +51,7 @@ function UserUpdatePage() {
         setNickName(response.data.nickName);
         setPassword(response.data.password);
       } else if (response.status === 400) {
-        console.log("회원정보 가져오기 실퍂");
+        console.log("회원정보 가져오기 실패");
       }
     } catch (error) {
       console.log(error);
