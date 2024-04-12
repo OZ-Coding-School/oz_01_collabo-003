@@ -157,6 +157,13 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_ALLOW_ALL = True 
 
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:5173',
+#     'https://853d-211-247-35-153.ngrok-free.app:8000',
+#     'https://853d-211-247-35-153.ngrok-free.app:5173',
+#     'http://localhost:8000'
+# ]
+
 SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
@@ -182,9 +189,13 @@ from datetime import timedelta
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
-    "SIGNING_KEY": "SECRET",
-    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "ALGORITHM" : "HS256",
     "AUTH_HEADER_TYPES": ("Bearer",),
+    "VERIFYING_KEY" : None,
+    "USER_ID_FIELD": "email",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "ROTATE_REFRESH_TOKENS" : False,
 }
 # HTTP 응답 헤더에 X-XSS-Protection: 1: mode=block 를 포함하여 브라우저의  XSS를 필터를 활성화
 SECURE_BROWSER_XSS_FILTER = True

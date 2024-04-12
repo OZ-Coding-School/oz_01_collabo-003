@@ -1,9 +1,8 @@
 from rest_framework.views import APIView, Response, status
 from .serializers import RegisterSerializer, UserSerializer
 from django.contrib.auth import authenticate
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView,TokenObtainPairView
 from .models import User
 from quizs.models import Quiz
 from feedbacks.models import Feedback
@@ -47,30 +46,25 @@ class nickNameValid(APIView):
             return Response({"message": "닉네임이 정상입니다."}, status=status.HTTP_200_OK)
 
 # 로그인 기능
-class LoginAPIView(APIView):
+class LoginAPIView(TokenObtainPairView):
     permission_classes = [AllowAny]
     authentication_classes = []
     def post(self, request):
-        user = authenticate(
-            email = request.data.get('email'),
-            password = request.data.get('password')
-        )
-        if user is not None:
-            accessToken = TokenObtainPairSerializer().get_token(user)
-            refreshToken = RefreshToken.for_user(user)
-            res = Response(
+        res = super().post(request)
+        print(res.data)
+        refreshToken = res.data['refresh']
+        accessToken = res.data['access']
+        res = Response(
                 {
                     "message": "로그인 성공",
                     "accessToken": str(accessToken),
                     "refreshToken": str(refreshToken),
+                   
                 },
                 status=status.HTTP_200_OK,
             )
-            return res
-        else:
-            # 사용자가 인증되지 않았을 경우 이메일 또는 비밀번호가 잘못되었음을 클라이언트에게 알려줍니다.
-            return Response({"message": "이메일 또는 비밀번호가 잘못되었습니다."}, status=status.HTTP_400_BAD_REQUEST)
-        
+        return res
+
 # 로그아웃 기능  
 class LogoutAPIvie(APIView):
     def post(self, request):
@@ -84,14 +78,14 @@ class LogoutAPIvie(APIView):
 
 # 유저 정보 업데이트
 class MyInfo(APIView):
-    def get(self, request, user_id):
-        user = User.objects.get(id=user_id)
+    def get(self, request):
+        user = User.objects.get(id=request.user.id)   
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def put(self, request, user_id):
-        user = User.objects.get(id=user_id)
-        serializer = myinfoSerializer(user, data=request.data)
+    def put(self, request):
+        user = request.user
+        serializer = myinfoSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
