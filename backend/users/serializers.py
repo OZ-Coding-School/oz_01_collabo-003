@@ -20,5 +20,10 @@ class LoginSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email','nickName','imgUrl')
+        fields = '__all__'
+
+class myinfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('nickName','imgUrl','password')
     
