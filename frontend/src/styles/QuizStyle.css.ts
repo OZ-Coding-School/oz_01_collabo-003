@@ -26,7 +26,7 @@ export const TodayQuiz = style({
   fontSize: "2.3rem",
   position: "absolute",
   top: "40px",
-
+  // fontFamily: "Swanky and Moo Moo",
   width: "250px",
 });
 export const questionNumbers = style({
@@ -81,4 +81,6 @@ export const quizButton = style({
   width: "6rem",
   padding: "1rem",
   borderRadius: "15px",
+  cursor: "pointer",
+  
 });

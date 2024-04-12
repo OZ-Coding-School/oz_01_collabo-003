@@ -1,21 +1,39 @@
-import { HTMLInputTypeAttribute } from "react";
+import { HTMLInputTypeAttribute, MouseEventHandler } from "react";
 import {
   duplicateCheckBtn,
+  duplicateCheckBtnChecked,
   duplicateInputDiv,
   input,
+  inputLabel,
+  inputMessage,
 } from "../styles/LoginStyle.css";
-import {} from "../styles/signupStyle.css";
 
 type InputProps = {
   children: React.ReactNode;
-  value: string;
+  value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   type: HTMLInputTypeAttribute;
+  required?: boolean;
+  ErrorMessage?: string;
+  onClick?: MouseEventHandler;
+  isEmail?: boolean;
+  isUserName?: boolean;
+  disabled?: boolean;
 };
-const DuplicateInput = ({ children, value, onChange, type }: InputProps) => {
+const DuplicateInput = ({
+  children,
+  value,
+  onChange,
+  type,
+  required,
+  ErrorMessage,
+  onClick,
+
+  disabled,
+}: InputProps) => {
   return (
     <div>
-      <label>
+      <label className={inputLabel}>
         {children}
         <div className={duplicateInputDiv}>
           <input
@@ -23,9 +41,17 @@ const DuplicateInput = ({ children, value, onChange, type }: InputProps) => {
             value={value}
             onChange={onChange}
             type={type}
-            required
+            required={required}
           ></input>
-          <button className={duplicateCheckBtn}>증복 확인</button>
+          {/* disabled 이면 버튼 색 없어지게 */}
+          <button
+            disabled={disabled}
+            className={disabled ? duplicateCheckBtn : duplicateCheckBtnChecked}
+            onClick={onClick}
+          >
+            중복 확인
+          </button>
+          <p className={inputMessage}>{ErrorMessage}</p>
         </div>
       </label>
     </div>
