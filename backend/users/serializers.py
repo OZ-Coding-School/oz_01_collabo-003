@@ -20,5 +20,18 @@ class LoginSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email','nickName','imgUrl')
+        fields = ('id','email','nickName','imgUrl')
+        
+
+class myinfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('nickName','password')
+
+    def update(self,instance,validated_data):
+        if validated_data:
+            password = validated_data.pop('password', None)
+            if password is not None:
+                instance.set_password(password)
+        return super().update(instance,validated_data)
     

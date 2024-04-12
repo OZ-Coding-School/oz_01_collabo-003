@@ -4,41 +4,101 @@ from openai import OpenAI
 import openai
 from django.views.decorators.csrf import csrf_exempt
 import json
+from quizs.models import Quiz
+
+
+# 따로 파일 만들어서 관리
 # OpenAI API 키 설정
 client = OpenAI(
     # api_key = settings.OPENAI_API_KEY
     api_key = settings.OPENAI_API_KEY
 )
+example = """
+{
+                        "questions": [
+                            {
+                            "number": 1,
+                            "type": "English vocabulary question in English",
+                            "question": "What is the English word for a place where you can borrow books?"
+                            },
+                            {
+                            "number": 2,
+                            "type": "Korean vocabulary question about English",
+                            "question": "‘사과’를 영어로 뭐라고 하나요?"
+                            },
+                            {
+                            "number": 3,
+                            "type": "English fill-in-the-blank",
+                            "question": "The opposite of 'night' is '___."
+                            },
+                            {
+                            "number": 4,
+                            "type": "Translate the English sentence",
+                            "question": "What does 'The cat sits on the mat.' mean?"
+                            },
+                            {
+                            "number": 5,
+                            "type": "Translate the Korean sentence to English",
+                            "question": "저는 매일 아침에 조깅을 합니다."
+                            }
+                        ]
+                        }
 
-# gpt에서 퀴즈 질문 5개 받아오는 기능
+"""
 @csrf_exempt
 def quiz(request):
-    if request.method == "POST":
-        level = request.POST.get('level')
+    if request.method != "POST":
+        return JsonResponse({"error": "POST 요청이 필요합니다."}, status=400)
+    
+    data = json.loads(request.body)
+    level = data.get('level')
+    try:
+        # 사용자가 선택한 난이도의 질문을 데이터베이스에서 가져옵니다.
+        existing_questions = Quiz.objects.filter(
+            quizLevel__level=level
+        )
+
+        # GPT 모델을 사용하여 새로운 질문을 생성합니다.
+        res = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role" : "system",
+                    "content" : f'''
+                    영어 퀴즈 문제를 만들거야 문제를 만들때 아래 조건, 형식의 예시를 무조건 지키고 {level} 수준으로 영어퀴즈를 만들어줘 리턴값은 JSON 형식으로 해줘, 답은 나오면 안돼 
+                    다음은 예시야 
+
+                    ```
+                    
+                    ```
+                    '''
+                }
+            ],
+            temperature=0.5,
+            max_tokens=1000
+        )
         
-        try:
+        new_question_content = json.loads(res.choices[0].message.content)
+        print(new_question_content)
+        # 중복되지 않는 새로운 질문을 필터링합니다.
+        new_questions = []
+        for question_content in new_question_content.values():
+            if not existing_questions.filter(content=question_content).exists() and question_content not in new_questions:
+                new_questions.append(question_content)
+
+        # 만약에 새로운 질문이 5개가 되지 않았다면, 추가로 생성하여야 합니다.
+        while len(new_questions) < 5:
             res = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {
                         "role" : "system",
                         "content" : f'''
-                        영어 공부하는 문제 5개를 만들거야 문제 만들 때 난이도는 {level} 수준으로 만들어줘
-                        
-
-                        퀴즈1: 영어 단어 퀴즈 (영어단어를 한글로 맞추는 퀴즈) 
-                        퀴즈2: 한글 단어 퀴즈 (한글단어를 영어로 맞추는 퀴즈) 
-                        퀴즈3: 영어 문장 빈칸 채우기 퀴즈 (영어 문장의 퀴즈에 빈칸에 들어갈 단어 맞추기)
-                        퀴즈4: 영어 문장 퀴즈 (영어문장 퀴즈를 한글로 맞추기)
-                        퀴즈5: 한글 문장 퀴즈 (한글문장 퀴즈를 영어로 맞추기)
-
-                        아래 작성하는 조건은 반드시 지켜줘
-
-                        조건1: 반환형식을 json 형식으로 해줘
-                        조건2: 퀴즈 1번 부터 5번까지 순서대로 나오게 해줘 단 출력시 퀴즈설명 없이 딱 퀴즈만 나오게 해줘
-                        조건3: 퀴즈는 겹치지 않게 섞어서 내줘
-                        조건4: 퀴즈는 설명없이 핵심 질문만 적어줘 
-                        조건5: {level} 수준에 맞는 퀴즈를 만들어줘 apple,사과 같은 너무 쉬운 단어는 반드시 나오지 않게 해줘
+                        영어 퀴즈 문제를 만들거야 문제를 만들때 아래 조건, 형식의 예시를 무조건 지키고 초등학교 수준으로 영어퀴즈를 만들어줘 리턴값은 JSON 형식으로 해줘, 답은 나오면 안돼 
+                    다음은 예시야 
+                    ```
+                    {example}
+                    ```
 
                         '''
                     }
@@ -46,52 +106,60 @@ def quiz(request):
                 temperature=0.5,
                 max_tokens=1000
             )
-            return JsonResponse(json.loads(res.choices[0].message.content))
-        except openai.RateLimitError as e:
-            return JsonResponse({"error": "API 요청 한도를 초과했습니다."}, status=429)
-        except openai.APIConnectionError as e:
-            return JsonResponse({"error": "OpenAI API에 연결할 수 없습니다."}, status=503)
-        except Exception as e:
-            return JsonResponse({"error": "알 수 없는 오류가 발생했습니다."}, status=500)
-    else:
-        return JsonResponse({"error": "POST 요청이 필요합니다."}, status=400)
+            
+            new_question_content = json.loads(res.choices[0].message.content)
+            
+            # 중복되지 않는 새로운 질문을 필터링합니다.
+            for question_content in new_question_content.values():
+                if not existing_questions.filter(content=question_content).exists() and question_content not in new_questions:
+                    new_questions.append(question_content)
+
+        # 5개씩 새로운 질문을 반환합니다.
+        return JsonResponse({"questions": new_questions[:5]})
+    except Exception as e:
+        return JsonResponse({"error": f"알 수 없는 오류가 발생했습니다.{e}"}, status=500)
+
     
+@csrf_exempt
+def feedback(request):
+    if request.method == "POST":
+        # POST 요청에서 데이터 추출
+        data = json.loads(request.body)
 
-# gpt 질문과 유저 답변으로 피드백과 점수를 받아오는 기능
-# def feedback(request):
-#     if request.method == "POST":
-#         # POST 요청에서 데이터 추출
-#         data = request.POST
+        question = data.get('question')
+        answer = data.get('answer')
+        
+        # OpenAI에 데이터 전송
+        try:
+            res = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {
+                        "role" : "system",
+                        "content" : f'''
+                        질문: {question}\n답변: {answer}\n피드백과 점수를 json 형식으로 점수는 20점 만점으로 생성해주세요.
+                        정답이면 정답이라고만 적어주고 틀리면 자세하게 알려주고 정답도 알려줘,
+                        점수 기준은 
 
-#         # Serializer를 사용하여 데이터 직렬화
-#         serializer = FeedbackSerializer(data=data)
+                        형식은
+                        "feedback": "피드백"
+                        "score": 20
+                        
+                        '''
+                    }
+                ],
+                temperature=0.5,
+                max_tokens=1000
+            )
 
-#         if serializer.is_valid():
-#             # Serializer가 유효한 경우, 데이터 추출
-#             question = serializer.validated_data.get('question')
-#             answer = serializer.validated_data.get('answer')
+            # OpenAI의 응답에서 피드백 및 점수 추출
+            
 
-#             # OpenAI에 데이터 전송
-#             try:
-#                 response = openai.Completion.create(
-#                     engine="text-davinci-002",  # 사용할 GPT 엔진 선택
-#                     prompt=f"질문: {question}\n답변: {answer}\n피드백과 점수를 생성해주세요.",
-#                     temperature=0.7,
-#                     max_tokens=150,
-#                     n=1
-#                 )
+            # 피드백 및 점수를 JSON 응답으로 반환
+            return JsonResponse(json.loads(res.choices[0].message.content), status=200)
+        except Exception as e:
+            # OpenAI API 요청 중 오류가 발생한 경우 에러 응답 반환
+            return JsonResponse({"error": str(e)}, status=500)
 
-#                 # OpenAI의 응답에서 피드백 및 점수 추출
-                
-
-#                 # 피드백 및 점수를 JSON 응답으로 반환
-#                 return JsonResponse(json.loads(response.choices[0].text), status=200)
-#             except Exception as e:
-#                 # OpenAI API 요청 중 오류가 발생한 경우 에러 응답 반환
-#                 return JsonResponse({"error": str(e)}, status=500)
-#         else:
-#             # Serializer가 유효하지 않은 경우, 오류 응답 반환
-#             return JsonResponse(serializer.errors, status=400)
-
-#     # POST 요청이 아닌 경우에는 에러 응답 반환
-#     return JsonResponse({"error": "POST 요청이 필요합니다."}, status=400)
+    # POST 요청이 아닌 경우에는 에러 응답 반환
+    return JsonResponse({"error": "POST 요청이 필요합니다."}, status=400)
