@@ -1,4 +1,5 @@
 import { FormEventHandler, useEffect, useRef, useState } from "react";
+import axios from "../api/axios";
 import { button, paragraph, title } from "../styles/LoginStyle.css";
 import { modalContainer, passwordModal } from "../styles/PasswordRest.css";
 import Input from "./Input";
@@ -10,10 +11,10 @@ const PassWordModal = ({
   setPassWordModalOpen,
   passWordModalOpen,
 }: PassWordModalProps) => {
-  const [Email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const handleResetPassword = () => {
     console.log("비밀번호재설정");
-    // fetchPasswordRest()
+    fetchPasswordRest();
   };
   const outerBoxRef = useRef(null);
   const handleLogin: FormEventHandler = (e) => {
@@ -30,25 +31,21 @@ const PassWordModal = ({
   }
   async function fetchPasswordRest() {
     // 서버 켜지면 아래 코드 주석 풀기
-    // try {
-    //   const response = await axios.post("/api/v1/user/passwordReset/", {
-    //     userName: userName,
-    //   });
-    //   console.log(response.data);
-    //   // 중복이면
-    //   if (response.status === 400) {
-    //     setUserNameMessage("이미 존재하는 이메일입니다");
-    //     //중복 아니면
-    //   } else if (response.status === 201) {
-    //      setUserNameMessage("");
-    //     setIsUserName(true);
-    // setIsUserName(false);
-    //   } else {
-    //     setUserNameMessage("이메일 확인 중 오류가 발생했습니다");
-    //   }
-    // } catch (err) {
-    //   console.log("err:", err);
-    // }
+    try {
+      const response = await axios.post("/api/v1/user/passwordReset/", {
+        email: email,
+      });
+      console.log(response.data);
+      // 중복이면
+      if (response.status === 200) {
+        alert("작성하신 이메일로 비밀번호 재설정 링크가 전송되었습니다");
+        //중복 아니면
+      } else if (response.status === 400) {
+        alert("유효하지않은 이메일입니다");
+      }
+    } catch (err) {
+      console.log("err:", err);
+    }
   }
 
   return (
@@ -69,7 +66,7 @@ const PassWordModal = ({
 
         <Input
           type="email"
-          value={Email}
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         >
           Email

@@ -71,6 +71,7 @@ function UserUpdatePage() {
       if (response.status === 200) {
         console.log("회원정보 수정 성공!");
         // setNickName(response.data.nickName);
+        // setEmail(response.data.email);
         // setPassword(response.data.password);
       } else if (response.status === 400) {
         console.log("회원정보 수정 실패");
