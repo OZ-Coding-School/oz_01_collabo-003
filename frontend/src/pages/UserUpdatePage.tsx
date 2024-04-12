@@ -23,23 +23,16 @@ const accessToken = localStorage.getItem("accessToken");
 function UserUpdatePage() {
   const [nickName, setNickName] = useState("");
   const [password, setPassword] = useState("");
-  const [userId, setUserId] = useState<string | null>("");
-  // 처음 마운트될때만 유저 정보 가져오기
+  const [email, setEmail] = useState("");
+  // const [imgUrl, setImgUrl] = useState("");
   useEffect(() => {
-    const loggedInUserId = localStorage.getItem("userId");
-    setUserId(loggedInUserId);
+    FetchUserUpdate();
   }, []);
-
-  useEffect(() => {
-    if (userId !== null) {
-      FetchUserUpdate();
-    }
-  }, [userId]);
 
   // userdata가져오기
   async function FetchUserUpdate() {
     try {
-      const response = await axios.get(`/api/v1/user/myinfo/${userId}`, {
+      const response = await axios.get(`/api/v1/user/myinfo/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -50,6 +43,7 @@ function UserUpdatePage() {
         console.log("회원정보 가져오기 성공!");
         setNickName(response.data.nickName);
         setPassword(response.data.password);
+        setEmail(response.data.email);
       } else if (response.status === 400) {
         console.log("회원정보 가져오기 실패");
       }
@@ -61,13 +55,15 @@ function UserUpdatePage() {
   async function handleChangeUserInfo() {
     try {
       const response = await axios.put(
-        `/api/v1/user/myinfo/${userId}`,
+        `/api/v1/user/myinfo/`,
         {
           nickName: nickName,
           password: password,
         },
         {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
       );
 
@@ -111,14 +107,14 @@ function UserUpdatePage() {
                   alt="user profile"
                 />
               </div>
-              <p className={userName}>하염빵</p>
+              <input
+                className={userName}
+                value={email}
+                onChange={(e) => setNickName(e.target.value)}
+              ></input>
             </div>
-            <Input
-              type="text"
-              value={nickName}
-              onChange={(e) => setNickName(e.target.value)}
-            >
-              User Name
+            <Input type="text" value={email} disabled>
+              email
             </Input>
             <Input
               type="password"
