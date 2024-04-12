@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from .models import User
 from quizs.models import Quiz
 from feedbacks.models import Feedback
-from .serializers import UserSerializer
+from .serializers import UserSerializer,myinfoSerializer
 from quizs.serializers import QuizSerializer
 from feedbacks.serializers import FeedbackSerializer
 from rest_framework.permissions import AllowAny
@@ -20,16 +20,36 @@ from django.urls import reverse
 # 회원가입 기능
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class emailValid(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+    def post(self, request):
+        email = request.data.get('email')
+        if User.objects.filter(email=email).exists():
+            return Response({"message": "이미 존재하는 이메일입니다."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"message": "이메일이 정상입니다."}, status=status.HTTP_200_OK)
+class nickNameValid(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+    def post(self, request):
+        nickName = request.data.get('nickName')
+        if User.objects.filter(nickName=nickName).exists():
+            return Response({"message": "이미 존재하는 닉네임입니다."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"message": "닉네임이 정상입니다."}, status=status.HTTP_200_OK)
 
 # 로그인 기능
 class LoginAPIView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
     def post(self, request):
         user = authenticate(
             email = request.data.get('email'),
@@ -64,14 +84,14 @@ class LogoutAPIvie(APIView):
 
 # 유저 정보 업데이트
 class MyInfo(APIView):
-    def get(self, request):
-        user = request.user
+    def get(self, request, user_id):
+        user = User.objects.get(id=user_id)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def put(self, request):
-        user = request.user
-        serializer = UserSerializer(user, data=request.data)
+    def put(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        serializer = myinfoSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -143,6 +163,8 @@ class GetUserDataAPIView(APIView):
 
 # 비밀번호 찾기 (초기화)
 class PasswordResetAPIView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
     def post(self, request):
         email = request.data.get('email')
         if email:
