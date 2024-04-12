@@ -256,10 +256,10 @@ function Auth() {
           navigate("/level");
           //로컬스토리지에 엑세스토큰 넣기
           const accessToken = response.data.accessToken;
-          const userId = response.data.userdata.id;
+          
           console.log("Access Token:", accessToken);
           localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("userId", userId);
+    
         } else {
           setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
         }
@@ -287,7 +287,7 @@ function Auth() {
               required
               ErrorMessage={emailMessage}
               onClick={fetchEmailDoubleCheck}
-              // isEmail={isEmail}
+         
               disabled={!isEmail}
             >
               Email
