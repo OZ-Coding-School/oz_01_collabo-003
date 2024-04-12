@@ -9,6 +9,7 @@ type InputProps = {
   required?: boolean;
   ErrorMessage?: string;
   placeholder?: string;
+  disabled?: boolean;
 };
 const Input = ({
   children,
@@ -16,7 +17,7 @@ const Input = ({
   onChange,
   type,
   ErrorMessage,
-
+  disabled,
 }: InputProps) => {
   return (
     <div>
@@ -28,6 +29,7 @@ const Input = ({
           onChange={onChange}
           type={type}
           required
+          disabled={disabled}
         ></input>
       </label>
       <p className={inputMessage}>{ErrorMessage}</p>
