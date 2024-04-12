@@ -254,13 +254,15 @@ function Auth() {
             withCredentials: true,
           }
         );
-        // const { accessToken } = response.data.token.accessToken;
-        // console.log("Access Token:", accessToken);
 
         console.log(response.data);
         if (response.status === 200) {
           console.log("로그인 성공!");
           navigate("/level");
+          //로컬스토리지에 엑세스토큰 넣기
+          const { accessToken } = response.data.token.accessToken;
+          console.log("Access Token:", accessToken);
+          localStorage.setItem("accessToken", accessToken);
         } else if (response.status === 400) {
           setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
         }
