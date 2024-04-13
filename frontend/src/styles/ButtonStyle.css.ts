@@ -8,7 +8,7 @@ export const buttonStyle = style({
   fontSize: "2.5rem",
   fontWeight: "bolder",
   width: "18%",
-  padding: "0.3rem",
+  // padding: "0.3rem",
   height: "10%",
   border: "none",
   borderRadius: "50px",
@@ -37,10 +37,27 @@ export const formButton = style([
 export const userUpdateButton = style([
   buttonStyle,
   {
+    marginTop: "0.5rem",
     width: "100%",
-    height: "50px",
-    fontSize: "1.8rem",
+    height: "40px",
+    fontSize: "1.5rem",
     position: "relative",
     textAlign: "center",
+  },
+]);
+export const userUpdateSelectButton = style([
+  buttonStyle,
+  {
+    marginTop: "0.2rem",
+    marginBottom: "1rem",
+    width: "100%",
+    height: "30px",
+    fontSize: "1rem",
+    position: "relative",
+    textAlign: "center",
+    background: "white",
+    color: "black",
+    border: "1px solid black",
+    borderRadius: 0,
   },
 ]);

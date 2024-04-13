@@ -41,7 +41,7 @@ export const userInfoTitle = style({
 });
 
 export const userLayout = style({
-  width: "50%",
+  width: "60%",
   display: "flex",
   flexDirection: "column",
   position: "relative",
@@ -60,9 +60,9 @@ export const userImgNameDiv = style({
   display: "flex",
   alignItems: "center",
   marginBottom: "2rem",
+  position: "relative",
 });
 export const userImgDiv = style({
-  padding: "0.8rem",
   border: "1px black solid",
   width: "130px",
   height: "130px",
@@ -70,7 +70,21 @@ export const userImgDiv = style({
   justifyContent: "center",
   borderRadius: "50%",
   marginRight: "2rem",
+  alignItems: "center",
+  overflow: "hidden",
+  marginBottom: "0.5rem",
+});
+export const userImgsrc = style({
+  overflow: "hidden",
+  height: "auto",
+  borderRadius: "50%",
 });
 export const userName = style({
   fontSize: "2rem",
+  marginBottom: "0.5rem",
+});
+export const editSvg = style({
+  position: "absolute",
+  top: 85,
+  left: 110,
 });
