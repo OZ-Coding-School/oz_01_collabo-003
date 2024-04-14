@@ -1,6 +1,5 @@
 from rest_framework.views import APIView, Response, status
 from .serializers import RegisterSerializer, UserSerializer
-from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView,TokenObtainPairView
 from .models import User
@@ -154,6 +153,7 @@ class GetUserDataAPIView(APIView):
         }
 
         return Response(data,status=status.HTTP_200_OK,)
+
 
 # 비밀번호 찾기 (초기화)
 class PasswordResetAPIView(APIView):
