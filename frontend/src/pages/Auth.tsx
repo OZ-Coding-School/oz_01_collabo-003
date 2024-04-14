@@ -51,7 +51,7 @@ function Auth() {
   const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
   const [isUserNameChecked, setIsUserNameChecked] = useState<boolean>(false);
   // css용 state
-  const [signin, setSignIn] = React.useState(true);
+  const [signin, setSignIn] = React.useState(false);
 
   //회원입시 이메일 검증
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -228,12 +228,12 @@ function Auth() {
 
     // setLogInEmail("");
     // setLogInPw("");
-    setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
+
     if (logInEmail && logInPw) {
       FetchLogin();
-      setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
+      setLoginErrorMessage("");
     } else {
-      //
+      setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
     }
 
     //로그인 데이터 전송 코드
@@ -256,10 +256,9 @@ function Auth() {
           navigate("/level");
           //로컬스토리지에 엑세스토큰 넣기
           const accessToken = response.data.accessToken;
-          
+
           console.log("Access Token:", accessToken);
           localStorage.setItem("accessToken", accessToken);
-    
         } else {
           setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
         }
@@ -287,7 +286,6 @@ function Auth() {
               required
               ErrorMessage={emailMessage}
               onClick={fetchEmailDoubleCheck}
-         
               disabled={!isEmail}
             >
               Email
