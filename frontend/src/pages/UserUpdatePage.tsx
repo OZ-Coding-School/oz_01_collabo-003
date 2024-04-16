@@ -80,6 +80,7 @@ function UserUpdatePage() {
           {
             nickName: nickName,
             password: password,
+            imgUrl: profileImg,
           },
           {
             headers: {

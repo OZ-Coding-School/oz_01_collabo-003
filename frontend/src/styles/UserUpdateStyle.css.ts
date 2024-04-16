@@ -76,8 +76,10 @@ export const userImgDiv = style({
 });
 export const userImgsrc = style({
   overflow: "hidden",
-  height: "auto",
-  borderRadius: "50%",
+  objectFit: "cover",
+  height: "100%",
+  // width: "100%",
+  // borderRadius: "50%",
 });
 export const userName = style({
   fontSize: "2rem",
