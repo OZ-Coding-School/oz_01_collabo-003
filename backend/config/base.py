@@ -213,3 +213,16 @@ EMAIL_USE_TLS = True  # TLS 사용 여부 (SSL을 사용하는 경우 EMAIL_USE_
 EMAIL_HOST_USER = SECRET["EMAIL_HOST_USER"]  # SMTP 서버 계정 이메일
 EMAIL_HOST_PASSWORD = SECRET["EMAIL_HOST_PASSWORD"]  # SMTP 서버 계정 비밀번호
 
+from celery.schedules import crontab
+
+# Celery 설정
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# CELERY_BEAT_SCHEDULE = {
+#     'generate-english-quiz-every-week': {
+#         'task': 'gpt.views.generate_english_quiz',
+#         'schedule': crontab(day_of_week='sunday', hour=0),
+#     },
+# }
+

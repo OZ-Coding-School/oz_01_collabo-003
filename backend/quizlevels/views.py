@@ -5,8 +5,8 @@ from .serializers import QuizLevelSerializer
 
 class QuizLevelAPIView(APIView):
     def post(self, request, format=None):
-        data = request.data
-        serializer = QuizLevelSerializer(data=data)
+        user = request.user
+        serializer = QuizLevelSerializer(user=user,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
