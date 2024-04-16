@@ -26,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
 class myinfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('nickName','password')
+        fields = ('nickName','password','imgUrl')
 
     def update(self,instance,validated_data):
         if validated_data:

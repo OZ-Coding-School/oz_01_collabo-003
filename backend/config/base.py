@@ -79,7 +79,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,6 +90,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -187,7 +192,7 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
     "SIGNING_KEY": SECRET_KEY,
     "ALGORITHM" : "HS256",
@@ -207,4 +212,17 @@ EMAIL_PORT = 587  # SMTP 서버 포트
 EMAIL_USE_TLS = True  # TLS 사용 여부 (SSL을 사용하는 경우 EMAIL_USE_SSL = True로 설정)
 EMAIL_HOST_USER = SECRET["EMAIL_HOST_USER"]  # SMTP 서버 계정 이메일
 EMAIL_HOST_PASSWORD = SECRET["EMAIL_HOST_PASSWORD"]  # SMTP 서버 계정 비밀번호
+
+from celery.schedules import crontab
+
+# Celery 설정
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# CELERY_BEAT_SCHEDULE = {
+#     'generate-english-quiz-every-week': {
+#         'task': 'gpt.views.generate_english_quiz',
+#         'schedule': crontab(day_of_week='sunday', hour=0),
+#     },
+# }
 

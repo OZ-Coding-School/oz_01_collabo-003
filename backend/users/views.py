@@ -1,6 +1,5 @@
 from rest_framework.views import APIView, Response, status
 from .serializers import RegisterSerializer, UserSerializer
-from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView,TokenObtainPairView
 from .models import User
@@ -92,11 +91,11 @@ class MyInfo(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # refresh 토큰 재발급 커스텀 유효성 실패시 다시 발급 
-class RefreshTokenView(TokenRefreshView):
+class RefreshTokenView(APIView):
     def post(self, request, *args, **kwargs):
         # 클라이언트로부터 refresh 토큰을 받습니다.
         refresh_token = request.data.get('refresh')
-        
+        print(refresh_token)
         # refresh 토큰이 제공되지 않은 경우
         if not refresh_token:
             return Response({"message": "Refresh token이 없습니다"}, status=status.HTTP_400_BAD_REQUEST)
@@ -104,28 +103,23 @@ class RefreshTokenView(TokenRefreshView):
         try:
             # refresh 토큰을 검증하여 유효성을 확인합니다.
             token = RefreshToken(refresh_token)
-            token_payload = token.payload
             
             # 새로운 액세스 토큰 발급
             access_token = token.access_token
             
-            # 새로운 리프레시 토큰 발급
-            new_refresh_token = RefreshToken.for_user(token_payload['user'])
-            
             # 새로운 액세스 토큰과 리프레시 토큰을 클라이언트에게 반환합니다.
             return Response({
                 'access': str(access_token),
-                'refresh': str(new_refresh_token),
             }, status=status.HTTP_200_OK)
         
         except Exception as e:
             # refresh 토큰이 유효하지 않은 경우
-            return Response({"message": "유효하지 않는 토큰입니다"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": f"유효하지 않는 토큰입니다{e}"}, status=status.HTTP_400_BAD_REQUEST)
         
 class GetUserDataAPIView(APIView):
-    def get(self, request, user_id):
+    def get(self, request):
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(id=request.user.id)
         except User.DoesNotExist:
             return Response({"message": "유저가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
         
@@ -154,6 +148,7 @@ class GetUserDataAPIView(APIView):
         }
 
         return Response(data,status=status.HTTP_200_OK,)
+
 
 # 비밀번호 찾기 (초기화)
 class PasswordResetAPIView(APIView):
