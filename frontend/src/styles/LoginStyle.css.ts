@@ -1,14 +1,14 @@
-import { composeStyles, style } from "@vanilla-extract/css";
+import { style } from "@vanilla-extract/css";
 import { logoLayout } from "./LayoutStyle.css";
 
-export const logoBgDiv = composeStyles(
+export const logoBgDiv = [
   logoLayout,
   style({
     backgroundImage: `url("/img/bg1.png")`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-  })
-);
+  }),
+];
 export const inputdiv = style({
   marginBottom: "1rem",
 });
@@ -17,11 +17,9 @@ export const inputContainer = style({
 });
 export const input = style({
   width: "100%",
-
   border: "none",
   borderRadius: "12px",
   backgroundColor: "#efefef",
-
   padding: "1rem",
   fontSize: "1rem",
   paddingLeft: "1.5rem",
@@ -47,7 +45,6 @@ export const duplicateCheckBtn = style({
   color: "#8C8888",
   // border: "1px solid #D4D8FF",
   border: "none",
-
   // borderColor: "#D4D8FF",
   borderRadius: "50px",
   padding: "0.5rem",
@@ -108,6 +105,7 @@ export const signInContainer = style({
     },
   },
 });
+
 export const formContainer = style({
   backgroundColor: "#ffffff",
   display: "flex",
@@ -129,6 +127,7 @@ export const title = style({
 export const titleExplanation = style({
   color: "#8D9188",
 });
+
 export const button = style({
   borderRadius: "20px",
   fontSize: "1rem",
@@ -150,6 +149,7 @@ export const button = style({
     },
   },
 });
+
 export const inputMessage = style({
   color: "#FF4141",
   fontSize: "0.8rem",
@@ -164,6 +164,7 @@ export const ghostButton = style([
     borderColor: "#838ade9d;",
   },
 ]);
+
 export const anchor = style({
   color: "#333",
   fontSize: "14px",
@@ -171,6 +172,7 @@ export const anchor = style({
   margin: "15px 0",
   cursor: "pointer",
 });
+
 export const overlayContainer = style({
   position: "absolute",
   top: 0,
@@ -181,11 +183,12 @@ export const overlayContainer = style({
   transition: "transform 0.6s ease-in-out",
   zIndex: 100,
   selectors: {
-    "&:not([data-signin])": {
+    [`&[data-signin="false"]`]: {
       transform: "translateX(-100%)",
     },
   },
 });
+
 export const overlay = style({
   backgroundPosition: "0 0",
   color: "#988888",
@@ -196,11 +199,12 @@ export const overlay = style({
   transform: "translateX(0)",
   transition: "transform 0.6s ease-in-out",
   selectors: {
-    "&:not([data-signin])": {
+    [`&[data-signin="false"]`]: {
       transform: "translateX(50%)",
     },
   },
 });
+
 export const overlayPanel = style({
   position: "absolute",
   display: "flex",
@@ -227,11 +231,18 @@ export const leftOverlayPanel = style({
     },
   },
 });
+
 export const rightOverlayPanel = style({
   backgroundImage: "url('../public/img/bg3.png')",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   right: "0",
+  transform: "translateX(0)",
+  selectors: {
+    [`&[data-signin="false"]`]: {
+      transform: "translateX(20%)",
+    },
+  },
 });
 
 export const paragraph = style({

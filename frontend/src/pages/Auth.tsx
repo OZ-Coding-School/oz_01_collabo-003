@@ -14,6 +14,8 @@ import {
   ghostButton,
   inputContainer,
   inputMessage,
+  overlay,
+  overlayContainer,
   paragraph,
   signInContainer,
   signUpContainer,
@@ -320,7 +322,6 @@ function Auth() {
               Password
             </Input>
           </div>
-
           <button className={button}>Sign Up</button>
         </form>
       </div>
@@ -354,11 +355,10 @@ function Auth() {
         </form>
       </div>
       {/* 오버레이 */}
-      <Components.OverlayContainer signin={signin}>
-        <Components.Overlay signin={signin}>
+      <div data-signin={signin} className={overlayContainer}>
+        <div data-signin={signin} className={overlay}>
           <Components.LeftOverlayPanel signin={signin}>
             <h1 className={title}>Welcome Back!</h1>
-
             <p className={paragraph}>
               To keep connected with us please login with your personal info
             </p>
@@ -366,19 +366,17 @@ function Auth() {
               Sign Up
             </button>
           </Components.LeftOverlayPanel>
-
           <Components.RightOverlayPanel signin={signin}>
             <h1 className={title}>Hello, Friend!</h1>
             <p className={paragraph}>
               Enter Your personal details and start journey with us
             </p>
-
             <button className={ghostButton} onClick={() => setSignIn(false)}>
               Sign In
             </button>
           </Components.RightOverlayPanel>
-        </Components.Overlay>
-      </Components.OverlayContainer>
+        </div>
+      </div>
     </div>
   );
 }
