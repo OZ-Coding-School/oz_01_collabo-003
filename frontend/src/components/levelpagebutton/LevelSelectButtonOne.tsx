@@ -1,6 +1,6 @@
 import { levelPageButtonOne, levelPageButtonText } from "../../styles/LevelPage.css"
 
-type Props = {
+export type Props = {
   name: string
   onClick: () => void
 }
