@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from gptmanage import gpt
+from .gptmanage import gpt
 from celery import shared_task
 from .models import GptElementary, GptMiddle, GptNative, GptHigh, GptToeic
 
