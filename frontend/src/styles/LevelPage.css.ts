@@ -55,35 +55,41 @@ export const levelPageBackgroundImage = style({
   top: "50px",
   right: 0,
   position: "absolute",
-  width: "400px",
-  height: "505px",
+  width: "30%",
+  height: "60%",
   zIndex: -1,
 });
 
 export const levelPageContainer = style({
   width: "100%",
+  height: "100%",
   maxWidth: "1263px",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-evenly",
+  justifyContent: "space-between",
   alignItems: "center",
-});
-
-export const levelPageTitle = style({
-  marginBottom: "36px",
+  "@media": {
+    "screen and (max-width: 1400px)": {
+      height: "100%",
+    },
+  },
 });
 
 export const levelPageButtonContainerOne = style({
   display: "flex",
   justifyContent: "space-evenly",
   width: "100%",
+  height: "100%",
+  alignItems: "center",
   flexWrap: "wrap",
 });
 
 export const levelPageButtonContainerTwo = style({
   display: "flex",
+  alignItems: "center",
   justifyContent: "space-evenly",
   width: "100%",
+  height: "100%",
   flexWrap: "wrap",
 });
 
@@ -91,14 +97,17 @@ export const levelPageButtonOne = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "10px",
-  width: "320px",
-  height: "273px",
+  width: "300px",
   backgroundColor: "#FEE5E5",
-  borderRadius: "80px",
+  borderRadius: "25%",
   cursor: "pointer",
   boxShadow: "none",
   transition: "all 0.3s",
+  ":before": {
+    content: '""',
+    display: "block",
+    paddingTop: "100%",
+  },
   ":hover": {
     transform: "scale(1.03)",
     boxShadow: "5px 5px 0 0 #F4F8F1",
@@ -106,6 +115,11 @@ export const levelPageButtonOne = style({
   ":active": {
     transform: "none",
     boxShadow: "none",
+  },
+  "@media": {
+    "screen and (max-width: 1400px)": {
+      width: "250px",
+    },
   },
 });
 
@@ -113,14 +127,17 @@ export const levelPageButtonTwo = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "50px",
-  width: "320px",
-  height: "273px",
+  width: "300px",
   backgroundColor: "#FEF8D5",
-  borderRadius: "80px",
+  borderRadius: "25%",
   cursor: "pointer",
   boxShadow: "none",
   transition: "all 0.3s",
+  ":before": {
+    content: '""',
+    display: "block",
+    paddingTop: "100%",
+  },
   ":hover": {
     transform: "scale(1.03)",
     boxShadow: "5px 5px 0 0 #F4F8F1",
@@ -128,6 +145,11 @@ export const levelPageButtonTwo = style({
   ":active": {
     transform: "none",
     boxShadow: "none",
+  },
+  "@media": {
+    "screen and (max-width: 1400px)": {
+      width: "250px",
+    },
   },
 });
 
