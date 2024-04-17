@@ -1,6 +1,18 @@
 import { style } from "@vanilla-extract/css";
+export const infoLayout = style({
+  display: "flex",
+  width: "calc(100% + 65px)",
+  height: "calc(100vh - 60px)",
 
-// 스타일 정의
+  position: "relative",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  },
+});
 export const user_background_03 = style({
   position: "absolute",
 });
@@ -16,9 +28,14 @@ export const userLogoLayout = style({
   width: "50%",
   display: "flex",
   position: "relative",
-  top: "10",
   justifyContent: "center",
-  height: "100vh",
+  height: "calc(100vh - 60px)",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      height: "auto",
+      marginBottom: "1.5rem",
+    },
+  },
 });
 export const userLogoBg = style({
   width: "13rem",
@@ -30,6 +47,14 @@ export const userLogoBg = style({
   backgroundImage: `url('../../public/images/user_background_03.png')`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "contain",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      marginTop: "-3rem",
+      height: "6rem",
+      width: "8rem",
+      color: "#5F5F5F",
+    },
+  },
 });
 export const userInfoTitle = style({
   width: "100%",
@@ -38,6 +63,11 @@ export const userInfoTitle = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      fontSize: "1.9rem",
+    },
+  },
 });
 
 export const userLayout = style({
@@ -45,10 +75,17 @@ export const userLayout = style({
   display: "flex",
   flexDirection: "column",
   position: "relative",
-  height: "100vh",
+  height: "calc(100vh - 60px)",
   justifyContent: "center",
   alignItems: "center",
+
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      height: "auto",
+    },
+  },
 });
+
 export const userInfoDiv = style({
   width: "60%",
   display: "flex",
@@ -61,6 +98,7 @@ export const userImgNameDiv = style({
   alignItems: "center",
   marginBottom: "2rem",
   position: "relative",
+  width: "100%",
 });
 export const userImgDiv = style({
   border: "1px black solid",
@@ -72,21 +110,53 @@ export const userImgDiv = style({
   marginRight: "2rem",
   alignItems: "center",
   overflow: "hidden",
-  marginBottom: "0.5rem",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      width: "130px",
+      height: "130px",
+    },
+    "screen and (max-width: 768px)": {
+      width: "100px",
+      height: "100px",
+    },
+    "screen and (max-width:  570px)": {
+      width: "90px",
+      height: "90px",
+    },
+  },
 });
 export const userImgsrc = style({
   overflow: "hidden",
   objectFit: "cover",
   height: "100%",
-  // width: "100%",
-  // borderRadius: "50%",
+  width: "100%",
 });
 export const userName = style({
-  fontSize: "2rem",
+  fontSize: "2.3rem",
   marginBottom: "0.5rem",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      fontSize: "2.2rem",
+    },
+    "screen and (max-width: 570px)": {
+      fontSize: "1.8rem",
+    },
+  },
 });
 export const editSvg = style({
   position: "absolute",
   top: 85,
   left: 110,
+  zIndex: 999,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      width: "25px",
+      top: 69,
+      left: 84,
+    },
+    "screen and (max-width: 570px)": {
+      top: 60,
+      left: 75,
+    },
+  },
 });
