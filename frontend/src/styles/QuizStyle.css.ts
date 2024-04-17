@@ -11,7 +11,8 @@ export const quizContainer = style({
 });
 export const quizTitleContainer = style({
   position: "relative",
-  width: "80%",
+  // width: "80%",
+
   height: "auto",
   display: "flex",
   flexDirection: "column",
@@ -27,7 +28,8 @@ export const todayQuiz = style({
   top: "40px",
   width: "250px",
   textAlign: "center",
-  color: "#5F5F5F",
+  fontFamily: "Space Mono",
+  color: "#202020",
   "@media": {
     "screen and (max-width: 768px)": {
       fontSize: "1.8rem",
