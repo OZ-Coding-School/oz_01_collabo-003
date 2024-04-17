@@ -7,9 +7,9 @@ import {
   userUpdateButton,
   userUpdateSelectButton,
 } from "../styles/ButtonStyle.css";
-import { layout } from "../styles/LayoutStyle.css";
 import {
   editSvg,
+  infoLayout,
   userImgDiv,
   userImgNameDiv,
   userImgsrc,
@@ -129,13 +129,13 @@ function UserUpdatePage() {
         src="images/week_background_02.png"
         alt="week 배경02"
       />
-      <div className={layout}>
+      <div className={infoLayout}>
         <div className={userLogoLayout}>
           <div className={userLogoBg}>
             <div className={userInfoTitle}>나의 정보</div>
           </div>
         </div>
-        <div className={userLayout} style={{ backgroundClip: "border-box" }}>
+        <div className={userLayout}>
           <div className={userInfoDiv}>
             <div className={userImgNameDiv}>
               <div className={userImgDiv}>
