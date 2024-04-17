@@ -5,6 +5,18 @@ export const layout = style({
   width: "100%",
   position: "relative",
 });
+export const mainLayout = style({
+  display: "flex",
+  width: "100%",
+  position: "relative",
+  "@media": {
+    "screen and (max-width: 900px)": {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  },
+});
 export const logoLayout = style({
   width: "50%",
   display: "flex",
@@ -13,6 +25,22 @@ export const logoLayout = style({
   justifyContent: "center",
   alignItems: "center",
 });
+export const mainLogoLayout = style({
+  width: "50%",
+  display: "flex",
+  position: "relative",
+  height: "100vh",
+  justifyContent: "center",
+  alignItems: "center",
+  "@media": {
+    "screen and (max-width: 900px)": {
+      height: 700,
+    },
+    "screen and (max-width: 500px)": {
+      height: 600,
+    },
+  },
+});
 export const textLayout = style({
   width: "50%",
   display: "flex",
@@ -20,6 +48,11 @@ export const textLayout = style({
   height: "100vh",
   justifyContent: "center",
   alignItems: "center",
+  "@media": {
+    "screen and (max-width: 900px)": {
+      display: "none",
+    },
+  },
 });
 export const iconBlue = style({
   position: "absolute",
