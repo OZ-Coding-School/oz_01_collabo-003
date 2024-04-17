@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Logo from "../components/Logo";
-import { iconBlue, layout, textLayout } from "../styles/LayoutStyle.css";
+import { iconBlue, mainLayout, textLayout } from "../styles/LayoutStyle.css";
 import "../styles/MainTextStyle.css";
 function Main() {
   const navigate = useNavigate();
@@ -10,12 +10,12 @@ function Main() {
     navigate("/auth/login-signup");
   };
   return (
-    <div className={layout}>
+    <div className={mainLayout}>
       <img src="img/icon_blue.png" alt="icon_blue" className={iconBlue} />
       <Logo />
       <div className={textLayout}>
         <div id="container">
-          3Eng과 함께
+          3ENG과 함께
           <div id="flip">
             <div>
               <div>새로운 하루</div>
