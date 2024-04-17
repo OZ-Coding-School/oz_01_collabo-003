@@ -11,12 +11,12 @@ import {
   front,
   qiuzDiv,
   resultAgainButton,
+  resultBackground,
   resultBg,
   resultButtonDiv,
   resultCongratulation,
   resultContainer,
   resultDetailButton,
-  resultImg,
   resultPageDetail,
   resultScoreBox,
   score,
@@ -41,7 +41,7 @@ function ResultPage() {
               alt="TodayQuizBg"
             />
           </div>
-          <p className={resultCongratulation}>Congratulation</p>
+          <p className={resultCongratulation}>Congratulation!</p>
         </div>
         <p className={resultPageDetail}>
           오늘의 학습을 마쳤습니다 <br />
@@ -51,7 +51,7 @@ function ResultPage() {
       <div className={flip}>
         <div className={resultScoreBox}>
           <div className={isFlipped ? `${card} ${flipped}` : card}>
-            <img src="../../public/images/resultBg.png" className={resultImg} />
+            <div className={resultBackground} />
             <div className={front}>
               <p className={yourScoreTitle}>Your Score</p>
               <p className={score}>80</p>
@@ -72,7 +72,12 @@ function ResultPage() {
       </div>
 
       <div className={resultButtonDiv}>
-        <button className={resultAgainButton} onClick={() => navigate('/level')}>AGAIN</button>
+        <button
+          className={resultAgainButton}
+          onClick={() => navigate("/level")}
+        >
+          AGAIN
+        </button>
         <button
           className={resultDetailButton}
           onClick={handleDetailButtonClick}

@@ -1,8 +1,7 @@
 import { style } from "@vanilla-extract/css";
-import { calc } from "@vanilla-extract/css-utils";
 export const resultContainer = style({
-  width: "100%",
-  height: calc.add("100vh", "-60px"),
+  width: "calc(100% + 65px)",
+  height: "calc(100vh - 60px)",
   padding: "20px 100px 0 100px",
   display: "flex",
   flexDirection: "column",
@@ -12,14 +11,23 @@ export const resultContainer = style({
 export const resultBg = style({
   width: "180px",
   marginLeft: "30px",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      width: "150px",
+    },
+  },
 });
-
 export const resultCongratulation = style({
   fontSize: "2.3rem",
   position: "absolute",
-  top: "40px",
-  left: "0px",
-  width: "250px",
+  color: "#202020",
+  textAlign: "center",
+  fontFamily: "Space Mono",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "1.8rem",
+    },
+  },
 });
 export const resultPageDetail = style({
   width: "100%",
@@ -27,6 +35,7 @@ export const resultPageDetail = style({
   zIndex: 1,
   fontSize: "1.2rem",
   marginBottom: "1.2rem",
+  color: "rgba(32, 32, 32, 0.8)",
 });
 export const flip = style({
   width: "1000px",
@@ -36,6 +45,17 @@ export const flip = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      width: "900px",
+    },
+    "screen and (max-width: 768px)": {
+      width: "700px",
+    },
+    "screen and (max-width: 500px)": {
+      width: "500px",
+    },
+  },
 });
 
 export const resultScoreBox = style({
@@ -57,14 +77,15 @@ export const card = style({
   transition: "0.4s",
   transformStyle: "preserve-3d",
 });
-
-export const resultImg = style({
+export const resultBackground = style({
   width: "100%",
   height: "400px",
-
   position: "absolute",
+  borderRadius: "30px",
+  background:
+    "radial-gradient(circle, rgba(121,130,232,0.77) 0%, rgba(179,185,255,0.57)70%)",
+  filter: "blur(2.5px)",
 });
-
 export const front = style({
   position: "absolute",
   width: "100%",
@@ -76,19 +97,34 @@ export const front = style({
   alignItems: "center",
 });
 export const yourScoreTitle = style({
+  position: "absolute",
+  top: "3rem",
   fontSize: "2rem",
   textAlign: "center",
-  color: "#202020",
+  color: "rgba(1,1,1,71%)",
   zIndex: 999,
+  fontFamily: "Space Mono",
+  "@media": {
+    "screen and (max-width: 500px)": {
+      fontSize: "1.5rem",
+    },
+  },
 });
 export const score = style({
-  marginTop: "3rem",
-  fontSize: "7rem",
+  marginTop: "2rem",
+  fontSize: "10rem",
+
   textAlign: "center",
   color: "white",
-  position: "relative",
+  // position: "relative",
   zIndex: 999,
-  fontFamily: "Aladin",
+  fontFamily: "Ownglyph_meetme-Rg",
+
+  "@media": {
+    "screen and (max-width: 500px)": {
+      fontSize: "8rem",
+    },
+  },
 });
 export const back = style({
   transform: "rotateY(180deg)",
@@ -106,13 +142,9 @@ export const FlippedContainer = style({
   width: "100%",
   textAlign: "center",
   height: "280px",
-  //   background: "red",
   zIndex: 999,
   position: "absolute",
   top: "30px",
-  //   "::-webkit-scrollbar": {
-  //     borderRadius: "5px",
-  //   },
 });
 export const qiuzDiv = style({
   textAlign: "center",
@@ -122,9 +154,9 @@ export const qiuzDiv = style({
 export const resultButtonDiv = style({
   position: "relative",
   top: -80,
-  width: "50%",
+  width: "80%",
   display: "flex",
-  justifyContent: "space-around",
+  justifyContent: "space-evenly",
 });
 export const resultAgainButton = style({
   position: "relative",

@@ -41,6 +41,7 @@ export const userLogoBg = style({
   width: "13rem",
   height: "10rem",
   marginTop: "7rem",
+  color: "#202020",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -52,7 +53,6 @@ export const userLogoBg = style({
       marginTop: "-3rem",
       height: "6rem",
       width: "8rem",
-      color: "#5F5F5F",
     },
   },
 });
@@ -63,6 +63,7 @@ export const userInfoTitle = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+
   "@media": {
     "screen and (max-width: 1024px)": {
       fontSize: "1.9rem",
