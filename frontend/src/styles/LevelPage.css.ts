@@ -7,17 +7,15 @@ export const levelPageMainContainer = style({
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
+  width: "100vw",
   height: calc.add("100vh", "-60px"),
   zIndex: 1,
 });
 
 export const levelPageTopMenu = style({
-  // marginTop: "40px",
-  // position: "fixed",
   top: "0px",
   boxSizing: "border-box",
   padding: "0px 50px 0px 150px",
-  // alignItems: "center",
   alignItems: "flex-end",
   height: "60px",
   display: "flex",
@@ -56,21 +54,45 @@ export const levelPageBackgroundImage = style({
   right: 0,
   position: "absolute",
   width: "30%",
-  height: "60%",
+  height: "50%",
   zIndex: -1,
 });
 
 export const levelPageContainer = style({
   width: "100%",
-  height: "100%",
   maxWidth: "1263px",
   display: "flex",
+  paddingLeft: "65px",
   flexDirection: "column",
-  justifyContent: "space-between",
+  justifyContent: "center",
   alignItems: "center",
+  transition: "all 0.3s",
   "@media": {
-    "screen and (max-width: 1400px)": {
-      height: "100%",
+    // "screen and (max-width: 1400px)": {
+    //   height: "90%",
+    // },
+    // "screen and (max-width: 768px)": {
+    //   height: "80%",
+    // },
+    // "screen and (max-width: 500px)": {
+    //   height: "70%",
+    // },
+  },
+});
+
+export const levelPageTitle = style({
+  marginBottom: "50px",
+});
+
+export const levelPageButtonContainer = style({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "nowrap",
+  "@media": {
+    "screen and (max-width: 1280px)": {
+      flexDirection: "row",
+      overflowX: "hidden",
     },
   },
 });
@@ -79,9 +101,20 @@ export const levelPageButtonContainerOne = style({
   display: "flex",
   justifyContent: "space-evenly",
   width: "100%",
-  height: "100%",
+  // height: "100%",
   alignItems: "center",
-  flexWrap: "wrap",
+  // flexWrap: "wrap",
+  marginBottom: "50px",
+  flexShrink: 0,
+  transition: "all 0.3s",
+  "@media": {
+    // "screen and (max-width: 1400px)": {
+    //   width: "220px",
+    // },
+    "screen and (max-width: 1280px)": {
+      paddingLeft: "65px",
+    },
+  },
 });
 
 export const levelPageButtonContainerTwo = style({
@@ -89,8 +122,28 @@ export const levelPageButtonContainerTwo = style({
   alignItems: "center",
   justifyContent: "space-evenly",
   width: "100%",
-  height: "100%",
-  flexWrap: "wrap",
+  flexShrink: 0,
+  transition: "all 0.3s",
+  "@media": {
+    "screen and (max-width: 1280px)": {
+      marginBottom: "50px",
+    },
+    "screen and (max-width: 880px)": {
+      marginLeft: "65px",
+    },
+    "screen and (max-width: 768px)": {
+      marginLeft: "120px",
+    },
+    "screen and (max-width: 700px)": {
+      marginLeft: "200px",
+    },
+    "screen and (max-width: 600px)": {
+      marginLeft: "270px",
+    },
+    "screen and (max-width: 500px)": {
+      marginLeft: "380px",
+    },
+  },
 });
 
 export const levelPageButtonOne = style({
@@ -98,6 +151,8 @@ export const levelPageButtonOne = style({
   justifyContent: "center",
   alignItems: "center",
   width: "300px",
+  minWidth: "200px",
+  margin: "10px 0",
   backgroundColor: "#FEE5E5",
   borderRadius: "25%",
   cursor: "pointer",
@@ -118,8 +173,21 @@ export const levelPageButtonOne = style({
   },
   "@media": {
     "screen and (max-width: 1400px)": {
-      width: "250px",
+      width: "220px",
     },
+    "screen and (max-width: 1280px)": {
+      width: "220px",
+      marginRight: "50px",
+    },
+    // "screen and (max-width: 1024px)": {
+    //   width: "220px",
+    // },
+    // "screen and (max-width: 768px)": {
+    //   width: "170px",
+    // },
+    // "screen and (max-width: 500px)": {
+    //   width: "130px",
+    // },
   },
 });
 
@@ -128,6 +196,8 @@ export const levelPageButtonTwo = style({
   justifyContent: "center",
   alignItems: "center",
   width: "300px",
+  minWidth: "200px",
+  margin: "10px 0",
   backgroundColor: "#FEF8D5",
   borderRadius: "25%",
   cursor: "pointer",
@@ -148,12 +218,43 @@ export const levelPageButtonTwo = style({
   },
   "@media": {
     "screen and (max-width: 1400px)": {
-      width: "250px",
+      width: "220px",
     },
+    "screen and (max-width: 1280px)": {
+      width: "220px",
+      marginRight: "50px",
+    },
+    // "screen and (max-width: 1024px)": {
+    //   width: "220px",
+    // },
+    // "screen and (max-width: 768px)": {
+    //   width: "170px",
+    // },
+    // "screen and (max-width: 500px)": {
+    //   width: "130px",
+    // },
   },
 });
 
 export const levelPageButtonText = style({
   fontSize: "64px",
   color: "#595959",
+  transition: "all 0.3s",
+  "@media": {
+    "screen and (max-width: 1400px)": {
+      fontSize: "40px",
+    },
+    "screen and (max-width: 1280px)": {
+      fontSize: "40px",
+    },
+    // "screen and (max-width: 1024px)": {
+    //   fontSize: "32px",
+    // },
+    "screen and (max-width: 768px)": {
+      fontSize: "24px",
+    },
+    "screen and (max-width: 500px)": {
+      fontSize: "24px",
+    },
+  },
 });
