@@ -7,7 +7,7 @@ from .models import GptQuestionAnswer
 from quizs.models import Quiz, QuizTry
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-from .serializers import GptQuestionAnswerSerializer
+from .serializers import GptQuestionAnswerDetailSerializer
 from quizs.serializers import QuizSerializer,QuiztrySerializer,QuizAllSerializer
 import json
 
@@ -33,7 +33,7 @@ class OpenAiAPIView(APIView):
 
 
 class GptQuizAPIView(ListAPIView):
-    serializer_class = QuizAllSerializer
+    serializer_class = GptQuestionAnswerDetailSerializer
     
     def get_queryset(self):
         # 특정 유저가 푼 퀴즈의 question_id 리스트 가져오기
@@ -54,14 +54,18 @@ from rest_framework.response import Response
 class FeedbackView(APIView):
     def post(self, request, quiz_try_id, format=None):
         # 클라이언트로부터 전송된 데이터
-        data_list = request.data
+        data_list = request.data.get("question", [])
         response_data_list = []  # 모든 데이터의 응답을 저장할 리스트
         
         try:
             # 각 데이터를 순회하며 처리
-            for data in data_list:
+            for i, data in enumerate(data_list):
+                question = data_list[i]
+                answer = request.data.get("answer", [])[i]
+                order_num = request.data.get("orderNum", [])[i]
+                
                 # GptManager를 사용하여 피드백과 점수를 생성합니다.
-                feedback_str = GptManager.generate_feedback(data["question"], data["answer"])
+                feedback_str = GptManager.generate_feedback(question, answer)
                 feedback = json.loads(feedback_str)
                 
                 # 피드백을 데이터베이스에 저장합니다.
@@ -70,13 +74,13 @@ class FeedbackView(APIView):
                 quiz_try_instance = get_object_or_404(QuizTry, id=quiz_try_id)
                 
                 # 주어진 질문과 일치하는 GptQuestionAnswer 인스턴스를 가져옵니다.
-                question_instance = get_object_or_404(GptQuestionAnswer, question=data["question"])
+                question_instance = get_object_or_404(GptQuestionAnswer, question=question)
                 
                 quiz_instance = Quiz.objects.create(
                     question=question_instance,
-                    answer=data["answer"],
+                    answer=answer,
                     quiz_try=quiz_try_instance,
-                    orderNum=data["orderNum"],
+                    orderNum=order_num,
                     feedback=feedback["feedback"],
                     score=feedback["score"]
                 )
@@ -98,7 +102,6 @@ class FeedbackView(APIView):
         except Exception as e:
             # 예외가 발생할 경우 에러 메시지를 응답으로 보냅니다.
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
     def get(self, request, quiz_try_id, *args, **kwargs):
         # 특정 유저의 quiz_try를 받아서 get 요청
         quiz_try_instance = get_object_or_404(QuizTry, id=quiz_try_id)
