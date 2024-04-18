@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute } from "react";
+import { ClipboardEventHandler, HTMLInputTypeAttribute } from "react";
 import { input, inputLabel, inputMessage } from "../styles/LoginStyle.css";
 
 type InputProps = {
@@ -10,6 +10,7 @@ type InputProps = {
   ErrorMessage?: string;
   placeholder?: string;
   disabled?: boolean;
+  onPaste?: ClipboardEventHandler;
 };
 const Input = ({
   children,
@@ -18,6 +19,7 @@ const Input = ({
   type,
   ErrorMessage,
   disabled,
+  onPaste,
 }: InputProps) => {
   return (
     <div>
@@ -30,6 +32,7 @@ const Input = ({
           type={type}
           required
           disabled={disabled}
+          onPaste={onPaste}
         ></input>
       </label>
       <p className={inputMessage}>{ErrorMessage}</p>
