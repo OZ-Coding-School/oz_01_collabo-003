@@ -86,6 +86,13 @@ export const signUpContainer = style({
       zIndex: "5",
     },
   },
+  "@media": {
+    "screen and (max-width: 900px)": {
+      width: "100vw",
+      opacity: "1",
+      transition: "none",
+    },
+  },
 });
 
 export const signInContainer = style({
@@ -102,6 +109,16 @@ export const signInContainer = style({
   selectors: {
     [`&[data-signin="false"]`]: {
       transform: "translateX(100%)",
+    },
+  },
+  "@media": {
+    "screen and (max-width: 900px)": {
+      position: "fixed",
+      left: "-100%",
+      width: "100vw",
+      zIndex: 999,
+      opacity: "1",
+      // transition: "none",
     },
   },
 });
@@ -149,7 +166,32 @@ export const button = style({
     },
   },
 });
-
+export const elseButton = style({
+  borderRadius: "20px",
+  fontSize: "1rem",
+  cursor: "pointer",
+  border: "1px solid #838ade9d;",
+  textAlign: "center",
+  color: "black",
+  fontWeight: "bold",
+  padding: "12px 45px",
+  letterSpacing: "1px",
+  textTransform: "uppercase",
+  transition: "transform 80ms ease-in",
+  marginTop: "1rem",
+  selectors: {
+    "&:active": {
+      transform: "scale(0.95)",
+      backgroundColor: "#838ade9d",
+    },
+    "&:focus": {
+      outline: "none",
+    },
+  },
+  "@media": {
+    "screen and (min-width: 900px)": { display: "none" },
+  },
+});
 export const inputMessage = style({
   color: "#FF4141",
   fontSize: "0.8rem",
@@ -201,6 +243,11 @@ export const overlay = style({
   selectors: {
     [`&[data-signin="false"]`]: {
       transform: "translateX(50%)",
+    },
+  },
+  "@media": {
+    "screen and (max-width: 900px)": {
+      display: "none",
     },
   },
 });

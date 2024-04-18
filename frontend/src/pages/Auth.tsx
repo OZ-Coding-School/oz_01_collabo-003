@@ -10,6 +10,7 @@ import {
   anchor,
   button,
   container,
+  elseButton,
   formContainer,
   ghostButton,
   inputContainer,
@@ -324,6 +325,9 @@ function Auth() {
             </Input>
           </div>
           <button className={button}>Sign Up</button>
+          <p className={elseButton} onClick={() => setSignIn(false)}>
+            이미 계정이 있으신가요?
+          </p>
         </form>
       </div>
 
@@ -353,6 +357,9 @@ function Auth() {
           </p>
 
           <button className={button}>Sign In</button>
+          <p className={elseButton} onClick={() => setSignIn(true)}>
+            아직 계정이 없으신가요?
+          </p>
         </form>
       </div>
       {/* 오버레이 */}

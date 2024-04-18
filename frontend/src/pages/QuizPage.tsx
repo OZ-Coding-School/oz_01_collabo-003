@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 import {
   question,
   questionInput,
@@ -21,11 +22,18 @@ interface QuizDetail {
 interface Quiz {
   [key: string]: QuizDetail;
 }
-
+const accessToken = localStorage.getItem("accessToken");
 function QuizPage() {
   const navigate = useNavigate();
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
-  const [answers, setAnswers] = useState<string[]>(Array(5).fill("")); // 답변을 저장할 상태 추가
+  const [answers, setAnswers] = useState<string[]>(Array(5).fill(""));
+  const [quiz, setQuiz] = useState([]);
+  //location으로 문제 받아오기
+  const location = useLocation();
+  useEffect(() => {
+    setQuiz(location.state);
+  }, [location.state]);
+
   const quizs: Quiz[] = [
     {
       문제1: {
@@ -65,9 +73,11 @@ function QuizPage() {
       },
     },
   ];
+  //이전문제
   const handlePrevQuiz = () => {
     setCurrentQuizIndex((prevIndex) => prevIndex - 1);
   };
+  //다음문제
   const handleNextQuiz = () => {
     if (currentQuizIndex === quizs.length - 1) {
       const confirmSubmit = window.confirm(
@@ -81,7 +91,32 @@ function QuizPage() {
     }
   };
   const handleSubmit = () => {
-    //백에 보내는 로직
+    //문제랑 정답 보내는 로직
+    async function FetchPostQuiz() {
+      try {
+        const response = await axios.post(
+          `/api/v1/gpt/feedback/`,
+          {
+            question: quiz,
+            answer: answers,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        console.log(response.data);
+        if (response.status === 200) {
+          console.log("문제,정답 보내기 성공!");
+        } else if (response.status === 400) {
+          console.log("문제,정답 보내기 실패");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    FetchPostQuiz();
     navigate("/result");
   };
   const handleAnswerChange = (index: number, answer: string) => {
