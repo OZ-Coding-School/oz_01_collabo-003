@@ -8,7 +8,7 @@ from quizs.models import Quiz, QuizTry
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from .serializers import GptQuestionAnswerSerializer
-from quizs.serializers import QuizSerializer,QuiztrySerializer
+from quizs.serializers import QuizSerializer,QuiztrySerializer,QuizAllSerializer
 import json
 
 
@@ -33,7 +33,7 @@ class OpenAiAPIView(APIView):
 
 
 class GptQuizAPIView(ListAPIView):
-    serializer_class = QuizSerializer
+    serializer_class = QuizAllSerializer
     
     def get_queryset(self):
         # 특정 유저가 푼 퀴즈의 question_id 리스트 가져오기
@@ -42,8 +42,8 @@ class GptQuizAPIView(ListAPIView):
         
         # 중복되지 않는 퀴즈를 최대 5개까지 가져오기
         random_questions = GptQuestionAnswer.objects.exclude(id__in=user_quiz_questions).order_by('?')[:5]
-        
         return random_questions
+
     
 
 from rest_framework.views import APIView
