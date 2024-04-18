@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 import { weekBackgroundImage01, weekBackgroundImage02, weekContainer, weekMainContentContainer, weekPageSubtitleDate, weekPageTitle, weekPageTitleContainer, weekSelectBox, weekSelectBoxContainer, weekSelectText } from "../styles/WeekPage.css";
 
 const WeekPage = () => {
@@ -7,6 +8,40 @@ const WeekPage = () => {
   const date = new Date();
   const lastDays = new Date(date.getTime() + 5 * 24 * 60 * 60 * 1000);
   const day = lastDays.getDate();
+  const location = useLocation();
+
+  const handleGetData = async (day: string) => {
+    let url = '';
+    if (location.state === '초등학교') {
+      url = '/api/v1/gpt/elementary/';
+    } else if (location.state === '중학교') {
+      url = '/api/v1/gpt/middle/';
+    } else if (location.state === '고등학교') {
+      url = '/api/v1/gpt/high/';
+    } else if (location.state === '토익') {
+      url = '/api/v1/gpt/toeic/';
+    } else if (location.state === '프리토킹') {
+      url = '/api/v1/gpt/native/';
+    }
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+      console.log('week', response.data);
+      if (response.status === 200) {
+        navigate('/quiz', {
+          state: {
+            data: response.data,
+            day: day,
+          }
+        });
+      }
+    } catch (error) {
+      console.log('week get 에러 : ', error);
+    }
+  }
 
   return (
     <div className={weekContainer}>
@@ -24,7 +59,7 @@ const WeekPage = () => {
 
         <div className={weekSelectBoxContainer}>
           {week.map((day, index) => (
-            <div className={weekSelectBox} key={index} onClick={() => navigate('/quiz')}>
+            <div className={weekSelectBox} key={index} onClick={() => handleGetData(day)}>
               <div className={weekSelectText}>
                 <p>{day}</p>
                 <p>80</p>
