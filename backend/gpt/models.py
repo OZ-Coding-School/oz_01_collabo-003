@@ -13,7 +13,6 @@ class GptQuestionAnswer(models.Model):
     answer = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
     level = models.CharField(max_length=30, choices=LEVEL_CHOICES)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
