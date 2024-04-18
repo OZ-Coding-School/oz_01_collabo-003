@@ -40,6 +40,7 @@ export const duplicateCheckBtn = style({
   right: "10px",
   transform: "translateY(54%)",
   backgroundColor: "#D9D9D9",
+  // zIndex: 999,
   // backgroundColor: "white",
   // backgroundColor: "#D4D8FF",
   color: "#8C8888",
@@ -133,6 +134,7 @@ export const formContainer = style({
   height: "100%",
 
   width: "70%",
+  zIndex: 999,
 });
 
 export const title = style({
@@ -227,6 +229,11 @@ export const overlayContainer = style({
   selectors: {
     [`&[data-signin="false"]`]: {
       transform: "translateX(-100%)",
+    },
+  },
+  "@media": {
+    "screen and (max-width: 900px)": {
+      display: "none",
     },
   },
 });

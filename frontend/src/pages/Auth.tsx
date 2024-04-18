@@ -32,7 +32,7 @@ function Auth() {
 
   //회원가입
   const [email, setEmail] = useState<string>("");
-  const [userName, setUserName] = useState<string>("");
+  const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordCheck, setPasswordCheck] = useState<string>("");
 
@@ -105,7 +105,7 @@ function Auth() {
   //닉네임 유효성 검증
   const onChangeUserName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const currentName = e.target.value;
-    setUserName(currentName);
+    setNickName(currentName);
 
     if (currentName.length < 2 || currentName.length > 6) {
       setUserNameMessage("닉네임은 2글자 이상 6글자 이하여야합니다.");
@@ -122,23 +122,28 @@ function Auth() {
 
     // 서버 켜지면 아래 코드 주석 풀기
     try {
-      const response = await axios.post("/api/v1/user/nickNamevalid/", {
-        nickName: userName,
-      });
-      console.log(response.data);
-      // 중복이면
-      if (response.status === 400) {
-        setUserNameMessage("이미 존재하는 이메일입니다");
-        //중복 아니면
-      } else if (response.status === 200) {
-        setIsUserNameChecked(true);
-        setUserNameMessage("");
-        setIsUserName(false);
-      } else {
-        setUserNameMessage("이메일 확인 중 오류가 발생했습니다");
-      }
+      await axios
+        .post("/api/v1/user/nickNamevalid/", {
+          nickName: nickName,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            setUserNameMessage("");
+            setIsUserName(false);
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            const errorMessage = "이미 존재하는 닉네임입니다";
+            setUserNameMessage(errorMessage);
+          } else {
+            setUserNameMessage("닉네임 확인 중 오류가 발생했습니다");
+          }
+        });
     } catch (err) {
       console.log("err:", err);
+      setUserNameMessage("닉네임 중복확인 중 오류가 발생했습니다");
     }
   }
 
@@ -184,8 +189,8 @@ function Auth() {
       console.log(
         "email :",
         email,
-        "/userName:",
-        userName,
+        "/nickName:",
+        nickName,
         "/password:",
         password,
         "/passwordCheck:",
@@ -194,7 +199,7 @@ function Auth() {
       setSignIn(false);
       fetchSignUp();
     } else {
-      alert("오류메시지를 확인해주세요!!");
+      alert("오류메시지를 확인해주세요!");
     }
     // 데이터 전송 후 값 초기화 코드 _ test 후 주석 풀 예정!
     // setEmail("");
@@ -208,18 +213,21 @@ function Auth() {
       try {
         const response = await axios.post("/api/v1/user/register/", {
           email: email,
-          nickName: userName,
+          nickName: nickName,
           password: password,
         });
         console.log(response.data);
         if (response.status === 201) {
-          console.log("회원가입 성공!");
+          // console.log("회원가입 성공!");
+          alert(`환영합니다 ${nickName} 님!`);
           setSignIn(false);
         } else {
-          console.log("회원가입을 하는 도중에 오류 발생 ~");
+          console.log("회원가입을 하는 도중에 오류 발생 ");
+          alert("회원가입 도중 오류가 발생하였습니다. 다시 시도해주세요");
         }
       } catch (err) {
         console.log("err:", err);
+        alert("회원가입 도중 오류가 발생하였습니다. 다시 시도해주세요");
       }
     }
   };
@@ -256,6 +264,7 @@ function Auth() {
         console.log(response.data);
         if (response.status === 200) {
           console.log("로그인 성공!");
+
           navigate("/level");
           //로컬스토리지에 엑세스토큰 넣기
           const accessToken = response.data.accessToken;
@@ -268,6 +277,7 @@ function Auth() {
         }
       } catch (error) {
         console.log(error);
+        alert("로그인을 하는 중 오류가 발생하였습니다. 다시 시도해주세요");
       }
     }
   };
@@ -296,7 +306,7 @@ function Auth() {
             </DuplicateInput>
             <DuplicateInput
               type="text"
-              value={userName}
+              value={nickName}
               onChange={onChangeUserName}
               required
               ErrorMessage={userNameMessage}

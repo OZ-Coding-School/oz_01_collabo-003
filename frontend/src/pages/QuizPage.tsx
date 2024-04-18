@@ -123,7 +123,7 @@ function QuizPage() {
             // 현재 퀴즈 인덱스와 매핑되는 퀴즈를 보여줌
             id === currentQuizIndex && (
               <>
-                <p className={questionNumbers}>{}/5</p>
+                <p className={questionNumbers}>{currentQuizIndex + 1}/5</p>
                 <p className={question}>{quiz.category}</p>
                 <div className={quizAnswerDiv}>
                   <div className={questionInput}>{quiz.question}</div>
