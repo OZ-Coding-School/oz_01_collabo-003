@@ -12,7 +12,7 @@ class QuizSerializer(serializers.ModelSerializer):
 class QuizAllSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
-        fields = ['id', 'question']
+        fields = ['id', 'question', "category"]
 class QuiztrySerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizTry
