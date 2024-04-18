@@ -1,8 +1,9 @@
 import { style } from "@vanilla-extract/css";
 export const resultContainer = style({
-  width: "calc(100% + 65px)",
+  width: "100%",
+
   height: "calc(100vh - 60px)",
-  padding: "20px 100px 0 100px",
+  padding: "20px 0px 20px 65px ",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",

@@ -1,7 +1,8 @@
 import { style } from "@vanilla-extract/css";
 export const infoLayout = style({
   display: "flex",
-  width: "calc(100% + 65px)",
+  width: "100%",
+  paddingLeft: "65px",
   height: "calc(100vh - 60px)",
 
   position: "relative",

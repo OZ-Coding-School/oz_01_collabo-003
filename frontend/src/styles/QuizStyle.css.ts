@@ -2,8 +2,8 @@ import { style } from "@vanilla-extract/css";
 
 export const quizContainer = style({
   height: "calc(100vh - 60px)",
-  width: "calc(100% + 65px)",
-  padding: "20px 100px ",
+  width: "100%",
+  padding: "20px 0px 20px 65px ",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
