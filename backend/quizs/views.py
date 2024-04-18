@@ -1,12 +1,18 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import QuizSerializer
+from .serializers import QuiztrySerializer
 
-class QuizView(APIView):
+class QuizAPIView(APIView):
     def post(self, request, format=None):
+        user = request.user
+        
+        # 클라이언트로부터 받은 데이터에 사용자 정보를 추가하여 serializer에 전달
         data = request.data
-        serializer = QuizSerializer(data=data, many=True)
+        data['user'] = user.id
+        
+        # Serializer를 사용하여 데이터 유효성 검사 후 저장
+        serializer = QuiztrySerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

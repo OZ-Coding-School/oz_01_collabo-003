@@ -4,10 +4,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView,TokenObtainPairView
 from .models import User
 from quizs.models import Quiz
-from feedbacks.models import Feedback
 from .serializers import UserSerializer,myinfoSerializer
 from quizs.serializers import QuizSerializer
-from feedbacks.serializers import FeedbackSerializer
 from rest_framework.permissions import AllowAny
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -82,12 +80,15 @@ class MyInfo(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def put(self, request):
-        user = request.user
-        serializer = myinfoSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+def put(self, request):
+    user = request.user
+    serializer = myinfoSerializer(user, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        if 'nickname' in serializer.errors:
+            return Response({'error': 'Nickname already exists.'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # refresh 토큰 재발급 커스텀 유효성 실패시 다시 발급 
@@ -116,38 +117,38 @@ class RefreshTokenView(APIView):
             # refresh 토큰이 유효하지 않은 경우
             return Response({"message": f"유효하지 않는 토큰입니다{e}"}, status=status.HTTP_400_BAD_REQUEST)
         
-class GetUserDataAPIView(APIView):
-    def get(self, request):
-        try:
-            user = User.objects.get(id=request.user.id)
-        except User.DoesNotExist:
-            return Response({"message": "유저가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+# class GetUserDataAPIView(APIView):
+#     def get(self, request):
+#         try:
+#             user = User.objects.get(id=request.user.id)
+#         except User.DoesNotExist:
+#             return Response({"message": "유저가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
         
-        # 해당 유저의 퀴즈와 피드백을 가져옴
-        quizzes = Quiz.objects.filter(user=user).order_by('orderNum')[:5]
-        feedbacks = Feedback.objects.filter(quiz__user=user).order_by('-createdAt')[:5]
+#         # 해당 유저의 퀴즈와 피드백을 가져옴
+#         quizzes = Quiz.objects.filter(user=user).order_by('orderNum')[:5]
+#         feedbacks = Feedback.objects.filter(quiz__user=user).order_by('-createdAt')[:5]
 
-        user_serializer = UserSerializer(user)
-        quiz_serializer = QuizSerializer(quizzes, many=True)
-        feedback_serializer = FeedbackSerializer(feedbacks, many=True)
+#         user_serializer = UserSerializer(user)
+#         quiz_serializer = QuizSerializer(quizzes, many=True)
+#         feedback_serializer = FeedbackSerializer(feedbacks, many=True)
 
-        # 퀴즈와 피드백을 합친 데이터 생성
-        combined_data = []
-        for quiz, feedback in zip(quiz_serializer.data, feedback_serializer.data):
-            combined_data.append({
-                "content": quiz["content"],
-                "answer": quiz["answer"],
-                "feedback": feedback["content"],
-                "score": feedback["score"],
-                "createdAt": feedback["createdAt"]
-            })
+#         # 퀴즈와 피드백을 합친 데이터 생성
+#         combined_data = []
+#         for quiz, feedback in zip(quiz_serializer.data, feedback_serializer.data):
+#             combined_data.append({
+#                 "content": quiz["content"],
+#                 "answer": quiz["answer"],
+#                 "feedback": feedback["content"],
+#                 "score": feedback["score"],
+#                 "createdAt": feedback["createdAt"]
+#             })
 
-        data = {
-            "user": user_serializer.data,
-            "quizzes": combined_data,
-        }
+#         data = {
+#             "user": user_serializer.data,
+#             "quizzes": combined_data,
+#         }
 
-        return Response(data,status=status.HTTP_200_OK,)
+#         return Response(data,status=status.HTTP_200_OK,)
 
 
 # 비밀번호 찾기 (초기화)
