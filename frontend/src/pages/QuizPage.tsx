@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  TodayBg,
-  TodayQuiz,
   question,
   questionInput,
   questionNumbers,
   quizAnswerDiv,
   quizButton,
+  quizButtonDiv,
   quizContainer,
   quizInput,
   quizTitleContainer,
-  quizbuttonDiv,
+  todayBg,
+  todayQuiz,
 } from "../styles/QuizStyle.css";
 interface QuizDetail {
   문제설명: string;
@@ -44,8 +44,8 @@ function QuizPage() {
     },
     {
       문제3: {
-        문제설명: "What was the weather like?",
-        문제: "Read the following passage and answer the question below: \n\nThe sun was shining brightly in the clear blue sky. Birds were chirping happily in the trees. What was the weather like?",
+        문제설명: "Read the following passage and answer the question below",
+        문제: "The sun was shining brightly in the clear blue sky. Birds were chirping happily in the trees. \n\n What was the weather like?",
         답변: "",
       },
     },
@@ -95,12 +95,12 @@ function QuizPage() {
         <div className={quizTitleContainer}>
           <div>
             <img
-              className={TodayBg}
+              className={todayBg}
               src="../../public/images/user_background_03.png"
               alt="TodayQuizBg"
             />
           </div>
-          <p className={TodayQuiz}>TODAY QUIZ</p>
+          <p className={todayQuiz}>TODAY QUIZ</p>
         </div>
 
         {quizs.map(
@@ -127,7 +127,7 @@ function QuizPage() {
               </>
             )
         )}
-        <div className={quizbuttonDiv}>
+        <div className={quizButtonDiv}>
           <button
             className={quizButton}
             disabled={currentQuizIndex === 0}

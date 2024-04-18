@@ -1,9 +1,8 @@
 import { style } from "@vanilla-extract/css";
 
 export const quizContainer = style({
-  width: "100%",
   height: "calc(100vh - 60px)",
-
+  width: "calc(100% + 65px)",
   padding: "20px 100px ",
   display: "flex",
   flexDirection: "column",
@@ -12,22 +11,30 @@ export const quizContainer = style({
 });
 export const quizTitleContainer = style({
   position: "relative",
-  width: "80%",
+  // width: "80%",
+
+  height: "auto",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
 });
-
-export const TodayBg = style({
+export const todayBg = style({
   width: "180px",
 });
-export const TodayQuiz = style({
+export const todayQuiz = style({
   fontSize: "2.3rem",
   position: "absolute",
   top: "40px",
-  // fontFamily: "Swanky and Moo Moo",
   width: "250px",
+  textAlign: "center",
+  fontFamily: "Space Mono",
+  color: "#202020",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "1.8rem",
+    },
+  },
 });
 export const questionNumbers = style({
   fontSize: "1.3rem",
@@ -35,6 +42,8 @@ export const questionNumbers = style({
 });
 export const question = style({
   paddingBottom: "2rem",
+  width: "80%",
+  textAlign: "center",
 });
 export const quizAnswerDiv = style({
   display: "flex",
@@ -47,7 +56,7 @@ export const quizAnswerDiv = style({
 export const quizInput = style({
   fontSize: "1rem",
   width: "60%",
-  padding: "2rem 8rem",
+  padding: "2rem 0rem",
   border: "0.5px solid #000000",
   borderRadius: "10px",
   marginBottom: "2rem",
@@ -69,7 +78,7 @@ export const questionInput = style([
     overflow: "unset",
   },
 ]);
-export const quizbuttonDiv = style({
+export const quizButtonDiv = style({
   width: "80%",
   display: "flex",
   justifyContent: "space-evenly",
@@ -82,5 +91,4 @@ export const quizButton = style({
   padding: "1rem",
   borderRadius: "15px",
   cursor: "pointer",
-  
 });

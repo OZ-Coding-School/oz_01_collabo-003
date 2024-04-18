@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
-
-import Input from "../components/Input";
-import { userUpdateButton } from "../styles/ButtonStyle.css";
-import { layout } from "../styles/LayoutStyle.css";
-
+import { useEffect, useRef, useState } from "react";
+import userImg from "../../public/images/userImg.png";
+import edit5 from "../../public/svg/edit5.svg";
 import axios from "../api/axios";
+import Input from "../components/Input";
 import {
+  userUpdateButton,
+  userUpdateSelectButton,
+} from "../styles/ButtonStyle.css";
+import {
+  editSvg,
+  infoLayout,
   userImgDiv,
   userImgNameDiv,
+  userImgsrc,
   userInfoDiv,
   userInfoTitle,
   userLayout,
@@ -21,13 +26,20 @@ import {
 } from "../styles/WeekPage.css";
 const accessToken = localStorage.getItem("accessToken");
 function UserUpdatePage() {
+  const userImgInput = useRef<HTMLInputElement | null>(null);
+  const [profileImg, setProfileImg] = useState<string>(userImg);
   const [nickName, setNickName] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordcheck, setPasswordcheck] = useState("");
+  const [passwordEdit, setPasswordEdit] = useState(false);
   const [email, setEmail] = useState("");
+
+  const [fetchNickName, setFetchNickName] = useState("하염빵");
+
   // const [imgUrl, setImgUrl] = useState("");
   useEffect(() => {
     FetchUserUpdate();
-  }, []);
+  }, [accessToken]);
 
   // userdata가져오기
   async function FetchUserUpdate() {
@@ -42,7 +54,8 @@ function UserUpdatePage() {
       if (response.status === 200) {
         console.log("회원정보 가져오기 성공!");
         setNickName(response.data.nickName);
-        setPassword(response.data.password);
+        setFetchNickName(response.data.nickName);
+
         setEmail(response.data.email);
       } else if (response.status === 400) {
         console.log("회원정보 가져오기 실패");
@@ -51,36 +64,59 @@ function UserUpdatePage() {
       console.log(error);
     }
   }
+  const handleNickNameChage: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
+    setNickName(e.target.value);
+  };
+
   //회원정보수정요청함수
   async function handleChangeUserInfo() {
-    try {
-      const response = await axios.put(
-        `/api/v1/user/myinfo/`,
-        {
-          nickName: nickName,
-          password: password,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
+    const confirmSubmit = window.confirm("정보를 수정하시겠습니까?");
+    if (confirmSubmit) {
+      try {
+        const response = await axios.put(
+          `/api/v1/user/myinfo/`,
+          {
+            nickName: nickName,
+            password: password,
+            imgUrl: profileImg,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
 
-      console.log(response.data);
-      if (response.status === 200) {
-        console.log("회원정보 수정 성공!");
-        // setNickName(response.data.nickName);
-        // setEmail(response.data.email);
-        // setPassword(response.data.password);
-      } else if (response.status === 400) {
-        console.log("회원정보 수정 실패");
+        console.log(response.data);
+        if (response.status === 200) {
+          console.log("회원정보 수정 성공!");
+          alert("회원정보가 수정되었습니다!");
+          setPassword("");
+          setFetchNickName(nickName);
+        } else if (response.status === 400) {
+          console.log("회원정보 수정 실패");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   }
-
+  const onChangeUserImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setProfileImg(reader.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setProfileImg(userImg);
+    }
+  };
   return (
     <div style={{ zIndex: "1000" }}>
       <img
@@ -93,43 +129,85 @@ function UserUpdatePage() {
         src="images/week_background_02.png"
         alt="week 배경02"
       />
-      <div className={layout}>
+      <div className={infoLayout}>
         <div className={userLogoLayout}>
           <div className={userLogoBg}>
             <div className={userInfoTitle}>나의 정보</div>
           </div>
         </div>
-        <div className={userLayout} style={{ backgroundClip: "border-box" }}>
+        <div className={userLayout}>
           <div className={userInfoDiv}>
             <div className={userImgNameDiv}>
               <div className={userImgDiv}>
                 <img
-                  src="../../public/images/profile.webp"
+                  src={profileImg}
                   alt="user profile"
+                  className={userImgsrc}
                 />
-              </div>
-              <input
-                className={userName}
-                value={email}
-                onChange={(e) => setNickName(e.target.value)}
-              ></input>
+                <input
+                  type="file"
+                  style={{ display: "none" }}
+                  accept="image/jpg,image/png,image/jpeg"
+                  name="profile_img"
+                  onChange={onChangeUserImg}
+                  ref={userImgInput}
+                />
+                <img
+                  src={edit5}
+                  className={editSvg}
+                  onClick={() => {
+                    userImgInput.current && userImgInput.current.click();
+                  }}
+                />
+              </div>{" "}
+              <p className={userName}>{fetchNickName}</p>
             </div>
-            <Input type="text" value={email} disabled>
-              email
-            </Input>
-            <Input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
+            <button
+              onClick={() => setPasswordEdit(!passwordEdit)}
+              className={userUpdateSelectButton}
             >
-              Password
-            </Input>
-            <Input type="password">PasswordCheck</Input>
+              {passwordEdit ? "닉네임 변경하기" : "비밀번호 변경하기"}
+            </button>
+            {passwordEdit ? (
+              <>
+                {" "}
+                <Input
+                  type="text"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                >
+                  password
+                </Input>
+                <Input
+                  type="text"
+                  value={passwordcheck}
+                  onChange={(e) => setPasswordcheck(e.target.value)}
+                >
+                  passwordCheck
+                </Input>
+              </>
+            ) : (
+              <>
+                {" "}
+                <Input
+                  type="text"
+                  value={nickName}
+                  onChange={handleNickNameChage}
+                >
+                  nickName
+                </Input>
+                <Input type="text" value={email} disabled>
+                  email
+                </Input>
+              </>
+            )}
+
             <button
               className={userUpdateButton}
               type="submit"
               onClick={handleChangeUserInfo}
             >
-              수정하기
+              {passwordEdit ? " 변경하기" : " 변경하기"}
             </button>
           </div>
         </div>

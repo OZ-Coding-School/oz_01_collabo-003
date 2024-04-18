@@ -14,6 +14,8 @@ import {
   ghostButton,
   inputContainer,
   inputMessage,
+  overlay,
+  overlayContainer,
   paragraph,
   signInContainer,
   signUpContainer,
@@ -51,7 +53,7 @@ function Auth() {
   const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
   const [isUserNameChecked, setIsUserNameChecked] = useState<boolean>(false);
   // css용 state
-  const [signin, setSignIn] = React.useState(true);
+  const [signin, setSignIn] = React.useState(false);
 
   //회원입시 이메일 검증
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -228,12 +230,12 @@ function Auth() {
 
     // setLogInEmail("");
     // setLogInPw("");
-    setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
+
     if (logInEmail && logInPw) {
       FetchLogin();
-      setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
+      setLoginErrorMessage("");
     } else {
-      //
+      setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
     }
 
     //로그인 데이터 전송 코드
@@ -256,10 +258,10 @@ function Auth() {
           navigate("/level");
           //로컬스토리지에 엑세스토큰 넣기
           const accessToken = response.data.accessToken;
-          
+
           console.log("Access Token:", accessToken);
+          localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("accessToken", accessToken);
-    
         } else {
           setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
         }
@@ -287,7 +289,6 @@ function Auth() {
               required
               ErrorMessage={emailMessage}
               onClick={fetchEmailDoubleCheck}
-         
               disabled={!isEmail}
             >
               Email
@@ -322,7 +323,6 @@ function Auth() {
               Password
             </Input>
           </div>
-
           <button className={button}>Sign Up</button>
         </form>
       </div>
@@ -356,11 +356,10 @@ function Auth() {
         </form>
       </div>
       {/* 오버레이 */}
-      <Components.OverlayContainer signin={signin}>
-        <Components.Overlay signin={signin}>
+      <div data-signin={signin} className={overlayContainer}>
+        <div data-signin={signin} className={overlay}>
           <Components.LeftOverlayPanel signin={signin}>
             <h1 className={title}>Welcome Back!</h1>
-
             <p className={paragraph}>
               To keep connected with us please login with your personal info
             </p>
@@ -368,19 +367,17 @@ function Auth() {
               Sign Up
             </button>
           </Components.LeftOverlayPanel>
-
           <Components.RightOverlayPanel signin={signin}>
             <h1 className={title}>Hello, Friend!</h1>
             <p className={paragraph}>
               Enter Your personal details and start journey with us
             </p>
-
             <button className={ghostButton} onClick={() => setSignIn(false)}>
               Sign In
             </button>
           </Components.RightOverlayPanel>
-        </Components.Overlay>
-      </Components.OverlayContainer>
+        </div>
+      </div>
     </div>
   );
 }
