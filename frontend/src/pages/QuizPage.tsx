@@ -30,6 +30,7 @@ function QuizPage() {
   const [quiz, setQuiz] = useState([]);
   //location으로 문제 받아오기
   const location = useLocation();
+  console.log('quiz', location.state);
   useEffect(() => {
     setQuiz(location.state);
   }, [location.state]);
