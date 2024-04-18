@@ -38,9 +38,9 @@ function UserUpdatePage() {
   const [fetchNickName, setFetchNickName] = useState("하염빵");
   const [isUserName, setIsUserName] = useState<boolean>(false);
   const [passwordMessage, setPasswordMessage] = useState<string>("");
-  // const [isPassword, setIsPassword] = useState<boolean>(false);
+
   const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>("");
-  // const [isPasswordCheck, setIsPasswordCheck] = useState<boolean>(false);
+
   useEffect(() => {
     FetchUserUpdate();
   }, [accessToken]);
@@ -69,11 +69,7 @@ function UserUpdatePage() {
       console.log(error);
     }
   }
-  // const handleNickNameChage: React.ChangeEventHandler<HTMLInputElement> = (
-  //   e
-  // ) => {
-  //   setNickName(e.target.value);
-  // };
+
   interface UserDataType {
     nickName: string;
     password?: string;
@@ -192,10 +188,8 @@ function UserUpdatePage() {
       setPasswordMessage(
         "비밀번호는 숫자+영문자+특수문자를 포함한 8자리 이상이어야 합니다."
       );
-      // setIsPassword(false);
     } else {
       setPasswordMessage("");
-      // setIsPassword(true);
     }
   };
 
@@ -249,7 +243,6 @@ function UserUpdatePage() {
                     className={userImgsrc}
                   />
                 )}
-
                 <input
                   type="file"
                   style={{ display: "none" }}
@@ -290,6 +283,7 @@ function UserUpdatePage() {
                   value={passwordCheck}
                   onChange={onChangePasswordConfirm}
                   ErrorMessage={passwordCheckMessage}
+                  onPaste={(e) => e.preventDefault()}
                 >
                   passwordCheck
                 </Input>
