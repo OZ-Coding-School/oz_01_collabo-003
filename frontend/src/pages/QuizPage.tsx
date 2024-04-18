@@ -15,65 +15,41 @@ import {
   todayQuiz,
 } from "../styles/QuizStyle.css";
 interface QuizDetail {
-  문제설명: string;
-  문제: string;
-  답변: string;
-}
-interface Quiz {
-  [key: string]: QuizDetail;
+  id: number;
+  question: string;
+  category: string;
+  level: string;
 }
 const accessToken = localStorage.getItem("accessToken");
 function QuizPage() {
   const navigate = useNavigate();
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<string[]>(Array(5).fill(""));
-  const [quiz, setQuiz] = useState([]);
+  const [quizs, setQuizs] = useState<QuizDetail[]>([]);
+  const [feedback, setFeedback] = useState({});
   //location으로 문제 받아오기
-  const location = useLocation();
-  console.log('quiz', location.state);
-  useEffect(() => {
-    setQuiz(location.state);
-  }, [location.state]);
 
-  const quizs: Quiz[] = [
-    {
-      문제1: {
-        문제설명: "다음 단어의 한글 뜻을 쓰시오",
-        문제: "Apple",
-        답변: "",
-      },
-    },
-    {
-      문제2: {
-        문제설명:
-          "Choose the correct form of the verb: She __ to the store yesterday.",
-        문제: "go, goes, went, gone",
-        답변: "",
-      },
-    },
-    {
-      문제3: {
-        문제설명: "Read the following passage and answer the question below",
-        문제: "The sun was shining brightly in the clear blue sky. Birds were chirping happily in the trees. \n\n What was the weather like?",
-        답변: "",
-      },
-    },
-    {
-      문제4: {
-        문제설명: "다음 단어의 영어단어를 쓰시오",
-        문제: "사과",
-        답변: "",
-      },
-    },
-    {
-      문제5: {
-        문제설명:
-          "다음 문장을 읽고, 'Why did Sarah go to the park?'라는 질문에 대답하세요",
-        문제: "Sarah went to the park to play with her friends.",
-        답변: "",
-      },
-    },
-  ];
+  const location = useLocation();
+  console.log("quiz", location.state.data);
+  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (Array.isArray(location.state.data)) {
+      const allQuizzes = location.state.data;
+      const randomQuizs: QuizDetail[] = [];
+
+      while (randomQuizs.length < 5) {
+        const randomIndex = Math.floor(Math.random() * allQuizzes.length);
+        if (!selectedIndexes.includes(randomIndex)) {
+          randomQuizs.push(allQuizzes[randomIndex]);
+          setSelectedIndexes([...selectedIndexes, randomIndex]);
+        }
+      }
+
+      setQuizs(randomQuizs);
+    }
+  }, [location.state.data]);
+
   //이전문제
   const handlePrevQuiz = () => {
     setCurrentQuizIndex((prevIndex) => prevIndex - 1);
@@ -98,7 +74,7 @@ function QuizPage() {
         const response = await axios.post(
           `/api/v1/gpt/feedback/`,
           {
-            question: quiz,
+            question: quizs,
             answer: answers,
           },
           {
@@ -108,8 +84,11 @@ function QuizPage() {
           }
         );
         console.log(response.data);
+
         if (response.status === 200) {
           console.log("문제,정답 보내기 성공!");
+          setFeedback(response.data);
+          localStorage.setItem("feedback", JSON.stringify(response.data));
         } else if (response.status === 400) {
           console.log("문제,정답 보내기 실패");
         }
@@ -118,7 +97,7 @@ function QuizPage() {
       }
     }
     FetchPostQuiz();
-    navigate("/result");
+    navigate("/result", { state: feedback });
   };
   const handleAnswerChange = (index: number, answer: string) => {
     const updatedAnswers = [...answers];
@@ -140,16 +119,14 @@ function QuizPage() {
         </div>
 
         {quizs.map(
-          (quiz, index) =>
+          (quiz, id) =>
             // 현재 퀴즈 인덱스와 매핑되는 퀴즈를 보여줌
-            index === currentQuizIndex && (
+            id === currentQuizIndex && (
               <>
-                <p className={questionNumbers}>{index + 1}/5</p>
-                <p className={question}>{quiz[`문제${index + 1}`].문제설명}</p>
+                <p className={questionNumbers}>{}/5</p>
+                <p className={question}>{quiz.category}</p>
                 <div className={quizAnswerDiv}>
-                  <div className={questionInput}>
-                    {quiz[`문제${index + 1}`].문제}
-                  </div>
+                  <div className={questionInput}>{quiz.question}</div>
                   <input
                     className={quizInput}
                     type="text"
