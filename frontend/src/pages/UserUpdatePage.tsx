@@ -55,6 +55,7 @@ function UserUpdatePage() {
         console.log("회원정보 가져오기 성공!");
         setNickName(response.data.nickName);
         setFetchNickName(response.data.nickName);
+        setProfileImg(response.data.imgUrl);
 
         setEmail(response.data.email);
       } else if (response.status === 400) {
@@ -75,20 +76,25 @@ function UserUpdatePage() {
     const confirmSubmit = window.confirm("정보를 수정하시겠습니까?");
     if (confirmSubmit) {
       try {
+        const userData = {
+          nickName: nickName,
+        };
+        if (password) {
+          userData.password = password;
+        }
+        if (profileImg) {
+          userData.imgUrl = profileImg;
+        }
         const response = await axios.put(
           `/api/v1/user/myinfo/`,
-          {
-            nickName: nickName,
-            password: password,
-            imgUrl: profileImg,
-          },
+          userData,
+
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           }
         );
-
         console.log(response.data);
         if (response.status === 200) {
           console.log("회원정보 수정 성공!");
@@ -97,9 +103,11 @@ function UserUpdatePage() {
           setFetchNickName(nickName);
         } else if (response.status === 400) {
           console.log("회원정보 수정 실패");
+          alert("회원정보 수정 실패");
         }
       } catch (error) {
         console.log(error);
+        alert("회원정보 수정 실패");
       }
     }
   }
@@ -139,11 +147,20 @@ function UserUpdatePage() {
           <div className={userInfoDiv}>
             <div className={userImgNameDiv}>
               <div className={userImgDiv}>
-                <img
-                  src={profileImg}
-                  alt="user profile"
-                  className={userImgsrc}
-                />
+                {profileImg ? (
+                  <img
+                    src={profileImg}
+                    alt="user profile"
+                    className={userImgsrc}
+                  />
+                ) : (
+                  <img
+                    src={userImg}
+                    alt="user profile"
+                    className={userImgsrc}
+                  />
+                )}
+
                 <input
                   type="file"
                   style={{ display: "none" }}
@@ -179,7 +196,7 @@ function UserUpdatePage() {
                   password
                 </Input>
                 <Input
-                  type="text"
+                  type="password"
                   value={passwordcheck}
                   onChange={(e) => setPasswordcheck(e.target.value)}
                 >

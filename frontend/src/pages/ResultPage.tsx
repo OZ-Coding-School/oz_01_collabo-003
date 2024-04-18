@@ -24,12 +24,16 @@ import {
 } from "../styles/ResultStyle.css";
 import { quizs } from "./ResultDetail";
 function ResultPage() {
+  const feedback = localStorage.getItem("feedback");
+  const resultFeedback = feedback && JSON.parse(feedback);
+
   const [result, setResult] = useState([]);
   const location = useLocation();
   useEffect(() => {
-    setResult(location.state);
+    setResult(location.state.score);
   }, [location.state]);
-
+  console.log(location.state);
+  console.log(resultFeedback);
   const [isFlipped, setIsFlipped] = useState(false);
   const navigate = useNavigate();
   const handleDetailButtonClick = () => {
@@ -59,7 +63,7 @@ function ResultPage() {
             <div className={resultBackground} />
             <div className={front}>
               <p className={yourScoreTitle}>Your Score</p>
-              <p className={score}>80</p>
+              <p className={score}>{resultFeedback.score}</p>
             </div>
             <div className={back}>
               <div className={FlippedContainer}>
@@ -68,6 +72,7 @@ function ResultPage() {
                     <p>{quiz.question}</p>
                     <p>답변: {quiz.userAnswer}</p>
                     <p>정답: {quiz.correctAnswer}</p>
+                    <p>{resultFeedback.feedback}</p>
                   </div>
                 ))}
               </div>
