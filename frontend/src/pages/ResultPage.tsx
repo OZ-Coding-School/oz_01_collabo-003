@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { quizTitleContainer } from "../styles/QuizStyle.css";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   FlippedContainer,
   back,
@@ -23,8 +23,13 @@ import {
   yourScoreTitle,
 } from "../styles/ResultStyle.css";
 import { quizs } from "./ResultDetail";
-
 function ResultPage() {
+  const [result, setResult] = useState([]);
+  const location = useLocation();
+  useEffect(() => {
+    setResult(location.state);
+  }, [location.state]);
+
   const [isFlipped, setIsFlipped] = useState(false);
   const navigate = useNavigate();
   const handleDetailButtonClick = () => {
