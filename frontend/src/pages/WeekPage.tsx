@@ -13,18 +13,18 @@ const WeekPage = () => {
   const handleGetData = async (day: string) => {
     let url = '';
     if (location.state === '초등학교') {
-      url = '/api/v1/gpt/elementary/';
+      url = 'elementary/';
     } else if (location.state === '중학교') {
-      url = '/api/v1/gpt/middle/';
+      url = 'middle/';
     } else if (location.state === '고등학교') {
-      url = '/api/v1/gpt/high/';
+      url = 'high/';
     } else if (location.state === '토익') {
-      url = '/api/v1/gpt/toeic/';
+      url = 'toeic/';
     } else if (location.state === '프리토킹') {
-      url = '/api/v1/gpt/native/';
+      url = 'native/';
     }
     try {
-      const response = await axios.get(url, {
+      const response = await axios.get(`/api/v1/gpt/${url}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },

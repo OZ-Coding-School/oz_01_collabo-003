@@ -71,12 +71,18 @@ function UserUpdatePage() {
     setNickName(e.target.value);
   };
 
+  type UserUpdateData = {
+    nickName: string;
+    password?: string;
+    imgUrl?: string;
+  };
+
   //회원정보수정요청함수
   async function handleChangeUserInfo() {
     const confirmSubmit = window.confirm("정보를 수정하시겠습니까?");
     if (confirmSubmit) {
       try {
-        const userData = {
+        const userData: UserUpdateData = {
           nickName: nickName,
         };
         if (password) {
