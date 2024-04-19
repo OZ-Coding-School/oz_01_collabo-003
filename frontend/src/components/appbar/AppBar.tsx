@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
+import useAuthStore from "../../store/useAuth";
 import { nav } from "../../styles/AppBar.css";
 import {
   levelPageLogo,
@@ -18,27 +18,22 @@ type UserData = {
 const AppBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [userData, setUserData] = useState<UserData | null>(null);
-  console.log(location.pathname);
+  const [userFetchDate, setUserFetchDate] = useState<UserData | null>(null);
+  const [isChecked, setIsChecked] = useState(false);
+  const { userData } = useAuthStore();
 
-  const getUserData = async () => {
-    try {
-      const response = await axios.get("/api/v1/user/myinfo/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      console.log(response.data);
-      if (response.status === 200) {
-        setUserData(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  (async () => {
+    const data = await userData();
+    setUserFetchDate(data);
+  })();
+
+  const handleClicked = (path: string) => {
+    setIsChecked(!isChecked);
+    navigate(path)
+  }
 
   useEffect(() => {
-    getUserData();
+
   }, []);
 
   const handleLogout = () => {
@@ -66,7 +61,7 @@ const AppBar = () => {
       </div>
       <div className={nav}>
         <div className="container">
-          <input type="checkbox" className="menu_icon_input" id="menu_icon" />
+          <input type="checkbox" className="menu_icon_input" id="menu_icon" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
           <div className="menu_bar">
             <label htmlFor="menu_icon" className="menu_icon">
               <span className="menu_icon_bar"></span>
@@ -79,31 +74,31 @@ const AppBar = () => {
               <div className="user_icon">
                 <img
                   src={
-                    userData?.imgUrl ? userData.imgUrl : "/images/profile.webp"
+                    userFetchDate?.imgUrl ? userFetchDate.imgUrl : "/images/profile.webp"
                   }
                   alt="유저아이콘"
                 />
               </div>
               <p className="user_nickname">
-                {userData?.nickName ? userData.nickName : "닉네임"}
+                {userFetchDate?.nickName ? userFetchDate.nickName : "닉네임"}
               </p>
             </div>
             <div className="menu_list">
               <div
                 className="menu_list_item"
-                onClick={() => navigate("/level")}
+                onClick={() => handleClicked("/level")}
               >
                 메인페이지
               </div>
               <div
                 className="menu_list_item"
-                onClick={() => navigate("/learning")}
+                onClick={() => handleClicked("/learning")}
               >
                 나의 학습공간
               </div>
               <div
                 className="menu_list_item"
-                onClick={() => navigate("/user-update")}
+                onClick={() => handleClicked("/user-update")}
               >
                 정보수정
               </div>
