@@ -3,7 +3,6 @@ from rest_framework import status
 from django.urls import reverse
 from .models import User
 from quizs.models import Quiz
-from feedbacks.models import Feedback
 
 class RegisterAPITestCase(APITestCase):
     def test_register(self):

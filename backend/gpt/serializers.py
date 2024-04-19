@@ -6,6 +6,7 @@ class GptQuestionAnswerSerializer(serializers.ModelSerializer):
         model = GptQuestionAnswer
         fields = '__all__'
 
+
 class GptQuestionAnswerDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = GptQuestionAnswer
