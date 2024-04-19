@@ -2,8 +2,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import QuiztrySerializer
+from .serializers import QuizTrySerializer
 from quizs.models import QuizTry
+
 
 class QuizAPIView(APIView):
     def post(self, request, format=None):
@@ -14,7 +15,7 @@ class QuizAPIView(APIView):
         data['user'] = user.id
         
         # Serializer를 사용하여 데이터 유효성 검사 후 저장
-        serializer = QuiztrySerializer(data=data)
+        serializer = QuizTrySerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

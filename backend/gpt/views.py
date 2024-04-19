@@ -1,25 +1,23 @@
-from random import sample
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-# from django.views.decorators.csrf import csrf_exempt
 from .manager import GptManager
 from .models import GptQuestionAnswer
 from quizs.models import Quiz, QuizTry
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from .serializers import GptQuestionAnswerDetailSerializer
-from quizs.serializers import QuizSerializer,QuiztrySerializer,QuizAllSerializer
+from quizs.serializers import QuizSerializer
+from rest_framework import status
+from rest_framework.response import Response
 import json
 
 
 class OpenAiAPIView(APIView):
     def post(self, request):
-        # levels = ["초등학생","중학생","고등학생","원어민","토플"]
-        levels = ["초등학생"]
+        levels = ["초등학생","중학생","고등학생","원어민","토플"]
         for level in levels:
             # 각 level에 대해 퀴즈 생성
-            order_num = 1  # 퀴즈의 생성 순서를 나타내는 변수
-            for _ in range(4):
+            for _ in range(20):
                 questions = GptManager.generate_question_openai(level)
                 questions = json.loads(questions)
                 for question in questions["questions"]:
@@ -44,12 +42,6 @@ class GptQuizAPIView(ListAPIView):
         random_questions = GptQuestionAnswer.objects.exclude(id__in=user_quiz_questions).order_by('?')[:5]
         return random_questions
 
-    
-
-from rest_framework.views import APIView
-from rest_framework import status
-from quizs.serializers import QuizSerializer
-from rest_framework.response import Response
 
 class FeedbackView(APIView):
     def post(self, request, quiz_try_id, format=None):
@@ -102,6 +94,7 @@ class FeedbackView(APIView):
         except Exception as e:
             # 예외가 발생할 경우 에러 메시지를 응답으로 보냅니다.
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
     def get(self, request, quiz_try_id, *args, **kwargs):
         # 특정 유저의 quiz_try를 받아서 get 요청
         quiz_try_instance = get_object_or_404(QuizTry, id=quiz_try_id)
