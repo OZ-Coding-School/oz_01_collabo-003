@@ -228,7 +228,7 @@ export const learningBox03GraphBox = style({
   height: "67.5%",
   backgroundColor: "#FFFFFF",
   borderRadius: "50px",
-  fontSize: "45px",
+  fontSize: "25px",
 });
 
 export const learningBox03TitleContainer = style({
