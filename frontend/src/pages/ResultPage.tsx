@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { quizTitleContainer } from "../styles/QuizStyle.css";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import request from "../api/axios";
 import {
   FlippedContainer,
   back,
@@ -22,22 +23,64 @@ import {
   score,
   yourScoreTitle,
 } from "../styles/ResultStyle.css";
-import { quizs } from "./ResultDetail";
-function ResultPage() {
-  const feedback = localStorage.getItem("feedback");
-  const resultFeedback = feedback && JSON.parse(feedback);
+const accessToken = localStorage.getItem("accessToken");
 
-  const [result, setResult] = useState([]);
-  const location = useLocation();
+function ResultPage() {
   useEffect(() => {
-    setResult(location.state.score);
-  }, [location.state]);
-  console.log(location.state);
-  console.log(resultFeedback);
+    handleSubmit();
+  }, []);
+
+  interface result {
+    id: number;
+    answer: string;
+    orderNum: number;
+    feedback: string;
+    score: number;
+    category: number;
+  }
+  // const location = useLocation();
+  // const quizTryId = location;
+  // console.log(quizTryId);
+  const [result, setResult] = useState<result[]>([]);
+  const totalScore = result.reduce((accumulator, currentResult) => {
+    return accumulator + currentResult.score;
+  }, 0);
+  console.log(result);
+
+  // console.log(resultFeedback);
   const [isFlipped, setIsFlipped] = useState(false);
   const navigate = useNavigate();
+
   const handleDetailButtonClick = () => {
     setIsFlipped(!isFlipped);
+  };
+  const handleSubmit = () => {
+    async function FetchPostQuiz() {
+      try {
+        const response = await request.get(
+          `/api/v1/gpt/feedback/${localStorage.getItem("quizTryId")}/`,
+
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        console.log(response.data);
+
+        if (response.status === 200) {
+          console.log("문제,정답 보내기 성공!");
+          setResult(response.data);
+          // setFeedback(response.data);
+          localStorage.setItem("feedback", JSON.stringify(response.data));
+        } else if (response.status === 400) {
+          console.log("문제,정답 보내기 실패");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    FetchPostQuiz();
   };
   return (
     <div className={resultContainer}>
@@ -63,16 +106,16 @@ function ResultPage() {
             <div className={resultBackground} />
             <div className={front}>
               <p className={yourScoreTitle}>Your Score</p>
-              <p className={score}>{resultFeedback.score}</p>
+
+              <p className={score}>{totalScore}</p>
             </div>
             <div className={back}>
               <div className={FlippedContainer}>
-                {quizs.map((quiz, index) => (
+                {result.map((item, index) => (
                   <div className={qiuzDiv} key={index}>
-                    <p>{quiz.question}</p>
-                    <p>답변: {quiz.userAnswer}</p>
-                    <p>정답: {quiz.correctAnswer}</p>
-                    <p>{resultFeedback.feedback}</p>
+                    <p>{item.category}</p>
+                    <p>답변: {item.answer}</p>
+                    <p>정답: {item.feedback}</p>
                   </div>
                 ))}
               </div>

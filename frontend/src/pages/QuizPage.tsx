@@ -25,31 +25,20 @@ function QuizPage() {
   const navigate = useNavigate();
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<string[]>(Array(5).fill(""));
+
   const [quizs, setQuizs] = useState<QuizDetail[]>([]);
   const [feedback, setFeedback] = useState({});
   //location으로 문제 받아오기
-
   const location = useLocation();
-  console.log("quiz", location.state.data);
-  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
+
+  // console.log("quiz", location.state.id);
 
   useEffect(() => {
-    if (Array.isArray(location.state.data)) {
-      const allQuizzes = location.state.data;
-      const randomQuizs: QuizDetail[] = [];
-
-      while (randomQuizs.length < 5) {
-        const randomIndex = Math.floor(Math.random() * allQuizzes.length);
-        if (!selectedIndexes.includes(randomIndex)) {
-          randomQuizs.push(allQuizzes[randomIndex]);
-          setSelectedIndexes([...selectedIndexes, randomIndex]);
-        }
-      }
-
-      setQuizs(randomQuizs);
-    }
+    setQuizs(location.state.data);
   }, [location.state.data]);
-
+  console.log(quizs.map((quiz) => quiz.question));
+  console.log(quizs.map((quiz) => quiz.id));
+  // console.log(answers);
   //이전문제
   const handlePrevQuiz = () => {
     setCurrentQuizIndex((prevIndex) => prevIndex - 1);
@@ -70,12 +59,14 @@ function QuizPage() {
   const handleSubmit = () => {
     //문제랑 정답 보내는 로직
     async function FetchPostQuiz() {
+      const url = `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`;
       try {
         const response = await axios.post(
-          `/api/v1/gpt/feedback/`,
+          url,
           {
-            question: quizs,
+            question: quizs.map((quiz) => quiz.question),
             answer: answers,
+            orderNum: quizs.map((quiz) => quiz.id),
           },
           {
             headers: {
@@ -84,16 +75,19 @@ function QuizPage() {
           }
         );
         console.log(response.data);
+        console.log(url);
 
         if (response.status === 200) {
           console.log("문제,정답 보내기 성공!");
           setFeedback(response.data);
+          navigate("/result", {});
           localStorage.setItem("feedback", JSON.stringify(response.data));
         } else if (response.status === 400) {
           console.log("문제,정답 보내기 실패");
         }
       } catch (error) {
         console.log(error);
+        console.log(url);
       }
     }
     FetchPostQuiz();
