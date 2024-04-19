@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import {
@@ -20,25 +20,22 @@ interface QuizDetail {
   category: string;
   level: string;
 }
-const accessToken = localStorage.getItem("accessToken");
-function QuizPage() {
-  const navigate = useNavigate();
-  const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
-  const [answers, setAnswers] = useState<string[]>(Array(5).fill(""));
 
-  const [quizs, setQuizs] = useState<QuizDetail[]>([]);
-  const [feedback, setFeedback] = useState({});
-  //location으로 문제 받아오기
+function QuizPage() {
+  console.log("리렌더링된다");
+  const navigate = useNavigate();
   const location = useLocation();
 
-  // console.log("quiz", location.state.id);
+  const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
+  // const [answers, setAnswers] = useState<string[]>(Array(5).fill(""));
+  const answers = useRef<string[]>(Array(5).fill(""));
+  const [quizs, setQuizs] = useState<QuizDetail[]>([]);
+  const [feedback, setFeedback] = useState({});
 
   useEffect(() => {
     setQuizs(location.state.data);
   }, [location.state.data]);
-  console.log(quizs.map((quiz) => quiz.question));
-  console.log(quizs.map((quiz) => quiz.id));
-  // console.log(answers);
+
   //이전문제
   const handlePrevQuiz = () => {
     setCurrentQuizIndex((prevIndex) => prevIndex - 1);
@@ -50,14 +47,23 @@ function QuizPage() {
         "마지막 문제입니다. 제출 하시겠습니까?"
       );
       if (confirmSubmit) {
-        handleSubmit();
+        handlePostQuiz();
       }
     } else {
       setCurrentQuizIndex((prevIndex) => prevIndex + 1);
     }
   };
-  const handleSubmit = () => {
-    //문제랑 정답 보내는 로직
+  const handlePostQuiz = () => {
+    console.log(
+      "문제",
+      quizs.map((quiz) => quiz.question)
+    );
+    console.log("답변", answers);
+    console.log(
+      "정답",
+      quizs.map((quiz) => quiz.id)
+    );
+    //문제 제출하는 로직
     async function FetchPostQuiz() {
       const url = `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`;
       try {
@@ -70,7 +76,7 @@ function QuizPage() {
           },
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           }
         );
@@ -80,7 +86,7 @@ function QuizPage() {
         if (response.status === 200) {
           console.log("문제,정답 보내기 성공!");
           setFeedback(response.data);
-          navigate("/result", {});
+          navigate("/result");
           localStorage.setItem("feedback", JSON.stringify(response.data));
         } else if (response.status === 400) {
           console.log("문제,정답 보내기 실패");
@@ -94,9 +100,11 @@ function QuizPage() {
     navigate("/result", { state: feedback });
   };
   const handleAnswerChange = (index: number, answer: string) => {
-    const updatedAnswers = [...answers];
+    // const updatedAnswers = [...answers];
+    const updatedAnswers = [...answers.current];
     updatedAnswers[index] = answer;
-    setAnswers(updatedAnswers);
+    // setAnswers(updatedAnswers);
+    answers.current = updatedAnswers;
   };
   {
     return (
@@ -116,7 +124,7 @@ function QuizPage() {
           (quiz, id) =>
             // 현재 퀴즈 인덱스와 매핑되는 퀴즈를 보여줌
             id === currentQuizIndex && (
-              <>
+              <div key={quiz.id} style={{ width: "100%" }}>
                 <p className={questionNumbers}>{currentQuizIndex + 1}/5</p>
                 <p className={question}>{quiz.category}</p>
                 <div className={quizAnswerDiv}>
@@ -125,13 +133,12 @@ function QuizPage() {
                     className={quizInput}
                     type="text"
                     placeholder="정답을 입력하세요"
-                    value={answers[currentQuizIndex]}
                     onChange={(e) =>
                       handleAnswerChange(currentQuizIndex, e.target.value)
                     }
                   />
                 </div>
-              </>
+              </div>
             )
         )}
         <div className={quizButtonDiv}>
