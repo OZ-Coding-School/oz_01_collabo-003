@@ -38,16 +38,12 @@ function ResultPage() {
     score: number;
     category: number;
   }
-  // const location = useLocation();
-  // const quizTryId = location;
-  // console.log(quizTryId);
+
   const [result, setResult] = useState<result[]>([]);
   const totalScore = result.reduce((accumulator, currentResult) => {
     return accumulator + currentResult.score;
   }, 0);
   console.log(result);
-
-  // console.log(resultFeedback);
   const [isFlipped, setIsFlipped] = useState(false);
   const navigate = useNavigate();
 

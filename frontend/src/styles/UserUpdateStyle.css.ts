@@ -127,7 +127,7 @@ export const userImgDiv = style({
     },
   },
 });
-export const userImgsrc = style({
+export const userImgSrc = style({
   overflow: "hidden",
   objectFit: "cover",
   height: "100%",

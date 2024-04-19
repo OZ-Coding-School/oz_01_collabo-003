@@ -13,7 +13,7 @@ import {
   infoLayout,
   userImgDiv,
   userImgNameDiv,
-  userImgsrc,
+  userImgSrc,
   userInfoDiv,
   userInfoTitle,
   userLayout,
@@ -25,7 +25,7 @@ import {
   weekBackgroundImage01,
   weekBackgroundImage02,
 } from "../styles/WeekPage.css";
-const accessToken = localStorage.getItem("accessToken");
+
 function UserUpdatePage() {
   const userImgInput = useRef<HTMLInputElement | null>(null);
   const [profileImg, setProfileImg] = useState<string>(userImg);
@@ -43,14 +43,13 @@ function UserUpdatePage() {
 
   useEffect(() => {
     FetchUserUpdate();
-  }, [accessToken]);
+  }, []);
 
-  // userdata가져오기
   async function FetchUserUpdate() {
     try {
       const response = await axios.get(`/api/v1/user/myinfo/`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
 
@@ -101,7 +100,7 @@ function UserUpdatePage() {
 
             {
               headers: {
-                Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
               },
             }
           );
@@ -162,7 +161,7 @@ function UserUpdatePage() {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            setUserNameMessage("");
+            setUserNameMessage("사용가능한 닉네임입니다");
             setIsUserName(false);
           }
         })
@@ -234,13 +233,13 @@ function UserUpdatePage() {
                   <img
                     src={profileImg}
                     alt="user profile"
-                    className={userImgsrc}
+                    className={userImgSrc}
                   />
                 ) : (
                   <img
                     src={userImg}
                     alt="user profile"
-                    className={userImgsrc}
+                    className={userImgSrc}
                   />
                 )}
                 <input

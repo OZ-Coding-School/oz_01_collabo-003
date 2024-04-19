@@ -11,8 +11,6 @@ export const quizContainer = style({
 });
 export const quizTitleContainer = style({
   position: "relative",
-  // width: "80%",
-
   height: "auto",
   display: "flex",
   flexDirection: "column",
@@ -39,10 +37,11 @@ export const todayQuiz = style({
 export const questionNumbers = style({
   fontSize: "1.3rem",
   transform: "translateY(-20px)",
+  textAlign: "center",
 });
 export const question = style({
   paddingBottom: "2rem",
-  width: "80%",
+  width: "100%",
   textAlign: "center",
 });
 export const quizAnswerDiv = style({
