@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
 import ReviewComponent from "../components/ReviewComponent";
 import { learningBox01Content, learningBox01ContentBox, learningBox01ContentContainer, learningBox01ContentTitle, learningBox01Title, learningBox01TitleContainer, learningBox03GraphBox, learningBox03Title, learningBox03TitleContainer, myLearningPageContentBox01, myLearningPageContentBox02, myLearningPageContentBox03, myLearningPageContentContainer, myLearningPageMainContainer, myLearningPageTitle, rotate, widthAnimation } from "../styles/MyLearningPage.css";
 
@@ -51,17 +52,19 @@ const MyLearningPage = () => {
 
   const getData = [
     {
-      date: "23.03.25",
+      id: 1,
+      date: "03.25",
       grade: "초등",
       quiz: [{ qId: 1, question: "1문제당", answer: "1구래~ 푸", score: 10 },
-      { qId: 2, question: "1문제당2", answer: "1구래~ 푸2", score: 20 },
-      { qId: 3, question: "1문제당3", answer: "1구래~ 푸3", score: 40 },
-      { qId: 4, question: "1문제당4", answer: "1구래~ 푸4", score: 50 },
-      { qId: 5, question: "1문제당5", answer: "1구래~ 푸5", score: 60 }
+      { qId: 2, question: "1문제당2", answer: "1구래~ 푸2", score: 14 },
+      { qId: 3, question: "1문제당3", answer: "1구래~ 푸3", score: 10 },
+      { qId: 4, question: "1문제당4", answer: "1구래~ 푸4", score: 15 },
+      { qId: 5, question: "1문제당5", answer: "1구래~ 푸5", score: 15 }
       ],
     },
     {
-      date: "23.03.25",
+      id: 2,
+      date: "04.25",
       grade: "초등",
       quiz: [{ qId: 1, question: "2문제당", answer: "2구래~ 푸", score: 10 },
       { qId: 2, question: "2121111111", answer: "2구래~ 푸2", score: 20 },
@@ -71,7 +74,8 @@ const MyLearningPage = () => {
       ],
     },
     {
-      date: "23.03.25",
+      id: 3,
+      date: "05.25",
       grade: "초등",
       quiz: [{ qId: 1, question: "문제당", answer: "3구래~ 푸", score: 20 },
       { qId: 2, question: "qqqqqq", answer: "3구래~ 푸2", score: 20 },
@@ -81,16 +85,37 @@ const MyLearningPage = () => {
       ],
     },
     {
-      date: "23.03.25",
+      id: 4,
+      date: "06.25",
       grade: "초등",
       quiz: [{ qId: 1, question: "문제당", answer: "4구래~ 푸", score: 20 },
-      { qId: 2, question: "aaaaaa", answer: "4구래~ 푸2", score: 30 },
-      { qId: 3, question: "ssssss", answer: "4구래~ 푸3", score: 40 },
-      { qId: 4, question: "dddddd", answer: "4구래~ 푸4", score: 50 },
-      { qId: 5, question: "ffffff", answer: "4구래~ 푸5", score: 60 }
+      { qId: 2, question: "aaaaaa", answer: "4구래~ 푸2", score: 17 },
+      { qId: 3, question: "ssssss", answer: "4구래~ 푸3", score: 15 },
+      { qId: 4, question: "dddddd", answer: "4구래~ 푸4", score: 12 },
+      { qId: 5, question: "ffffff", answer: "4구래~ 푸5", score: 10 }
+      ],
+    },
+    {
+      id: 5,
+      date: "07.25",
+      grade: "초등",
+      quiz: [{ qId: 1, question: "문제당", answer: "4구래~ 푸", score: 20 },
+      { qId: 2, question: "aaaaaa", answer: "4구래~ 푸2", score: 17 },
+      { qId: 3, question: "ssssss", answer: "4구래~ 푸3", score: 15 },
+      { qId: 4, question: "dddddd", answer: "4구래~ 푸4", score: 12 },
+      { qId: 5, question: "ffffff", answer: "4구래~ 푸5", score: 10 }
       ],
     },
   ];
+
+  const data1 =
+    getData.map((data) => (
+      {
+        id: data.id,
+        date: data.date,
+        score: data.quiz.reduce((acc, curr) => acc + curr.score, 0) / data.quiz.length,
+      }
+    ))
 
   return (
     <div className={myLearningPageMainContainer}>
@@ -123,7 +148,24 @@ const MyLearningPage = () => {
           {isClicked ? <ReviewComponent data={data} selectedDataIndex={selectedDataIndex} setIsClicked={setIsClicked} /> :
             <div className={myLearningPageContentBox03}>
               <div className={learningBox03GraphBox}>
-                구래~ 푸
+                <BarChart
+                  width={500}
+                  height={400}
+                  data={data1}
+                  margin={{
+                    top: 40,
+                    right: 0,
+                    left: 0,
+                    bottom: 40,
+                  }}
+                >
+                  {/* <CartesianGrid strokeDasharray="3 3" /> */}
+                  <XAxis dataKey="date" />
+                  <YAxis dataKey="score" />
+                  <Tooltip />
+                  {/* <Legend fontSize="16px" /> */}
+                  <Bar dataKey="score" barSize={30} fill="#43B5F4" fontSize='16px' />
+                </BarChart>
               </div>
               <div className={learningBox03TitleContainer}>
                 <p className={learningBox03Title}>평균점수</p>
