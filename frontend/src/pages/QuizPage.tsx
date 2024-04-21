@@ -115,7 +115,7 @@ function QuizPage() {
           currentQuizIndex={currentQuizIndex}
           answers={answers}
         />
-        
+
         <div className={quizButtonDiv}>
           <button
             className={quizButton}
