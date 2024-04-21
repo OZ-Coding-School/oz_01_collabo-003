@@ -54,7 +54,7 @@ function ResultPage() {
     async function FetchPostQuiz() {
       try {
         const response = await request.get(
-          `/api/v1/gpt/feedback/${localStorage.getItem("quizTryId")}/`,
+          `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`,
 
           {
             headers: {
