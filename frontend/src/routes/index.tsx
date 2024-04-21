@@ -8,6 +8,8 @@ import QuizPage from "../pages/QuizPage";
 import ResultPage from "../pages/ResultPage";
 import UserUpdatePage from "../pages/UserUpdatePage";
 import WeekPage from "../pages/WeekPage";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 const Layout = () => {
   return (
@@ -21,15 +23,21 @@ const Layout = () => {
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
-      <Route path="/auth/login-signup" element={<Auth />} />
-      <Route path="/" element={<Layout />}>
-        <Route path="/level" element={<LevelPage />} />
-        <Route path="/week/:levelTitle" element={<WeekPage />} />
-        <Route path="/learning" element={<MyLearningPage />} />
-        <Route path="/user-update" element={<UserUpdatePage />} />
-        <Route path="/quiz" element={<QuizPage />} />
-        <Route path="/result" element={<ResultPage />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/" element={<MainPage />} />
+
+        <Route path="/auth/login-signup" element={<Auth />} />
+      </Route>
+
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<Layout />}>
+          <Route path="/level" element={<LevelPage />} />
+          <Route path="/week/:levelTitle" element={<WeekPage />} />
+          <Route path="/learning" element={<MyLearningPage />} />
+          <Route path="/user-update" element={<UserUpdatePage />} />
+          <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/result" element={<ResultPage />} />
+        </Route>
       </Route>
     </Routes>
   );
