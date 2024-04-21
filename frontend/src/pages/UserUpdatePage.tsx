@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import userImg from "../../public/images/userImg.png";
 import edit5 from "../../public/svg/edit5.svg";
 import axios from "../api/axios";
@@ -41,7 +42,7 @@ function UserUpdatePage() {
   const [passwordMessage, setPasswordMessage] = useState<string>("");
   const { setUpdateCount } = useAuthStore();
   const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>("");
-
+  const navigate = useNavigate();
   useEffect(() => {
     FetchUserUpdate();
   }, []);
@@ -61,7 +62,6 @@ function UserUpdatePage() {
         setFetchNickName(response.data.nickName);
         setProfileImg(response.data.imgUrl);
         setEmail(response.data.email);
-
       } else if (response.status === 400) {
         console.log("회원정보 가져오기 실패");
       }
@@ -69,7 +69,33 @@ function UserUpdatePage() {
       console.log(error);
     }
   }
+  const handleDeleteUser = () => {
+    const confirmSubmit = window.confirm("진짜..갈거야..?");
+    if (confirmSubmit) {
+      userDetect();
+    }
+  };
+  async function userDetect() {
+    try {
+      const response = await axios.post("/api/v1/user/userdetect/", {
+        // withCredentials: true,
+      });
 
+      console.log(response.data);
+      if (response.status === 200) {
+        alert("탈퇴성공..");
+        navigate("/");
+        //로컬스토리지에서 토큰 삭제
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("accessToken");
+      } else {
+        alert("회원탈퇴 중 문제가 발생하였습니다. 다시 시도해주세요");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("회원탈퇴 중 문제가 발생하였습니다. 다시 시도해주세요");
+    }
+  }
   interface UserDataType {
     nickName: string;
     password?: string;
@@ -270,7 +296,6 @@ function UserUpdatePage() {
             </button>
             {passwordEdit ? (
               <>
-                {" "}
                 <Input
                   type="password"
                   value={password}
@@ -288,6 +313,13 @@ function UserUpdatePage() {
                 >
                   passwordCheck
                 </Input>
+                <button
+                  className={userUpdateButton}
+                  type="submit"
+                  onClick={handleDeleteUser}
+                >
+                  회원탈퇴하기
+                </button>
               </>
             ) : (
               <>

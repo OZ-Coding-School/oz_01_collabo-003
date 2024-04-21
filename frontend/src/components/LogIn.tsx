@@ -65,12 +65,19 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
           console.log("Access Token:", accessToken);
           localStorage.setItem("refreshToken", response.data.refresh_token);
           localStorage.setItem("accessToken", accessToken);
+        } else if (response.status === 400) {
+          alert("이미 탈퇴한 사용자입니다");
         } else {
           setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
         }
-      } catch (error) {
-        console.log(error);
-        alert("로그인을 하는 중 오류가 발생하였습니다. 다시 시도해주세요");
+      } catch (error: AxiosError) {
+        if (error.response.status === 400) {
+          alert("이미 탈퇴한 사용자입니다");
+          console.log(error);
+        } else {
+          console.log(error);
+          alert("로그인을 하는 중 오류가 발생하였습니다. 다시 시도해주세요");
+        }
       }
     }
   };
