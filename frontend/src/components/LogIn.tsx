@@ -60,10 +60,10 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
 
           navigate("/level");
           //로컬스토리지에 엑세스토큰 넣기
-          const accessToken = response.data.accessToken;
+          const accessToken = response.data.access_token;
 
           console.log("Access Token:", accessToken);
-          localStorage.setItem("refreshToken", response.data.refreshToken);
+          localStorage.setItem("refreshToken", response.data.refresh_token);
           localStorage.setItem("accessToken", accessToken);
         } else {
           setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
