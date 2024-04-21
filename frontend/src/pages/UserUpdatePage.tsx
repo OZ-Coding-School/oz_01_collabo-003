@@ -163,7 +163,7 @@ function UserUpdatePage() {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            setUserNameMessage("사용가능한 닉네임입니다");
+            setUserNameMessage("");
             setIsUserName(false);
           }
         })
