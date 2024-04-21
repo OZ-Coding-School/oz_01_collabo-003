@@ -12,6 +12,7 @@ interface AuthState {
   logInEmail: string;
   logInPw: string;
   updateCount: number;
+  userName: string;
   setLogInEmail: (title: string) => void;
   setLogInPw: (content: string) => void;
   userData: () => Promise<UserData>;
@@ -21,14 +22,17 @@ interface AuthAction {
   setLogInEmail: (logInEmail: string) => void;
   setLogInPw: (logInPw: string) => void;
   setUpdateCount: (updateFn: (prev: number) => number) => void;
+  setUserName: (userName: string) => void;
 }
 const useAuthStore = create<AuthState & AuthAction>((set) => ({
   logInEmail: "",
   logInPw: "",
   updateCount: 0,
+  userName: "",
   setLogInEmail: (logInEmail: string) => set({ logInEmail }),
   setLogInPw: (logInPw: string) => set({ logInPw }),
   setUpdateCount: (updateFn: (prev: number) => number) => set((state: AuthState) => ({ updateCount: updateFn(state.updateCount) })),
+  setUserName: (userName: string) => set({ userName }),
   userData: async () => {
     try {
       const response = await axios.get('/api/v1/user/myinfo/', {

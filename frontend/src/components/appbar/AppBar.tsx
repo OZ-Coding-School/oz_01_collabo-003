@@ -20,10 +20,11 @@ const AppBar = () => {
   const location = useLocation();
   const [userFetchDate, setUserFetchDate] = useState<UserData | null>(null);
   const [isChecked, setIsChecked] = useState(false);
-  const { userData, updateCount } = useAuthStore();
+  const { userData, updateCount, setUserName } = useAuthStore();
 
   const getUser = async () => {
     const data = await userData();
+    setUserName(data.nickName);
     setUserFetchDate(data);
   };
 

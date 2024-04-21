@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts";
 import axios from "../api/axios";
 import ReviewComponent from "../components/ReviewComponent";
+import useAuthStore from "../store/useAuth";
 import { learningBox01Content, learningBox01ContentBox, learningBox01ContentContainer, learningBox01ContentTitle, learningBox01Title, learningBox01TitleContainer, learningBox03GraphBox, learningBox03Title, learningBox03TitleContainer, myLearningPageContentBox01, myLearningPageContentBox02, myLearningPageContentBox03, myLearningPageContentContainer, myLearningPageMainContainer, myLearningPageTitle, rotate, widthAnimation } from "../styles/MyLearningPage.css";
 
 interface QuizItem {
@@ -42,6 +43,7 @@ const MyLearningPage = () => {
   const [selectedDataIndex, setSelectedDataIndex] = useState<number | null>(null);
   const [onCardClicked, setOnCardClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { userName } = useAuthStore();
   const getUserData = async () => {
     try {
       const response = await axios.get('/api/v1/user/', {
@@ -81,7 +83,6 @@ const MyLearningPage = () => {
     setDetailUserData(getData);
     setSelectedDataIndex(index);
     console.log('1111');
-
   }
 
   const handleCardClick = () => {
@@ -96,34 +97,42 @@ const MyLearningPage = () => {
       const dateString = data.quiz_try.createdAt;
       const date = new Date(dateString);
       const formattedDate = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+
       return (
         {
           id: data.quiz_try.id,
           date: formattedDate,
-          score: data.quizzes.reduce((acc, curr) => acc + curr.score, 0) / data.quizzes.length,
+          score: data.quizzes.reduce((acc, curr) => acc + curr.score, 0),
         }
       )
     })
 
+  if (!userData) return <div>로딩중...</div>;
+  const totalQuestions = userData!.quiz_data.reduce((total, data) => total + data.quizzes.length, 0);
 
+  const averageScores = userData.quiz_data.map(data => {
+    return data.quizzes.reduce((acc, curr) => acc + curr.score, 0);
+  });
+  const totalScore = averageScores.reduce((acc, score) => acc + score, 0);
+  const averageScore = (totalScore / averageScores.length).toFixed(2);
 
   return (
     <div className={myLearningPageMainContainer}>
       <div className={myLearningPageTitle}>
-        <p>하염빵님의 학습 공간</p>
+        <p>{userName}님의 학습 공간</p>
       </div>
       <div className={`${myLearningPageContentContainer}`} >
         <div className={`${widthAnimation}  ${rotate}`} data-clicked={onCardClicked} onClick={handleCardClick}>
           <div className={myLearningPageContentBox01} >
             <div className={learningBox01TitleContainer}>
               <p className={learningBox01Title}>내가 푼 문제 수</p>
-              <p className={learningBox01Title}>13문제</p>
+              <p className={learningBox01Title}>{totalQuestions}문제</p>
             </div>
             <div className={learningBox01ContentContainer}>
               <p className={learningBox01ContentTitle}>내가 푼 문제</p>
               <div className={learningBox01ContentBox}>
-                {userData!.quiz_data.map((data, index) => {
-                  const averageScore = data.quizzes.reduce((acc, curr) => acc + curr.score, 0) / data.quizzes.length;
+                {userData.quiz_data.map((data, index) => {
+                  const averageScore = data.quizzes.reduce((acc, curr) => acc + curr.score, 0);
                   const dateString = data.quiz_try.createdAt;
                   const date = new Date(dateString);
                   const formattedDate = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
@@ -145,13 +154,13 @@ const MyLearningPage = () => {
               <div className={learningBox03GraphBox}>
                 <BarChart
                   width={500}
-                  height={400}
+                  height={410}
                   data={data1}
                   margin={{
                     top: 40,
                     right: 0,
-                    left: 0,
-                    bottom: 40,
+                    left: -20,
+                    bottom: 20,
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
@@ -164,7 +173,7 @@ const MyLearningPage = () => {
               </div>
               <div className={learningBox03TitleContainer}>
                 <p className={learningBox03Title}>평균점수</p>
-                <p className={learningBox03Title}>85점</p>
+                <p className={learningBox03Title}>{averageScore}점</p>
               </div>
             </div>}
         </div>
