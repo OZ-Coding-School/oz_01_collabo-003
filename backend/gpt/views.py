@@ -74,7 +74,8 @@ class FeedbackView(APIView):
                     quiz_try=quiz_try_instance,
                     orderNum=order_num,
                     feedback=feedback["feedback"],
-                    score=feedback["score"]
+                    score=feedback["score"],
+                    gptanswer=feedback["gptanswer"]
                 )
                 
                 # 저장된 피드백의 정보를 응답 데이터에 추가합니다.
