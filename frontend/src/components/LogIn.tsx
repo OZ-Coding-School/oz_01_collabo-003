@@ -10,7 +10,7 @@ import {
 } from "../styles/LoginStyle.css";
 
 import { useState } from "react";
-import request from "../api/axios";
+import axios from "../api/axios";
 import Input from "./Input";
 
 type Props = {
@@ -43,41 +43,45 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
     //로그인 데이터 전송 코드
     async function FetchLogin() {
       try {
-        const response = await request.post(
-          "/api/v1/user/login/",
-          {
-            email: logInEmail,
-            password: logInPw,
-          },
-          {
-            withCredentials: true,
-          }
-        );
+        await axios
+          .post(
+            "/api/v1/user/login/",
+            {
+              email: logInEmail,
+              password: logInPw,
+            },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              console.log("로그인 성공!");
+              navigate("/level");
+              //로컬스토리지에 엑세스토큰 넣기
+              const accessToken = response.data.access_token;
 
-        console.log(response.data);
-        if (response.status === 200) {
-          console.log("로그인 성공!");
-
-          navigate("/level");
-          //로컬스토리지에 엑세스토큰 넣기
-          const accessToken = response.data.access_token;
-
-          console.log("Access Token:", accessToken);
-          localStorage.setItem("refreshToken", response.data.refresh_token);
-          localStorage.setItem("accessToken", accessToken);
-        } else if (response.status === 400) {
-          alert("이미 탈퇴한 사용자입니다");
-        } else {
-          setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
-        }
+              console.log("Access Token:", accessToken);
+              localStorage.setItem("accessToken", accessToken);
+              localStorage.setItem("refreshToken", response.data.refresh_token);
+            }
+          })
+          .catch((error) => {
+            if (error.response.status === 400) {
+              setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
+              console.log(error);
+            } else if (error.response.status === 409) {
+              alert("이미 탈퇴한 사용자입니다");
+            } else {
+              console.log(error);
+              alert(
+                "로그인을 하는 중 오류가 발생하였습니다. 다시 시도해주세요"
+              );
+            }
+          });
       } catch (error) {
-        if (error) {
-          alert("이미 탈퇴한 사용자입니다");
-          console.log(error);
-        } else {
-          console.log(error);
-          alert("로그인을 하는 중 오류가 발생하였습니다. 다시 시도해주세요");
-        }
+        alert("로그인을 하는 중 오류가 발생하였습니다. 다시 시도해주세요");
       }
     }
   };
