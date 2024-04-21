@@ -63,7 +63,7 @@ class LoginAPIView(TokenObtainPairView):
         user = User.objects.filter(email=email).first()
         if user and user.deletedAt is not None:
             # 사용자가 비활성화되어 있으면 로그인을 차단
-            return Response({"message": "비활성화된 사용자입니다."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "비활성화된 사용자입니다."}, status=status.HTTP_409_CONFLICT)
 
         # 부모 클래스(TokenObtainPairView)의 post 메서드 호출하여 로그인 처리
         res = super().post(request)
