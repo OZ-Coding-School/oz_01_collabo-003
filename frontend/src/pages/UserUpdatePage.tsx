@@ -4,6 +4,7 @@ import edit5 from "../../public/svg/edit5.svg";
 import axios from "../api/axios";
 import DuplicateInput from "../components/DuplicateInput";
 import Input from "../components/Input";
+import useAuthStore from "../store/useAuth";
 import {
   userUpdateButton,
   userUpdateSelectButton,
@@ -38,7 +39,7 @@ function UserUpdatePage() {
   const [fetchNickName, setFetchNickName] = useState("하염빵");
   const [isUserName, setIsUserName] = useState<boolean>(false);
   const [passwordMessage, setPasswordMessage] = useState<string>("");
-
+  const { setUpdateCount } = useAuthStore();
   const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>("");
 
   useEffect(() => {
@@ -59,8 +60,8 @@ function UserUpdatePage() {
         setNickName(response.data.nickName);
         setFetchNickName(response.data.nickName);
         setProfileImg(response.data.imgUrl);
-
         setEmail(response.data.email);
+
       } else if (response.status === 400) {
         console.log("회원정보 가져오기 실패");
       }
@@ -111,6 +112,7 @@ function UserUpdatePage() {
             setPassword("");
             setPasswordCheck("");
             setFetchNickName(nickName);
+            setUpdateCount((prev: number) => prev + 1);
           } else if (response.status === 400) {
             console.log("회원정보 수정 실패");
             alert("회원정보를 수정하는데서 오류가 발생하였습니다");

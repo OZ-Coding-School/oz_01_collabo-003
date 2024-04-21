@@ -20,12 +20,17 @@ const AppBar = () => {
   const location = useLocation();
   const [userFetchDate, setUserFetchDate] = useState<UserData | null>(null);
   const [isChecked, setIsChecked] = useState(false);
-  const { userData } = useAuthStore();
+  const { userData, updateCount } = useAuthStore();
 
-  (async () => {
+  const getUser = async () => {
     const data = await userData();
     setUserFetchDate(data);
-  })();
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [updateCount])
+
 
   const handleClicked = (path: string) => {
     setIsChecked(!isChecked);
