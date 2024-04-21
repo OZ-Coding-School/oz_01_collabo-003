@@ -14,4 +14,5 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name="password_reset_complete.html"), name='password_reset_complete'),
     path('emailvalid/', views.EmailValidAPIView.as_view(), name='email_valid'), # 이메일 중복 확인
     path('nickNamevalid/', views.NickNameValidAPIView.as_view(), name='nickName'), # 닉네임 중복 확인
+    path('userdetect/', views.DeactivateUserAPIView.as_view(), name='userDetect'), # 유저 탈퇴 비활성화
 ]

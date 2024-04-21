@@ -14,6 +14,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 from quizs.serializers import QuizTrySerializer
 from gpt.models import GptQuestionAnswer
+from django.utils import timezone
 
 
 # 회원가입 기능
@@ -50,25 +51,33 @@ class NickNameValidAPIView(APIView):
             return Response({"message": "닉네임이 정상입니다."}, status=status.HTTP_200_OK)
 
 
+    
 # 로그인 기능
 class LoginAPIView(TokenObtainPairView):
     permission_classes = [AllowAny]
     authentication_classes = []
     def post(self, request):
+        # 로그인 요청에서 전달된 사용자 정보
+        email = request.data.get('email')
+        # 사용자 인증을 위한 추가적인 검증 (예: 비활성화된 사용자인지 확인)
+        user = User.objects.filter(email=email).first()
+        if user and user.deletedAt is not None:
+            # 사용자가 비활성화되어 있으면 로그인을 차단
+            return Response({"message": "비활성화된 사용자입니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 부모 클래스(TokenObtainPairView)의 post 메서드 호출하여 로그인 처리
         res = super().post(request)
-        print(res.data)
+        # 응답에서 액세스 토큰과 리프레시 토큰 가져오기
         refreshToken = res.data['refresh']
         accessToken = res.data['access']
-        res = Response(
-                {
-                    "message": "로그인 성공",
-                    "accessToken": str(accessToken),
-                    "refreshToken": str(refreshToken),
-                   
-                },
-                status=status.HTTP_200_OK,
-            )
-        return res
+
+        # 로그인 성공 응답 생성
+        login_response = {
+            "message": "로그인 성공",
+            "access_token": accessToken,
+            "refresh_token": refreshToken,
+        }
+        return Response(login_response, status=status.HTTP_200_OK)
 
 
 # 로그아웃 기능  
@@ -100,6 +109,7 @@ class MyInfo(APIView):
             if 'nickname' in serializer.errors:
                 return Response({'error': 'Nickname already exists.'}, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 
 # refresh 토큰 재발급 커스텀 유효성 실패시 다시 발급 
@@ -200,3 +210,26 @@ class PasswordResetAPIView(APIView):
             return Response({"message": "비밀번호 재설정 이메일을 보냈습니다."}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "이메일 주소를 제출해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class DeactivateUserAPIView(APIView):
+    # 계정 비활성화 함수
+    def deactivate_user(self,user):
+        user.deletedAt = timezone.now()
+        user.save()
+    # 계정 30일뒤 삭제 함수
+    def delete_inactive_users():
+        thirty_days_ago = timezone.now() - timezone.timedelta(days=30)
+        inactive_users = User.objects.filter(deleteAt__lt=thirty_days_ago)
+        inactive_users.delete()
+
+    def post(self, request):
+        try:
+            user = User.objects.get(id=request.user.id)
+        except User.DoesNotExist:
+            return Response({"message": "해당 사용자가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # 사용자를 비활성화 처리
+        self.deactivate_user(user)
+        
+        return Response({"message": "사용자가 성공적으로 비활성화되었습니다."}, status=status.HTTP_200_OK)
