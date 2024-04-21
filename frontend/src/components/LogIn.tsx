@@ -70,8 +70,8 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
         } else {
           setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
         }
-      } catch (error: AxiosError) {
-        if (error.response.status === 400) {
+      } catch (error) {
+        if (error) {
           alert("이미 탈퇴한 사용자입니다");
           console.log(error);
         } else {
