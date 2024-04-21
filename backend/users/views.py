@@ -1,9 +1,9 @@
 from rest_framework.views import APIView, Response, status
 from .serializers import RegisterSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenRefreshView,TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import User
-from quizs.models import Quiz
+from quizs.models import Quiz,QuizTry
 from .serializers import UserSerializer,myinfoSerializer
 from quizs.serializers import QuizSerializer
 from rest_framework.permissions import AllowAny
@@ -12,6 +12,9 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
+from quizs.serializers import QuizTrySerializer
+from gpt.models import GptQuestionAnswer
+
 
 # 회원가입 기능
 class RegisterAPIView(APIView):
@@ -23,7 +26,9 @@ class RegisterAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-class emailValid(APIView):
+    
+
+class EmailValidAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
     def post(self, request):
@@ -32,7 +37,9 @@ class emailValid(APIView):
             return Response({"message": "이미 존재하는 이메일입니다."}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"message": "이메일이 정상입니다."}, status=status.HTTP_200_OK)
-class nickNameValid(APIView):
+
+
+class NickNameValidAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
     def post(self, request):
@@ -41,6 +48,7 @@ class nickNameValid(APIView):
             return Response({"message": "이미 존재하는 닉네임입니다."}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"message": "닉네임이 정상입니다."}, status=status.HTTP_200_OK)
+
 
 # 로그인 기능
 class LoginAPIView(TokenObtainPairView):
@@ -62,6 +70,7 @@ class LoginAPIView(TokenObtainPairView):
             )
         return res
 
+
 # 로그아웃 기능  
 class LogoutAPIvie(APIView):
     def post(self, request):
@@ -73,6 +82,7 @@ class LogoutAPIvie(APIView):
             status=status.HTTP_200_OK,
         )
 
+
 # 유저 정보 업데이트
 class MyInfo(APIView):
     def get(self, request):
@@ -80,16 +90,17 @@ class MyInfo(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-def put(self, request):
-    user = request.user
-    serializer = myinfoSerializer(user, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    else:
-        if 'nickname' in serializer.errors:
-            return Response({'error': 'Nickname already exists.'}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request):
+        user = request.user
+        serializer = myinfoSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            if 'nickname' in serializer.errors:
+                return Response({'error': 'Nickname already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # refresh 토큰 재발급 커스텀 유효성 실패시 다시 발급 
 class RefreshTokenView(APIView):
@@ -117,41 +128,48 @@ class RefreshTokenView(APIView):
             # refresh 토큰이 유효하지 않은 경우
             return Response({"message": f"유효하지 않는 토큰입니다{e}"}, status=status.HTTP_400_BAD_REQUEST)
         
-# class GetUserDataAPIView(APIView):
-#     def get(self, request):
-#         try:
-#             user = User.objects.get(id=request.user.id)
-#         except User.DoesNotExist:
-#             return Response({"message": "유저가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+class GetUserDataAPIView(APIView):
+    def get(self, request):
+        try:
+            user = User.objects.get(id=request.user.id)
+        except User.DoesNotExist:
+            return Response({"message": "유저가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
         
-#         # 해당 유저의 퀴즈와 피드백을 가져옴
-#         quizzes = Quiz.objects.filter(user=user).order_by('orderNum')[:5]
-#         feedbacks = Feedback.objects.filter(quiz__user=user).order_by('-createdAt')[:5]
+        # 해당 유저의 모든 퀴즈 시도 가져오기
+        quiz_tries = QuizTry.objects.filter(user=user)
+        
+        user_serializer = UserSerializer(user)
+        quiz_try_serializer = QuizTrySerializer(quiz_tries, many=True)
+        
+        # 퀴즈 시도마다 5개의 문제 가져오기
+        quiz_data = []
+        for quiz_try_data in quiz_try_serializer.data:
+            quiz_try_id = quiz_try_data['id']
+            quizzes = Quiz.objects.filter(quiz_try=quiz_try_id)  # 각 퀴즈 시도에서 문제 다 가져오기
+            # quizzes = Quiz.objects.filter(quiz_try=quiz_try_id[0:5] # 각 퀴즈 시도에 대해 최대 5개의 문제 가져오기
+            
+            quiz_serializer = QuizSerializer(quizzes, many=True)
+            
+            # 퀴즈의 질문을 문제 내용으로 바꾸기
+            modified_quizzes = []
+            for quiz in quiz_serializer.data:
+                question_instance = GptQuestionAnswer.objects.get(id=quiz['question'])  # 질문 객체 가져오기
+                quiz['question'] = question_instance.question  # 질문 내용으로 변경
+                modified_quizzes.append(quiz)
+            
+            quiz_data.append({
+                'quiz_try': quiz_try_data,
+                'quizzes': modified_quizzes
+            })
 
-#         user_serializer = UserSerializer(user)
-#         quiz_serializer = QuizSerializer(quizzes, many=True)
-#         feedback_serializer = FeedbackSerializer(feedbacks, many=True)
+        data = {
+            "user": user_serializer.data,
+            "quiz_data": quiz_data,
+        }
 
-#         # 퀴즈와 피드백을 합친 데이터 생성
-#         combined_data = []
-#         for quiz, feedback in zip(quiz_serializer.data, feedback_serializer.data):
-#             combined_data.append({
-#                 "content": quiz["content"],
-#                 "answer": quiz["answer"],
-#                 "feedback": feedback["content"],
-#                 "score": feedback["score"],
-#                 "createdAt": feedback["createdAt"]
-#             })
-
-#         data = {
-#             "user": user_serializer.data,
-#             "quizzes": combined_data,
-#         }
-
-#         return Response(data,status=status.HTTP_200_OK,)
-
-
-# 비밀번호 찾기 (초기화)
+        return Response(data, status=status.HTTP_200_OK)
+ 
+ 
 class PasswordResetAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []

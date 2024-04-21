@@ -54,7 +54,6 @@ OWN_APPS = [
     'users',
     'gpt',
     'quizs',
-    'graph',
 ]
 
 
