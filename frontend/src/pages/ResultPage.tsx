@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { quizTitleContainer } from "../styles/QuizStyle.css";
 
 import { useNavigate } from "react-router-dom";
-import request from "../api/axios";
+import axios from "../api/axios";
 import {
   FlippedContainer,
   back,
@@ -23,7 +23,6 @@ import {
   score,
   yourScoreTitle,
 } from "../styles/ResultStyle.css";
-const accessToken = localStorage.getItem("accessToken");
 
 function ResultPage() {
   useEffect(() => {
@@ -52,13 +51,15 @@ function ResultPage() {
   };
   const handleSubmit = () => {
     async function FetchPostQuiz() {
+      const url = `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`;
       try {
-        const response = await request.get(
-          `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`,
+        const response = await axios.get(
+          url,
+
 
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           }
         );
@@ -67,13 +68,14 @@ function ResultPage() {
         if (response.status === 200) {
           console.log("문제,정답 보내기 성공!");
           setResult(response.data);
-          // setFeedback(response.data);
           localStorage.setItem("feedback", JSON.stringify(response.data));
+          console.log(url);
         } else if (response.status === 400) {
           console.log("문제,정답 보내기 실패");
         }
       } catch (error) {
         console.log(error);
+        console.log(url);
       }
     }
     FetchPostQuiz();

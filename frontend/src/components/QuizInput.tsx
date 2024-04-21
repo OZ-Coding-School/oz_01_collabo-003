@@ -1,10 +1,10 @@
 import {
-    question,
-    questionInput,
-    questionNumbers,
-    quizAnswerDiv,
-    quizInput,
+  question,
+  questionInput,
+  questionNumbers,
+  quizAnswerDiv,
 } from "../styles/QuizStyle.css";
+import QuizAnswer from "./QuizAnswer";
 interface QuizDetail {
   id: number;
   question: string;
@@ -19,13 +19,6 @@ interface QuizInputProps {
 }
 
 function QuizInput({ quizs, currentQuizIndex, answers }: QuizInputProps) {
-  const handleAnswerChange = (index: number, answer: string) => {
-    // const updatedAnswers = [...answers];
-    const updatedAnswers = [...answers.current];
-    updatedAnswers[index] = answer;
-    // setAnswers(updatedAnswers);
-    answers.current = updatedAnswers;
-  };
   return (
     <>
       {quizs.map(
@@ -37,13 +30,9 @@ function QuizInput({ quizs, currentQuizIndex, answers }: QuizInputProps) {
               <p className={question}>{quiz.category}</p>
               <div className={quizAnswerDiv}>
                 <div className={questionInput}>{quiz.question}</div>
-                <input
-                  className={quizInput}
-                  type="text"
-                  placeholder="정답을 입력하세요"
-                  onChange={(e) =>
-                    handleAnswerChange(currentQuizIndex, e.target.value)
-                  }
+                <QuizAnswer
+                  answers={answers}
+                  currentQuizIndex={currentQuizIndex}
                 />
               </div>
             </div>
