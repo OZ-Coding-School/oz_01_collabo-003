@@ -16,7 +16,9 @@ from quizs.serializers import QuizTrySerializer
 from gpt.models import GptQuestionAnswer
 from django.utils import timezone
 from django.db.models import Sum
-from datetime import datetime, timedelta 
+from datetime import datetime, timedelta
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth.forms import SetPasswordForm
 # 회원가입 기능
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
@@ -178,17 +180,20 @@ class GetUserDataAPIView(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
- 
- 
+    
+
 class PasswordResetAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
+
     def post(self, request):
         email = request.data.get('email')
         if email:
             # 이메일 주소에 해당하는 사용자 찾기
             try:
                 user = User.objects.get(email=email)
+                if user.deletedAt is not None:
+                    return Response({"error:": "비활성화 된 이메일 입니다"}, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 return Response({"error": "해당 이메일 주소를 가진 사용자를 찾을 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
             
@@ -210,6 +215,22 @@ class PasswordResetAPIView(APIView):
             return Response({"message": "비밀번호 재설정 이메일을 보냈습니다."}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "이메일 주소를 제출해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = SetPasswordForm
+
+    def form_valid(self, form):
+        # 기존의 form_valid() 메서드 실행
+        response = super().form_valid(form)
+        
+        # 비밀번호 유효성 검사 수행
+        password = form.cleaned_data['new_password1']
+        if not any(char.isdigit() for char in password) or not any(char.isalpha() for char in password) or not any(not char.isalnum() for char in password):
+            # 특수문자가 포함되지 않은 경우
+            form.add_error('new_password1', '비밀번호에는 특수문자를 포함해야 합니다.')
+            return self.form_invalid(form)
+        
+        return response
         
 
 class DeactivateUserAPIView(APIView):
@@ -276,3 +297,5 @@ class GetUserAllScore(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK) 
+    
+
