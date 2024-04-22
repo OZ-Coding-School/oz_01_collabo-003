@@ -5,7 +5,7 @@ export const modalContainer = style({
   height: "100vh",
   position: "fixed",
   inset: 0,
-  zIndex: 999,
+  zIndex: 1000,
   backgroundColor: "rgba(0, 0, 0, 0.51)",
   backdropFilter: "blur(5px)",
 });
@@ -14,7 +14,7 @@ export const passwordModal = style({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  width: "50%",
+  width: "40%",
   height: "55%",
   backgroundColor: "white",
   position: "fixed",
@@ -23,4 +23,5 @@ export const passwordModal = style({
   transform: "translate(-50%, -45%)",
   borderRadius: "20px",
   zIndex: 2,
+  minWidth: "350px",
 });
