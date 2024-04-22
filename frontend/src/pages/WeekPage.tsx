@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import { useHorizontalScroll3 } from "../hooks/useHorizontalScroll";
 import {
   weekBackgroundImage01,
   weekBackgroundImage02,
@@ -13,16 +15,63 @@ import {
   weekSelectText,
 } from "../styles/WeekPage.css";
 
+interface DateObject {
+  day: string;
+  date: string;
+}
+
 const WeekPage = () => {
   const navigate = useNavigate();
-  const week = ["MON", "TUE", "WED", "TUR", "FRI", "SAR"];
+
   const date = new Date();
   const lastDays = new Date(date.getTime() + 5 * 24 * 60 * 60 * 1000);
   const day = lastDays.getDate();
+  const lastDayOfWeek = lastDays.getDay(); // 토요일이 6, 일요일이 0
+  const daysToAdd = lastDayOfWeek === 0 ? 1 : 0; // 일요일인 경우에만 하루를 더해줌
+  lastDays.setDate(lastDays.getDate() + daysToAdd);
+  const todayWeak = date.getDay();
+
+  console.log("todayWeak", todayWeak);
   const location = useLocation();
   console.log("location", location.state.data);
+  const ref = useHorizontalScroll3();
 
-  const handleGetData = async (day: string) => {
+  const getUserScore = async () => {
+    try {
+      const response = await axios.get('/api/v1/user/userscore/', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      })
+      console.log("score", response);
+    } catch (error) {
+      console.log("week get 에러 : ", error);
+    }
+  }
+
+  useEffect(() => {
+    getUserScore();
+  }, [])
+
+
+  const getDate = (): (string | DateObject)[] => {
+    const date = new Date()
+    const oneWeekLater = new Date(date.getTime() + 6 * 24 * 60 * 60 * 1000);
+    const result: (string | DateObject)[] = []
+    const week = ["SUN", "MON", "TUE", "WED", "TUR", "FRI", "SAT"];
+    for (let i = 0; i < 7; i++) {
+      const currentDate = new Date(oneWeekLater.getTime() - i * 24 * 60 * 60 * 1000);
+      const formattedDate: DateObject = {
+        day: week[currentDate.getDay()],
+        date: currentDate.toLocaleDateString().replace(/\./g, '').replace(/ /g, '/'),
+      };
+      result.push(formattedDate)
+    }
+    result.splice(0, 1);
+    return result.reverse();
+  }
+
+  const handleGetData = async (day: string | DateObject) => {
     try {
       const response = await axios.get(`/api/v1/gpt/quiz/`, {
         headers: {
@@ -67,19 +116,23 @@ const WeekPage = () => {
           </div>
         </div>
 
-        <div className={weekSelectBoxContainer}>
-          {week.map((day, index) => (
-            <div
-              className={weekSelectBox}
-              key={index}
-              onClick={() => handleGetData(day)}
-            >
-              <div className={weekSelectText}>
-                <p>{day}</p>
-                <p>80</p>
+        <div className={weekSelectBoxContainer} ref={ref}>
+          {getDate().map((day, index) => {
+            const dateObject = typeof day === 'string' ? { day: '', date: day } : day;
+            return (
+              <div
+                className={weekSelectBox}
+                key={index}
+                onClick={() => handleGetData(day)}
+              >
+                <div className={weekSelectText}>
+                  <p>{dateObject.day}</p>
+                  {/* <p>{dateObject.date}</p> */}
+                  <p>80</p>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </div>

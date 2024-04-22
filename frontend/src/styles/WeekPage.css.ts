@@ -51,11 +51,15 @@ export const weekPageSubtitleDate = style({
 });
 
 export const weekSelectBoxContainer = style({
-  width: "80%",
+  boxSizing: "border-box",
+  width: "95%",
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "space-evenly",
   alignItems: "center",
   marginBottom: "100px",
+  overflow: "auto",
+  paddingLeft: "110px",
+  scrollbarWidth: "none",
 });
 
 export const weekSelectBox = style({
@@ -69,7 +73,10 @@ export const weekSelectBox = style({
   backgroundColor: "#EFE1D6",
   borderRadius: "80px 80px 80px 0",
   cursor: "pointer",
+  flexShrink: 0,
+  margin: "10px 60px 10px 0",
   transition: "all 0.3s",
+  overflow: "hidden",
   ":hover": {
     transform: "scale(1.03)",
     boxShadow: "5px 5px 0 0 #F4F8F1",
