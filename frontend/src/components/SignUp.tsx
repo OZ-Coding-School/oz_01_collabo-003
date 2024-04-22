@@ -9,6 +9,7 @@ import {
   title,
 } from "../styles/LoginStyle.css";
 import fetchValidation from "../utils/fetchValidation";
+import { handleEnterKeyPress, handleSubmitKeyPress } from "../utils/keyDownHandler";
 import DuplicateInput from "./DuplicateInput";
 import Input from "./Input";
 type Props = {
@@ -119,7 +120,9 @@ function SignUp({ signin, setSignIn }: Props) {
   };
 
   // 회원가입 버튼 클릭 시 실행되는 함수
-  const handleSignUp: React.MouseEventHandler<HTMLFormElement> = (e) => {
+  const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    e
+  ) => {
     e.preventDefault();
     if (
       nickNameMessage === "" &&
@@ -129,7 +132,7 @@ function SignUp({ signin, setSignIn }: Props) {
     ) {
       //회원가입 버튼 클릭 시, 모든 유효성 검사가 참이어야 실행되도록
       setSignIn(false);
-      fetchSignUp();
+      await fetchSignUp();
     } else {
       alert("오류메시지를 확인해주세요!");
     }
@@ -162,9 +165,16 @@ function SignUp({ signin, setSignIn }: Props) {
       }
     }
   };
+  // 이메일에서 엔터 키 누르면 중복확인
+  const handleEmailKeyPress = handleEnterKeyPress(fetchEmailDoubleCheck);
+  // 닉네임에서 엔터 키 누르면 중복확인
+  const handleNickNamePress = handleEnterKeyPress(fetchNickNameDoubleCheck);
+  // 비밀번호에서 엔터 키 누르면 회원가입 버튼 눌림
+  const handlePasswordConfirmKeyDown = handleSubmitKeyPress(handleFormSubmit);
+
   return (
     <div className={signUpContainer} data-signin={signin}>
-      <form className={formContainer} onSubmit={handleSignUp}>
+      <form className={formContainer} onSubmit={handleFormSubmit}>
         <h1 className={title}>Welcome!</h1>
         <div className={inputContainer}>
           <DuplicateInput
@@ -175,6 +185,7 @@ function SignUp({ signin, setSignIn }: Props) {
             ErrorMessage={emailMessage}
             onClick={fetchEmailDoubleCheck}
             disabled={!isEmail}
+            onKeyDown={handleEmailKeyPress}
           >
             Email
           </DuplicateInput>
@@ -186,6 +197,7 @@ function SignUp({ signin, setSignIn }: Props) {
             ErrorMessage={nickNameMessage}
             onClick={fetchNickNameDoubleCheck}
             disabled={!isNickName}
+            onKeyDown={handleNickNamePress}
           >
             NickName
           </DuplicateInput>
@@ -205,11 +217,14 @@ function SignUp({ signin, setSignIn }: Props) {
             required
             ErrorMessage={passwordCheckMessage}
             onPaste={(e) => e.preventDefault()}
+            onKeyDown={handlePasswordConfirmKeyDown}
           >
             Password Check
           </Input>
         </div>
-        <button className={button}>Sign Up</button>
+        <button type="submit" className={button}>
+          Sign Up
+        </button>
         <p className={elseButton} onClick={() => setSignIn(false)}>
           이미 계정이 있으신가요?
         </p>

@@ -8,7 +8,7 @@ async function fetchValidation(
   successMessage: string
 ) {
   try {
-    const response = await axios
+    await axios
       .post(url, data)
       .then((response) => {
         if (response.status === 200) {
@@ -16,6 +16,7 @@ async function fetchValidation(
           setIsValid(false);
           alert(successMessage);
         }
+        console.log(response);
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -23,8 +24,8 @@ async function fetchValidation(
         } else {
           setMessage("확인 중 오류가 발생했습니다");
         }
+        console.log(error.response.data);
       });
-    console.log(response);
   } catch (error) {
     console.log(error);
   }

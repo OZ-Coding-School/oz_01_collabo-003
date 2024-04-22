@@ -1,4 +1,8 @@
-import { HTMLInputTypeAttribute, MouseEventHandler } from "react";
+import {
+  HTMLInputTypeAttribute,
+  KeyboardEventHandler,
+  MouseEventHandler,
+} from "react";
 import {
   duplicateCheckBtn,
   duplicateCheckBtnChecked,
@@ -19,6 +23,7 @@ type InputProps = {
   isEmail?: boolean;
   isUserName?: boolean;
   disabled?: boolean;
+  onKeyDown?: KeyboardEventHandler;
 };
 const DuplicateInput = ({
   children,
@@ -28,6 +33,7 @@ const DuplicateInput = ({
   required,
   ErrorMessage,
   onClick,
+  onKeyDown,
 
   disabled,
 }: InputProps) => {
@@ -42,6 +48,7 @@ const DuplicateInput = ({
             onChange={onChange}
             type={type}
             required={required}
+            onKeyDown={onKeyDown}
           ></input>
           {/* disabled 이면 버튼 색 없어지게 */}
           <button

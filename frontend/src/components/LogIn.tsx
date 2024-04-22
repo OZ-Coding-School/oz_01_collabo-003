@@ -11,6 +11,7 @@ import {
 
 import { useState } from "react";
 import axios from "../api/axios";
+import { handleSubmitKeyPress } from "../utils/keyDownHandler";
 import Input from "./Input";
 
 type Props = {
@@ -60,11 +61,11 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
               console.log("로그인 성공!");
               navigate("/level");
               //로컬스토리지에 엑세스토큰 넣기
-              const accessToken = response.data.accessToken;
+              const accessToken = response.data.access_token;
 
               console.log("Access Token:", accessToken);
               localStorage.setItem("accessToken", accessToken);
-              localStorage.setItem("refreshToken", response.data.refreshToken);
+              localStorage.setItem("refreshToken", response.data.refresh_token);
             }
           })
           .catch((error) => {
@@ -85,6 +86,8 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
       }
     }
   };
+  // 비밀번호에서 엔터 키 누르면 회원가입 버튼 눌림
+  const handlePasswordConfirmKeyDown = handleSubmitKeyPress(handleLogin);
   return (
     <div className={signInContainer} data-signin={signin}>
       <form className={formContainer} onSubmit={handleLogin}>
@@ -103,6 +106,7 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
           value={logInPw}
           onChange={(e) => setLogInPw(e.target.value)}
           required
+          onKeyDown={handlePasswordConfirmKeyDown}
         >
           Password
         </Input>
