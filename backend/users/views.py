@@ -15,8 +15,10 @@ from django.urls import reverse
 from quizs.serializers import QuizTrySerializer
 from gpt.models import GptQuestionAnswer
 from django.utils import timezone
-
-
+from django.db.models import Sum
+from datetime import datetime, timedelta
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth.forms import SetPasswordForm
 # 회원가입 기능
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
@@ -178,17 +180,20 @@ class GetUserDataAPIView(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
- 
- 
+    
+
 class PasswordResetAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
+
     def post(self, request):
         email = request.data.get('email')
         if email:
             # 이메일 주소에 해당하는 사용자 찾기
             try:
                 user = User.objects.get(email=email)
+                if user.deletedAt is not None:
+                    return Response({"error:": "비활성화 된 이메일 입니다"}, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 return Response({"error": "해당 이메일 주소를 가진 사용자를 찾을 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
             
@@ -211,12 +216,29 @@ class PasswordResetAPIView(APIView):
         else:
             return Response({"error": "이메일 주소를 제출해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
         
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = SetPasswordForm
+
+    def form_valid(self, form):
+        # 기존의 form_valid() 메서드 실행
+        response = super().form_valid(form)
+        
+        # 비밀번호 유효성 검사 수행
+        password = form.cleaned_data['new_password1']
+        if not any(char.isdigit() for char in password) or not any(char.isalpha() for char in password) or not any(not char.isalnum() for char in password):
+            # 특수문자가 포함되지 않은 경우
+            form.add_error('new_password1', '비밀번호에는 특수문자를 포함해야 합니다.')
+            return self.form_invalid(form)
+        
+        return response
+        
 
 class DeactivateUserAPIView(APIView):
     # 계정 비활성화 함수
     def deactivate_user(self,user):
         user.deletedAt = timezone.now()
         user.save()
+        
     # 계정 30일뒤 삭제 함수
     def delete_inactive_users():
         thirty_days_ago = timezone.now() - timezone.timedelta(days=30)
@@ -233,3 +255,47 @@ class DeactivateUserAPIView(APIView):
         self.deactivate_user(user)
         
         return Response({"message": "사용자가 성공적으로 비활성화되었습니다."}, status=status.HTTP_200_OK)
+    
+    
+class GetUserAllScore(APIView):
+    def get(self, request):
+        try:
+            user = User.objects.get(id=request.user.id)
+        except User.DoesNotExist:
+            return Response({"message": "유저가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # 현재 날짜 가져오기
+        current_date = datetime.now()
+
+        # 이번 주의 시작 날짜 계산
+        start_of_week = current_date - timedelta(days=current_date.weekday())
+
+        # 이번 주의 각 요일에 대한 점수 합과 퀴즈 트라이 개수 구하기
+        scores_and_quiz_tries_by_day = []
+        for i in range(7):
+            # 해당 요일의 날짜 계산
+            date_of_day = start_of_week + timedelta(days=i)
+            # 해당 요일에 푼 문제들 중에서 5개 가져오기
+            quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day)[:5]
+            # 해당 요일에 푼 문제들의 점수 합 구하기
+            total_score_of_day = quizzes_of_day.aggregate(total_score=Sum('score'))['total_score'] or 0
+            # 해당 요일에 생성된 퀴즈 트라이 개수 구하기
+            quiz_tries_of_day_count = QuizTry.objects.filter(user=user, createdAt__date=date_of_day).count()
+            # 점수 합과 퀴즈 트라이 개수를 scores_and_quiz_tries_by_day 리스트에 추가
+            scores_and_quiz_tries_by_day.append({
+                "day": date_of_day.strftime("%A"),  # 요일 문자열로 변환하여 추가
+                "day_": date_of_day.strftime("%m/%d"),
+                "total_score": total_score_of_day,
+                "quiz_try_count": quiz_tries_of_day_count,
+                "quizzes": QuizSerializer(quizzes_of_day, many=True).data  # 해당 요일에 푼 퀴즈들도 추가
+            })
+
+        # 결과 데이터 구성
+        data = {
+            "user": UserSerializer(user).data,
+            "scores_and_quiz_tries_by_day": scores_and_quiz_tries_by_day
+        }
+
+        return Response(data, status=status.HTTP_200_OK) 
+    
+
