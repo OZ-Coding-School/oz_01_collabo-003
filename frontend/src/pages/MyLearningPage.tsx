@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import axios from "../api/axios";
 import ReviewComponent from "../components/ReviewComponent";
 import useAuthStore from "../store/useAuth";
@@ -152,24 +152,25 @@ const MyLearningPage = () => {
           {isClicked ? <ReviewComponent detailUserData={detailUserData} selectedDataIndex={selectedDataIndex} setIsClicked={setIsClicked} /> :
             <div className={myLearningPageContentBox03}>
               <div className={learningBox03GraphBox}>
-                <BarChart
-                  width={500}
-                  height={410}
-                  data={data1}
-                  margin={{
-                    top: 40,
-                    right: 0,
-                    left: -20,
-                    bottom: 20,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis dataKey="score" />
-                  <Tooltip />
-                  <Legend fontSize="16px" />
-                  <Bar dataKey="score" barSize={30} fill="#43B5F4" fontSize='16px' />
-                </BarChart>
+                <ResponsiveContainer width={'100%'}>
+                  <BarChart
+                    height={410}
+                    data={data1}
+                    margin={{
+                      top: 40,
+                      right: 0,
+                      left: -20,
+                      bottom: 20,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis dataKey="score" />
+                    <Tooltip />
+                    <Legend fontSize="16px" />
+                    <Bar dataKey="score" barSize={30} fill="#43B5F4" fontSize='16px' />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
               <div className={learningBox03TitleContainer}>
                 <p className={learningBox03Title}>평균점수</p>

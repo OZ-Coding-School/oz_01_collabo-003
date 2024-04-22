@@ -49,7 +49,7 @@ export const widthAnimation = style({
   transformStyle: "preserve-3d",
   transition: "transform 0.5s",
   "@media": {
-    "screen and (max-width: 1540px)": {
+    "screen and (max-width: 1350px)": {
       position: "relative",
       display: "block",
       padding: "none",
@@ -61,7 +61,7 @@ export const widthAnimation = style({
 
 export const rotate = style({
   "@media": {
-    "screen and (max-width: 1540px)": {
+    "screen and (max-width: 1350px)": {
       selectors: {
         "&[data-clicked='true']": {
           transform: "rotateY(180deg)",
@@ -76,11 +76,12 @@ export const myLearningPageContentBox01 = style({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  width: "576px",
+  width: "40%",
   height: "100%",
   "@media": {
-    "screen and (max-width: 1540px)": {
+    "screen and (max-width: 1350px)": {
       position: "absolute",
+      width: "570px",
       top: "0",
       left: "50%",
       transform: "translateX(-50%)",
@@ -192,7 +193,7 @@ export const myLearningPageContentBox02 = style({
   height: "100%",
   backgroundColor: "#C9CDC5",
   "@media": {
-    "screen and (max-width: 1550px)": {
+    "screen and (max-width: 1350px)": {
       display: "none",
     },
   },
@@ -203,19 +204,23 @@ export const myLearningPageContentBox03 = style({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  width: "576px",
+  width: "40%",
   height: "100%",
   "@media": {
-    "screen and (max-width: 1540px)": {
+    "screen and (max-width: 1350px)": {
       position: "absolute",
+      width: "570px",
       top: "0",
       left: "50%",
       transform: "translateX(-50%) rotateY(180deg)",
       zIndex: -1,
       backfaceVisibility: "hidden",
     },
+    "screen and (max-width: 830px)": {
+      width: "500px",
+    },
     "screen and (max-width: 700px)": {
-      width: "300px",
+      width: "370px",
     },
   },
 });
