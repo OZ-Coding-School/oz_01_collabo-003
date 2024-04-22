@@ -4,6 +4,7 @@ import Auth from "../pages/Auth";
 import LevelPage from "../pages/LevelPage";
 import MainPage from "../pages/MainPage";
 import MyLearningPage from "../pages/MyLearningPage";
+import NotFoundPage from "../pages/NotFoundPage";
 import QuizPage from "../pages/QuizPage";
 import ResultPage from "../pages/ResultPage";
 import UserUpdatePage from "../pages/UserUpdatePage";
@@ -25,10 +26,8 @@ function Router() {
     <Routes>
       <Route element={<PublicRoute />}>
         <Route path="/" element={<MainPage />} />
-
         <Route path="/auth/login-signup" element={<Auth />} />
       </Route>
-
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Layout />}>
           <Route path="/level" element={<LevelPage />} />
@@ -39,6 +38,7 @@ function Router() {
           <Route path="/result" element={<ResultPage />} />
         </Route>
       </Route>
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
