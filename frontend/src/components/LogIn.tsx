@@ -60,11 +60,11 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
               console.log("로그인 성공!");
               navigate("/level");
               //로컬스토리지에 엑세스토큰 넣기
-              const accessToken = response.data.access_token;
+              const accessToken = response.data.accessToken;
 
               console.log("Access Token:", accessToken);
               localStorage.setItem("accessToken", accessToken);
-              localStorage.setItem("refreshToken", response.data.refresh_token);
+              localStorage.setItem("refreshToken", response.data.refreshToken);
             }
           })
           .catch((error) => {
