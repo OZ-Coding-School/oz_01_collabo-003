@@ -8,6 +8,7 @@ import {
   signUpContainer,
   title,
 } from "../styles/LoginStyle.css";
+import fetchValidation from "../utils/fetchValidation";
 import DuplicateInput from "./DuplicateInput";
 import Input from "./Input";
 type Props = {
@@ -15,17 +16,13 @@ type Props = {
   setSignIn: React.Dispatch<React.SetStateAction<boolean>>;
 };
 function SignUp({ signin, setSignIn }: Props) {
-  //유효성검사
+  //유효성검사 - 중복확인되면 버튼 비활성화를 위한 state
   const [isEmail, setIsEmail] = useState<boolean>(false);
-  const [isUserName, setIsUserName] = useState<boolean>(false);
-  // const [isPassword, setIsPassword] = useState<boolean>(false);
-  // const [isPasswordCheck, setIsPasswordCheck] = useState<boolean>(false);
-  // const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
-  // const [isUserNameChecked, setIsUserNameChecked] = useState<boolean>(false);
+  const [isNickName, setIsNickName] = useState<boolean>(false);
 
   //오류메시지 상태
   const [emailMessage, setEmailMessage] = useState<string>("");
-  const [userNameMessage, setUserNameMessage] = useState<string>("");
+  const [nickNameMessage, setNickNameMessage] = useState<string>("");
   const [passwordMessage, setPasswordMessage] = useState<string>("");
   const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>("");
 
@@ -56,83 +53,42 @@ function SignUp({ signin, setSignIn }: Props) {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     e.preventDefault();
-    // setIsEmailChecked(true);
-    // setEmailMessage("");
-    // setIsEmail(false);
-
-    // 서버 켜지면 아래 코드 주석 풀기
-    try {
-      await axios
-        .post("/api/v1/user/emailvalid/", {
-          email: email,
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            alert("사용가능한 이메일입니다");
-            setEmailMessage("");
-            setIsEmail(false);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          if (error.response.status === 400) {
-            setEmailMessage("이미 존재하는 이메일입니다");
-          } else {
-            setEmailMessage("이메일 확인 중 오류가 발생했습니다");
-          }
-        });
-    } catch (err) {
-      console.log("err:", err);
-    }
+    await fetchValidation(
+      "/api/v1/user/emailvalid/",
+      { email },
+      setEmailMessage,
+      setIsEmail,
+      "사용가능한 이메일입니다"
+    );
+  }
+  // 닉네임 중복확인
+  async function fetchNickNameDoubleCheck(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault();
+    await fetchValidation(
+      "/api/v1/user/nickNamevalid/",
+      { nickName },
+      setNickNameMessage,
+      setIsNickName,
+      "사용가능한 닉네임입니다"
+    );
   }
 
   //닉네임 유효성 검증
-  const onChangeUserName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onChangeNickName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const currentName = e.target.value;
     setNickName(currentName);
 
     if (currentName.length < 2 || currentName.length > 6) {
-      setUserNameMessage("닉네임은 2글자 이상 6글자 이하여야합니다.");
-      setIsUserName(false);
+      setNickNameMessage("닉네임은 2글자 이상 6글자 이하여야합니다.");
+      setIsNickName(false);
     } else {
-      setUserNameMessage("닉네임 중복확인을 해주세요.");
+      setNickNameMessage("닉네임 중복확인을 해주세요.");
       //중복확인하면 오류메시지 없어짐
-      setIsUserName(true);
+      setIsNickName(true);
     }
   };
-  // 닉네임 중복확인
-  async function fetchUserNameDoubleCheck(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    e.preventDefault();
-    // 서버 켜지면 아래 코드 주석 풀기
-    try {
-      await axios
-        .post("/api/v1/user/nickNamevalid/", {
-          nickName: nickName,
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            setUserNameMessage("");
-            setIsUserName(false);
-            alert("사용가능한 닉네임입니다");
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            const errorMessage = "이미 존재하는 닉네임입니다";
-            setUserNameMessage(errorMessage);
-          } else {
-            setUserNameMessage("닉네임 확인 중 오류가 발생했습니다");
-          }
-        });
-    } catch (err) {
-      console.log("err:", err);
-      setUserNameMessage("닉네임 중복확인 중 오류가 발생했습니다");
-    }
-  }
 
   //비밀번호 유효성 검증
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -166,7 +122,7 @@ function SignUp({ signin, setSignIn }: Props) {
   const handleSignUp: React.MouseEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (
-      userNameMessage === "" &&
+      nickNameMessage === "" &&
       emailMessage === "" &&
       passwordMessage === "" &&
       passwordCheckMessage === ""
@@ -179,7 +135,7 @@ function SignUp({ signin, setSignIn }: Props) {
     }
     // 데이터 전송 후 값 초기화 코드 _ test 후 주석 풀 예정!
     // setEmail("");
-    // setUserName("");
+    // setNickName("");
     // setPasswordCheck("");
     // setPassword("");
 
@@ -225,13 +181,13 @@ function SignUp({ signin, setSignIn }: Props) {
           <DuplicateInput
             type="text"
             value={nickName}
-            onChange={onChangeUserName}
+            onChange={onChangeNickName}
             required
-            ErrorMessage={userNameMessage}
-            onClick={fetchUserNameDoubleCheck}
-            disabled={!isUserName}
+            ErrorMessage={nickNameMessage}
+            onClick={fetchNickNameDoubleCheck}
+            disabled={!isNickName}
           >
-            User Name
+            NickName
           </DuplicateInput>
           <Input
             type="password"
@@ -250,7 +206,7 @@ function SignUp({ signin, setSignIn }: Props) {
             ErrorMessage={passwordCheckMessage}
             onPaste={(e) => e.preventDefault()}
           >
-            Password
+            Password Check
           </Input>
         </div>
         <button className={button}>Sign Up</button>
