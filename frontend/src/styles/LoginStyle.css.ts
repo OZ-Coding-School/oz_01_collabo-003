@@ -73,6 +73,7 @@ export const signUpContainer = style({
   top: "0",
   height: "100%",
   transition: "all 0.6s ease-in-out",
+
   left: "0",
   width: "50%",
   opacity: "0",
@@ -101,6 +102,7 @@ export const signInContainer = style({
   top: 0,
   height: "100%",
   transition: "all 0.6s ease-in-out",
+
   left: 0,
   width: "50%",
   zIndex: 2,
@@ -119,7 +121,7 @@ export const signInContainer = style({
       width: "100vw",
       zIndex: 999,
       opacity: "1",
-      // transition: "none",
+      transition: "none",
     },
   },
 });
@@ -198,6 +200,7 @@ export const elseButton = style({
   },
   "@media": {
     "screen and (min-width: 900px)": { display: "none" },
+    "screen and (max-width: 900px)": { fontSize: "0.8rem" },
   },
 });
 export const inputMessage = style({
