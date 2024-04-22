@@ -18,10 +18,10 @@ function SignUp({ signin, setSignIn }: Props) {
   //유효성검사
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [isUserName, setIsUserName] = useState<boolean>(false);
-  const [isPassword, setIsPassword] = useState<boolean>(false);
-  const [isPasswordCheck, setIsPasswordCheck] = useState<boolean>(false);
-  const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
-  const [isUserNameChecked, setIsUserNameChecked] = useState<boolean>(false);
+  // const [isPassword, setIsPassword] = useState<boolean>(false);
+  // const [isPasswordCheck, setIsPasswordCheck] = useState<boolean>(false);
+  // const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
+  // const [isUserNameChecked, setIsUserNameChecked] = useState<boolean>(false);
 
   //오류메시지 상태
   const [emailMessage, setEmailMessage] = useState<string>("");
@@ -34,30 +34,54 @@ function SignUp({ signin, setSignIn }: Props) {
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordCheck, setPasswordCheck] = useState<string>("");
+
+  //회원입시 이메일 검증
+  const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const currentEmail = e.target.value;
+    setEmail(currentEmail);
+
+    const emailRegExp =
+      /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+
+    if (!emailRegExp.test(currentEmail)) {
+      setEmailMessage("이메일 형식이 올바르지 않습니다");
+      setIsEmail(false);
+    } else {
+      setEmailMessage("이메일 중복확인을 해주세요.");
+      setIsEmail(true);
+    }
+  };
   // 이메일 중복확인
-  async function fetchEmailDoubleCheck() {
+  async function fetchEmailDoubleCheck(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault();
     // setIsEmailChecked(true);
     // setEmailMessage("");
     // setIsEmail(false);
-    alert("이메일 유효성 검증 중");
 
     // 서버 켜지면 아래 코드 주석 풀기
     try {
-      const response = await axios.post("/api/v1/user/emailvalid/", {
-        email: email,
-      });
-      console.log(response.data);
-      // 중복이면
-      if (response.status === 400) {
-        setEmailMessage("이미 존재하는 이메일입니다");
-        //중복 아니면
-      } else if (response.status === 200) {
-        setIsEmailChecked(true);
-        setEmailMessage("");
-        setIsEmail(false);
-      } else {
-        setEmailMessage("이메일 확인 중 오류가 발생했습니다");
-      }
+      await axios
+        .post("/api/v1/user/emailvalid/", {
+          email: email,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            alert("사용가능한 이메일입니다");
+            setEmailMessage("");
+            setIsEmail(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 400) {
+            setEmailMessage("이미 존재하는 이메일입니다");
+          } else {
+            setEmailMessage("이메일 확인 중 오류가 발생했습니다");
+          }
+        });
     } catch (err) {
       console.log("err:", err);
     }
@@ -78,9 +102,10 @@ function SignUp({ signin, setSignIn }: Props) {
     }
   };
   // 닉네임 중복확인
-  async function fetchUserNameDoubleCheck() {
-    alert("닉네임 유효성 검증 중");
-
+  async function fetchUserNameDoubleCheck(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault();
     // 서버 켜지면 아래 코드 주석 풀기
     try {
       await axios
@@ -92,7 +117,7 @@ function SignUp({ signin, setSignIn }: Props) {
           if (response.status === 200) {
             setUserNameMessage("");
             setIsUserName(false);
-            setIsUserNameChecked(true);
+            alert("사용가능한 닉네임입니다");
           }
         })
         .catch((error) => {
@@ -119,13 +144,10 @@ function SignUp({ signin, setSignIn }: Props) {
       setPasswordMessage(
         "비밀번호는 숫자+영문자+특수문자를 포함한 8자리 이상이어야 합니다."
       );
-      setIsPassword(false);
     } else {
       setPasswordMessage("");
-      setIsPassword(true);
     }
   };
-
   // 비밀번호 확인
   const onChangePasswordConfirm: React.ChangeEventHandler<HTMLInputElement> = (
     e
@@ -135,45 +157,21 @@ function SignUp({ signin, setSignIn }: Props) {
 
     if (password !== currentPasswordConfirm) {
       setPasswordCheckMessage("비밀번호가 일치하지않습니다");
-      setIsPasswordCheck(false);
     } else {
       setPasswordCheckMessage("");
-      setIsPasswordCheck(true);
     }
   };
 
-  //회원입시 이메일 검증
-  const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const currentEmail = e.target.value;
-    setEmail(currentEmail);
-
-    const emailRegExp =
-      /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-
-    if (!emailRegExp.test(currentEmail)) {
-      setEmailMessage("이메일 형식이 올바르지 않습니다");
-      setIsEmail(false);
-    } else {
-      setEmailMessage("이메일 중복확인을 해주세요.");
-      setIsEmail(true);
-    }
-  };
   // 회원가입 버튼 클릭 시 실행되는 함수
   const handleSignUp: React.MouseEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-
-    //회원가입 버튼 클릭 시, 모든 유효성 검사가 참이어야 실행되도록
-    if (isEmailChecked && isUserNameChecked && isPassword && isPasswordCheck) {
-      console.log(
-        "email :",
-        email,
-        "/nickName:",
-        nickName,
-        "/password:",
-        password,
-        "/passwordCheck:",
-        passwordCheck
-      );
+    if (
+      userNameMessage === "" &&
+      emailMessage === "" &&
+      passwordMessage === "" &&
+      passwordCheckMessage === ""
+    ) {
+      //회원가입 버튼 클릭 시, 모든 유효성 검사가 참이어야 실행되도록
       setSignIn(false);
       fetchSignUp();
     } else {
@@ -186,7 +184,6 @@ function SignUp({ signin, setSignIn }: Props) {
     // setPassword("");
 
     // 회원가입 데이터 전송 코드
-
     async function fetchSignUp() {
       try {
         const response = await axios.post("/api/v1/user/register/", {
@@ -209,7 +206,6 @@ function SignUp({ signin, setSignIn }: Props) {
       }
     }
   };
-
   return (
     <div className={signUpContainer} data-signin={signin}>
       <form className={formContainer} onSubmit={handleSignUp}>
