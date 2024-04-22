@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { useHorizontalScroll3 } from "../hooks/useHorizontalScroll";
@@ -18,6 +18,14 @@ import {
 interface DateObject {
   day: string;
   date: string;
+  totalScore?: number;
+  quizTryCount?: number;
+}
+
+interface ScoreData {
+  day: string;
+  total_score: number;
+  quiz_try_count: number;
 }
 
 const WeekPage = () => {
@@ -30,7 +38,7 @@ const WeekPage = () => {
   const daysToAdd = lastDayOfWeek === 0 ? 1 : 0; // 일요일인 경우에만 하루를 더해줌
   lastDays.setDate(lastDays.getDate() + daysToAdd);
   const todayWeak = date.getDay();
-
+  const [scoreData, setScoreData] = useState<ScoreData[]>([]);
   console.log("todayWeak", todayWeak);
   const location = useLocation();
   console.log("location", location.state.data);
@@ -44,6 +52,7 @@ const WeekPage = () => {
         }
       })
       console.log("score", response);
+      setScoreData(response.data.scores_and_quiz_tries_by_day);
     } catch (error) {
       console.log("week get 에러 : ", error);
     }
@@ -63,8 +72,15 @@ const WeekPage = () => {
       const currentDate = new Date(oneWeekLater.getTime() - i * 24 * 60 * 60 * 1000);
       const formattedDate: DateObject = {
         day: week[currentDate.getDay()],
-        date: currentDate.toLocaleDateString().replace(/\./g, '').replace(/ /g, '/'),
+        date: currentDate.toLocaleDateString().replace(/\./g, '').replace(/ /g, '/').replace('2024', ''),
+        totalScore: 0,
+        quizTryCount: 0
       };
+      const scoreDataForCurrentDate = scoreData.find((data) => data.day.toUpperCase().slice(0, 3) === formattedDate.day);
+      if (scoreDataForCurrentDate) {
+        formattedDate.totalScore = scoreDataForCurrentDate.total_score;
+        formattedDate.quizTryCount = scoreDataForCurrentDate.quiz_try_count;
+      }
       result.push(formattedDate)
     }
     result.splice(0, 1);
@@ -123,12 +139,13 @@ const WeekPage = () => {
               <div
                 className={weekSelectBox}
                 key={index}
+                data-score={dateObject.totalScore !== 0}
                 onClick={() => handleGetData(day)}
               >
                 <div className={weekSelectText}>
                   <p>{dateObject.day}</p>
-                  {/* <p>{dateObject.date}</p> */}
-                  <p>80</p>
+                  <p>{dateObject.totalScore}</p>
+                  {/* <p>{dateObject.quizTryCount}</p> */}
                 </div>
               </div>
             )

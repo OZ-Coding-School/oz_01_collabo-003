@@ -43,11 +43,23 @@ export const weekPageTitle = style({
   fontSize: "48px",
   color: "#222222",
   fontWeight: "bold",
+  "@media": {
+    "(max-width: 1200px)": {
+      paddingLeft: "60px",
+      fontSize: "32px",
+    },
+  },
 });
 
 export const weekPageSubtitleDate = style({
   fontSize: "40px",
   color: "#202020",
+  "@media": {
+    "(max-width: 1200px)": {
+      paddingLeft: "60px",
+      fontSize: "32px",
+    },
+  },
 });
 
 export const weekSelectBoxContainer = style({
@@ -77,6 +89,11 @@ export const weekSelectBox = style({
   margin: "10px 60px 10px 0",
   transition: "all 0.3s",
   overflow: "hidden",
+  selectors: {
+    '&[data-score="true"]': {
+      backgroundColor: "red",
+    },
+  },
   ":hover": {
     transform: "scale(1.03)",
     boxShadow: "5px 5px 0 0 #F4F8F1",
