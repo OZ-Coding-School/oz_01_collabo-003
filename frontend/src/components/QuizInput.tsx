@@ -16,9 +16,17 @@ interface QuizInputProps {
   quizs: QuizDetail[];
   currentQuizIndex: number;
   answers: React.MutableRefObject<string[]>;
+  handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+
 }
 
-function QuizInput({ quizs, currentQuizIndex, answers }: QuizInputProps) {
+function QuizInput({
+  quizs,
+  currentQuizIndex,
+  answers,
+  handleKeyDown,
+
+}: QuizInputProps) {
   return (
     <>
       {quizs.map(
@@ -33,6 +41,8 @@ function QuizInput({ quizs, currentQuizIndex, answers }: QuizInputProps) {
                 <QuizAnswer
                   answers={answers}
                   currentQuizIndex={currentQuizIndex}
+                  handleKeyDown={handleKeyDown}
+
                 />
               </div>
             </div>
