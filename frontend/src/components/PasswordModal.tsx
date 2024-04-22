@@ -1,6 +1,11 @@
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import axios from "../api/axios";
-import { button, paragraph, title } from "../styles/LoginStyle.css";
+import {
+  button,
+  disabledButton,
+  paragraph,
+  title,
+} from "../styles/LoginStyle.css";
 import { modalContainer, passwordModal } from "../styles/PasswordRest.css";
 import Input from "./Input";
 type PassWordModalProps = {
@@ -12,6 +17,7 @@ const PassWordModal = ({
   passWordModalOpen,
 }: PassWordModalProps) => {
   const [email, setEmail] = useState("");
+  const [isEmailSended, setIsEmailSended] = useState(false);
   const handleResetPassword = () => {
     console.log("비밀번호재설정");
     fetchPasswordRest();
@@ -30,24 +36,38 @@ const PassWordModal = ({
     return <></>;
   }
   async function fetchPasswordRest() {
-    // 서버 켜지면 아래 코드 주석 풀기
-    try {
-      const response = await axios.post("/api/v1/user/passwordReset/", {
-        email: email,
-      });
-      console.log(response.data);
-      // 중복이면
-      if (response.status === 200) {
-        alert("작성하신 이메일로 비밀번호 재설정 링크가 전송되었습니다");
-        //중복 아니면
-      } else if (response.status === 400) {
-        alert("유효하지않은 이메일입니다");
+    if (email === "") {
+      alert("이메일을 입력해주세요");
+    } else {
+      setIsEmailSended(true);
+      // 서버 켜지면 아래 코드 주석 풀기
+      try {
+        await axios
+          .post("/api/v1/user/passwordReset/", {
+            email: email,
+          })
+          .then((response) => {
+            console.log(response.data);
+            if (response.status === 200) {
+              alert("작성하신 이메일로 비밀번호 재설정 링크가 전송되었습니다");
+              setPassWordModalOpen(false);
+              setIsEmailSended(false);
+            }
+          })
+          .catch((error) => {
+            if (error.response.status === 400) {
+              alert("등록되지않은 이메일입니다");
+              setIsEmailSended(false);
+            }
+          });
+      } catch (err) {
+        console.log("err:", err);
+        alert(
+          "비밀번호 재설정 링크를 전송하는 과정에서 오류가 발생하였습니다 "
+        );
       }
-    } catch (err) {
-      console.log("err:", err);
     }
   }
-
   return (
     <div
       className={modalContainer}
@@ -63,7 +83,6 @@ const PassWordModal = ({
         <p className={paragraph}>
           가입하신 이메일로 비밀번호 재설정 링크가 전송됩니다
         </p>
-
         <Input
           type="email"
           value={email}
@@ -71,13 +90,17 @@ const PassWordModal = ({
         >
           Email
         </Input>
-
         <p className={paragraph}>
-          메일을 못받으셨다면 다시 보내기 버튼을 눌러주세요
+          메일이 오지 않으셨다면, 스팸 메일함을 확인해주세요
         </p>
 
-        <button className={button} type="submit" onClick={handleResetPassword}>
-          다시보내기
+        <button
+          disabled={isEmailSended}
+          className={isEmailSended ? disabledButton : button}
+          type="submit"
+          onClick={handleResetPassword}
+        >
+          메일 보내기
         </button>
       </div>
     </div>

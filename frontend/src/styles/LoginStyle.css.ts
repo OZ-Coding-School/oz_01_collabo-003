@@ -168,6 +168,12 @@ export const button = style({
     },
   },
 });
+export const disabledButton = style([
+  button,
+  {
+    backgroundColor: "#838ade9d",
+  },
+]);
 export const elseButton = style({
   borderRadius: "20px",
   fontSize: "1rem",

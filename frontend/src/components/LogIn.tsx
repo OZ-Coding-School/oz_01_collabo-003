@@ -90,10 +90,6 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
       <form className={formContainer} onSubmit={handleLogin}>
         <h1 className={title}>Sign in</h1>
 
-        <p className={inputMessage}>{loginErrorMessage}</p>
-        <p className={anchor} onClick={() => setPassWordModalOpen(true)}>
-          Forgot your password?
-        </p>
         <Input
           type="text"
           value={logInEmail}
@@ -110,6 +106,10 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
         >
           Password
         </Input>
+        <p className={inputMessage}>{loginErrorMessage}</p>
+        <p className={anchor} onClick={() => setPassWordModalOpen(true)}>
+          Forgot your password?
+        </p>
         <button className={button}>Sign In</button>
         <p className={elseButton} onClick={() => setSignIn(true)}>
           아직 계정이 없으신가요?
