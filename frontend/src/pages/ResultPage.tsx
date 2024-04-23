@@ -56,7 +56,6 @@ function ResultPage() {
         const response = await axios.get(
           url,
 
-
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -87,7 +86,7 @@ function ResultPage() {
           <div>
             <img
               className={resultBg}
-              src="../../public/images/user_background_03.png"
+              src="images/user_background_03.png"
               alt="TodayQuizBg"
             />
           </div>

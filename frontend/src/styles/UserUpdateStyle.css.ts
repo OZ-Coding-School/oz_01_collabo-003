@@ -46,7 +46,7 @@ export const userLogoBg = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  backgroundImage: `url('../../public/images/user_background_03.png')`,
+  backgroundImage: `url('images/user_background_03.png')`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "contain",
   "@media": {
