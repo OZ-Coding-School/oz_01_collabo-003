@@ -50,7 +50,8 @@ class GptManager():
         return cls.gpt_call(f'''질문: {question}\n답변: {answer}\n피드백과 점수를 json 형식으로 점수는 20점 만점으로 생성해주세요.
                 정답이면 정답이라고만 적어주고 틀리면 자세하게 알려주고 정답도 알려줘,점수 기준은 형식은
                         "feedback": "피드백"
-                        "score": 20''')
+                        "score": 20
+                        "gptanswer: "정답"''')
     
     def gpt_call(content):
         res = client.chat.completions.create(
