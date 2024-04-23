@@ -12,13 +12,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for level in LEVELS:
             # 각 level에 대해 퀴즈 생성
-            questions = [json.loads(GptManager.generate_question_openai(level)) for _ in range(20)]
-            self.save_question(questions)
-
-
-    def save_question(self, questions):
-        for question in questions["questions"]:
-            # 중복 확인
-            if GptQuestionAnswer.objects.filter(question=question['question']).exists():
-                continue
-            GptQuestionAnswer.objects.create(question=question['question'], category=question['type'], answer=question["answer"], level=level)
+            for _ in range(20):
+                questions = GptManager.generate_question_openai(level)
+                questions = json.loads(questions)
+                for question in questions["questions"]:
+                    # 중복 확인
+                    if not GptQuestionAnswer.objects.filter(question=question['question']).exists():
+                        GptQuestionAnswer.objects.create(question=question['question'], category=question['type'], answer=question["answer"], level=level)

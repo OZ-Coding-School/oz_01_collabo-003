@@ -30,7 +30,7 @@ SECRET = json.loads(config_scret_common_str)
 SECRET_KEY = SECRET["SECRET_KEY_NAME"]
 OPENAI_API_KEY = SECRET["OPENAI_API_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
