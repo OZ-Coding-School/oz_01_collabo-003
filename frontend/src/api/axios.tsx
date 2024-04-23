@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "http://www.3eng.store/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,21 +10,24 @@ const request = axios.create({
 
 const refreshToken = async () => {
   try {
-    const response = await axios.post('http://localhost:8000/api/v1/user/auth/refresh/', {
-      refresh: localStorage.getItem('refreshToken')
-    })
+    const response = await axios.post(
+      "http://www.3eng.store/api/v1/user/auth/refresh/",
+      {
+        refresh: localStorage.getItem("refreshToken"),
+      }
+    );
     const newAccessToken = response.data.access;
-    localStorage.setItem('accessToken', newAccessToken);
+    localStorage.setItem("accessToken", newAccessToken);
     return newAccessToken;
   } catch (error) {
-    console.log('리프레시 토큰 에러', error);
+    console.log("리프레시 토큰 에러", error);
     throw error;
   }
 };
 
 request.interceptors.request.use(
   async (config) => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -34,7 +37,7 @@ request.interceptors.request.use(
   (error) => {
     return Promise.reject(error);
   }
-)
+);
 
 request.interceptors.response.use(
   (response) => {
@@ -49,12 +52,12 @@ request.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return request(originalRequest);
       } catch (error) {
-        console.log('리프레시 토큰 에러', error);
+        console.log("리프레시 토큰 에러", error);
         throw error;
       }
     }
     return Promise.reject(error);
   }
-)
+);
 
 export default request;
