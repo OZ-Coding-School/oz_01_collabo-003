@@ -20,6 +20,7 @@ interface DateObject {
   date: string;
   totalScore?: number;
   quizTryCount?: number;
+  clickable?: boolean;
 }
 
 interface ScoreData {
@@ -75,7 +76,8 @@ const WeekPage = () => {
         day: week[currentDate.getDay()],
         date: currentDate.toLocaleDateString().replace(/\./g, '').replace(/ /g, '/').replace('2024', ''),
         totalScore: 0,
-        quizTryCount: 0
+        quizTryCount: 0,
+        clickable: currentDate.getDay() === new Date().getDay(),
       };
       const scoreDataForCurrentDate = scoreData.find((data) => data.day.toUpperCase().slice(0, 3) === formattedDate.day);
       if (scoreDataForCurrentDate) {
@@ -89,6 +91,16 @@ const WeekPage = () => {
   }
 
   const handleGetData = async (day: string | DateObject) => {
+    const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+    const todayWeekDay = weekDays[new Date().getDay()];
+    // 문자열인 경우 무시
+    if (typeof day === 'string') return;
+
+    // 클릭 가능하지 않은 경우 알림 표시
+    if (!day.clickable) {
+      alert(`${todayWeekDay}요일이 아닙니다.`);
+      return;
+    }
     try {
       const response = await axios.get(`/api/v1/gpt/quiz/`, {
         headers: {

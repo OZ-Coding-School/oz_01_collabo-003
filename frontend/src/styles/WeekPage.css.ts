@@ -91,7 +91,7 @@ export const weekSelectBox = style({
   overflow: "hidden",
   selectors: {
     '&[data-score="true"]': {
-      backgroundColor: "red",
+      backgroundColor: "#F2A6A6",
     },
   },
   ":hover": {
