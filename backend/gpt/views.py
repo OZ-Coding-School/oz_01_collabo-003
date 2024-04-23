@@ -51,6 +51,9 @@ class FeedbackView(APIView):
                 # 주어진 질문과 일치하는 GptQuestionAnswer 인스턴스를 가져옵니다.
                 question_instance = get_object_or_404(GptQuestionAnswer, question=question)
                 
+                # GptQuestionAnswer 인스턴스의 answer을 가져옵니다.
+                gpt_answer = question_instance.answer
+
                 quiz_instance = Quiz.objects.create(
                     question=question_instance,
                     answer=answer,
@@ -58,7 +61,7 @@ class FeedbackView(APIView):
                     orderNum=order_num,
                     feedback=feedback["feedback"],
                     score=feedback["score"],
-                    gptanswer=feedback["gptanswer"]
+                    gptanswer=gpt_answer
                 )
                 
                 # 저장된 피드백의 정보를 응답 데이터에 추가합니다.
