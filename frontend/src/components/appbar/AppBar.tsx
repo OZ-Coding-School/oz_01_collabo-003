@@ -5,7 +5,7 @@ import useAuthStore from "../../store/useAuth";
 import { nav } from "../../styles/AppBar.css";
 import {
   levelPageTopButton,
-  levelPageTopMenu
+  levelPageTopMenu,
 } from "../../styles/LevelPage.css";
 import "./AppBar.css";
 
@@ -30,17 +30,14 @@ const AppBar = () => {
 
   useEffect(() => {
     getUser();
-  }, [updateCount])
-
+  }, [updateCount]);
 
   const handleClicked = (path: string) => {
     setIsChecked(!isChecked);
-    navigate(path)
-  }
+    navigate(path);
+  };
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -53,10 +50,12 @@ const AppBar = () => {
   });
 
   return (
-    <div className="app_bar_main_container" >
+    <div className="app_bar_main_container">
       <div className={levelPageTopMenu}>
         {/* <img className={levelPageLogo} src="/images/logo.png" alt="로고" /> */}
-        <p className='app_bar_logo' onClick={() => navigate('/')}>3 ENG</p>
+        <p className="app_bar_logo" onClick={() => navigate("/")}>
+          3ENG
+        </p>
         <div
           className={levelPageTopButton}
           onClick={() =>
@@ -70,9 +69,15 @@ const AppBar = () => {
           </p>
         </div>
       </div>
-      <div className={nav} >
+      <div className={nav}>
         <div className="container">
-          <input type="checkbox" className="menu_icon_input" id="menu_icon" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
+          <input
+            type="checkbox"
+            className="menu_icon_input"
+            id="menu_icon"
+            checked={isChecked}
+            onChange={() => setIsChecked(!isChecked)}
+          />
           <div className="menu_bar">
             <label htmlFor="menu_icon" className="menu_icon">
               <span className="menu_icon_bar"></span>
@@ -85,7 +90,9 @@ const AppBar = () => {
               <div className="user_icon">
                 <img
                   src={
-                    userFetchDate?.imgUrl ? userFetchDate.imgUrl : "/images/profile.webp"
+                    userFetchDate?.imgUrl
+                      ? userFetchDate.imgUrl
+                      : "/images/profile.webp"
                   }
                   alt="유저아이콘"
                 />

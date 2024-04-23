@@ -43,6 +43,7 @@ export const question = style({
   paddingBottom: "2rem",
   width: "100%",
   textAlign: "center",
+  fontSize: "1.2rem",
 });
 export const quizAnswerDiv = style({
   display: "flex",
@@ -53,7 +54,8 @@ export const quizAnswerDiv = style({
 });
 
 export const quizInput = style({
-  fontSize: "1rem",
+  // fontSize: "1rem",
+  fontSize: "1.3rem",
   width: "60%",
   padding: "2rem 0rem",
   border: "0.5px solid #000000",
