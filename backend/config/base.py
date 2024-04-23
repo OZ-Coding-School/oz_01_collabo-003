@@ -138,7 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -167,6 +167,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     'https://853d-211-247-35-153.ngrok-free.app:5173',
 #     'http://localhost:8000'
 # ]
+
+CSRF_TRUSTED_ORIGIN = ["https://3eng.store/"]
 
 SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'

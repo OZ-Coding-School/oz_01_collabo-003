@@ -12,23 +12,6 @@ from rest_framework.response import Response
 import json
 
 
-class OpenAiAPIView(APIView):
-    def post(self, request):
-        levels = ["초등학생","중학생","고등학생","원어민","토플"]
-        for level in levels:
-            # 각 level에 대해 퀴즈 생성
-            for _ in range(20):
-                questions = GptManager.generate_question_openai(level)
-                questions = json.loads(questions)
-                for question in questions["questions"]:
-                    # 중복 확인
-                    if not GptQuestionAnswer.objects.filter(question=question['question']).exists():
-                        # 중복되지 않은 경우 퀴즈 저장
-                        GptQuestionAnswer.objects.create(question=question['question'], category=question['type'], answer=question["answer"], level=level)
-                        
-        
-        return JsonResponse({"message": "English quizzes generated successfully!"})
-
 
 class GptQuizAPIView(ListAPIView):
     serializer_class = GptQuestionAnswerDetailSerializer
