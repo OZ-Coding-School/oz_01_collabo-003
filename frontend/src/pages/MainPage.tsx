@@ -11,7 +11,7 @@ function Main() {
   };
   return (
     <div className={mainLayout}>
-      <img src="img/icon_blue.png" alt="icon_blue" className={iconBlue} />
+      <img src="images/icon_blue.png" alt="icon_blue" className={iconBlue} />
       <Logo />
       <div className={textLayout}>
         <div id="container">

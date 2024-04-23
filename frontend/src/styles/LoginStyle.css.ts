@@ -4,7 +4,7 @@ import { logoLayout } from "./LayoutStyle.css";
 export const logoBgDiv = [
   logoLayout,
   style({
-    backgroundImage: `url("/img/bg1.png")`,
+    backgroundImage: `url("/images/bg1.png")`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
   }),
@@ -284,7 +284,7 @@ export const overlayPanel = style({
 });
 
 export const leftOverlayPanel = style({
-  backgroundImage: "url('../public/img/bg3.png')",
+  backgroundImage: "url('/images/bg3.png')",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   transform: "translateX(-20%)",
@@ -296,7 +296,7 @@ export const leftOverlayPanel = style({
 });
 
 export const rightOverlayPanel = style({
-  backgroundImage: "url('../public/img/bg3.png')",
+  backgroundImage: "url('/images/bg3.png')",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   right: "0",

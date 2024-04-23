@@ -16,7 +16,7 @@ export const OverlayPanel = styled.div`
 `;
 
 export const LeftOverlayPanel = styled(OverlayPanel)<{ signin: boolean }>`
-  background-image: url("/img/bg3.png");
+  background-image: url("/images/bg3.png");
   background-repeat: no-repeat;
   background-size: cover;
   transform: translateX(-20%);
@@ -24,7 +24,7 @@ export const LeftOverlayPanel = styled(OverlayPanel)<{ signin: boolean }>`
 `;
 
 export const RightOverlayPanel = styled(OverlayPanel)<{ signin: boolean }>`
-  background-image: url("/img/bg3.png");
+  background-image: url("/images/bg3.png");
   background-repeat: no-repeat;
   background-size: cover;
   right: 0;
