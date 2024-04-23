@@ -29,7 +29,7 @@ function Router() {
         <Route path="/auth/login-signup" element={<Auth />} />
       </Route>
       <Route element={<PrivateRoute />}>
-        <Route path="/" element={<Layout />}>
+        <Route element={<Layout />}>
           <Route path="/level" element={<LevelPage />} />
           <Route path="/week/:levelTitle" element={<WeekPage />} />
           <Route path="/learning" element={<MyLearningPage />} />

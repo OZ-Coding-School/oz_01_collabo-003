@@ -33,7 +33,7 @@ const WeekPage = () => {
 
   const date = new Date();
   const lastDays = new Date(date.getTime() + 5 * 24 * 60 * 60 * 1000);
-  const day = lastDays.getDate();
+  // const day = lastDays.getDate();
   const lastDayOfWeek = lastDays.getDay(); // 토요일이 6, 일요일이 0
   const daysToAdd = lastDayOfWeek === 0 ? 1 : 0; // 일요일인 경우에만 하루를 더해줌
   lastDays.setDate(lastDays.getDate() + daysToAdd);

@@ -190,3 +190,13 @@
   visibility: visible;
   opacity: 1;
 }
+
+.app_bar_logo{
+  font-family: "Swanky and Moo Moo", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 50px;
+  line-height: 1;
+  color: #4A4444;
+  cursor: pointer;
+}

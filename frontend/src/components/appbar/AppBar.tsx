@@ -3,9 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../store/useAuth";
 import { nav } from "../../styles/AppBar.css";
 import {
-  levelPageLogo,
   levelPageTopButton,
-  levelPageTopMenu,
+  levelPageTopMenu
 } from "../../styles/LevelPage.css";
 import "./AppBar.css";
 
@@ -51,7 +50,8 @@ const AppBar = () => {
   return (
     <div className="app_bar_main_container">
       <div className={levelPageTopMenu}>
-        <img className={levelPageLogo} src="/images/logo.png" alt="로고" />
+        {/* <img className={levelPageLogo} src="/images/logo.png" alt="로고" /> */}
+        <p className='app_bar_logo' onClick={() => navigate('/')}>3 ENG</p>
         <div
           className={levelPageTopButton}
           onClick={() =>
