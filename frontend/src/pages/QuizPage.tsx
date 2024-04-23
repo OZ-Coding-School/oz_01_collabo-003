@@ -10,6 +10,7 @@ import {
   todayBg,
   todayQuiz,
 } from "../styles/QuizStyle.css";
+import { handleSubmitKeyPress } from "../utils/keyDownHandler";
 interface QuizDetail {
   id: number;
   question: string;
@@ -95,7 +96,8 @@ function QuizPage() {
     FetchPostQuiz();
     navigate("/result", { state: feedback });
   };
-
+  const handleKeyDown = handleSubmitKeyPress(handleNextQuiz);
+ 
   {
     return (
       <div className={quizContainer}>
@@ -114,6 +116,8 @@ function QuizPage() {
           quizs={quizs}
           currentQuizIndex={currentQuizIndex}
           answers={answers}
+          handleKeyDown={handleKeyDown}
+
         />
 
         <div className={quizButtonDiv}>
