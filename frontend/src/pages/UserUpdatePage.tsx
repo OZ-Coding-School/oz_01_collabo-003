@@ -7,6 +7,7 @@ import DuplicateInput from "../components/DuplicateInput";
 import Input from "../components/Input";
 import useAuthStore from "../store/useAuth";
 import {
+  userDeleteButton,
   userUpdateButton,
   userUpdateSelectButton,
 } from "../styles/ButtonStyle.css";
@@ -313,13 +314,6 @@ function UserUpdatePage() {
                 >
                   passwordCheck
                 </Input>
-                <button
-                  className={userUpdateButton}
-                  type="submit"
-                  onClick={handleDeleteUser}
-                >
-                  회원탈퇴하기
-                </button>
               </>
             ) : (
               <>
@@ -346,8 +340,17 @@ function UserUpdatePage() {
               type="submit"
               onClick={handleChangeUserInfo}
             >
-              {passwordEdit ? " 변경하기" : " 변경하기"}
+              {passwordEdit ? " 저장하기" : " 저장하기"}
             </button>
+            {passwordEdit && (
+              <button
+                className={userDeleteButton}
+                type="submit"
+                onClick={handleDeleteUser}
+              >
+                회원탈퇴하기
+              </button>
+            )}
           </div>
         </div>
       </div>

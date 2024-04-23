@@ -59,6 +59,13 @@ export const userUpdateButton = style([
     textAlign: "center",
   },
 ]);
+export const userDeleteButton = style([
+  userUpdateButton,
+  {
+    background: "#D9D9D9",
+    // color: "#D9D9D9",
+  },
+]);
 export const userUpdateSelectButton = style([
   buttonStyle,
   {

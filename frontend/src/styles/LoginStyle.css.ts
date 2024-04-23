@@ -21,14 +21,14 @@ export const input = style({
   borderRadius: "12px",
   backgroundColor: "#efefef",
   padding: "1rem",
-  fontSize: "1rem",
+  fontSize: "1.2rem",
   paddingLeft: "1.5rem",
   marginTop: "0.5rem",
   outlineColor: "#AFAFAF",
 });
 export const inputLabel = style({
   color: "#8D9188",
-  fontSize: "0.8rem",
+  fontSize: "1rem",
 });
 export const duplicateInputDiv = style({
   position: "relative",
@@ -38,6 +38,7 @@ export const duplicateCheckBtn = style({
   position: "absolute",
   width: "80px",
   right: "10px",
+  top: "3px",
   transform: "translateY(54%)",
   backgroundColor: "#D9D9D9",
   // zIndex: 999,
@@ -205,7 +206,7 @@ export const elseButton = style({
 });
 export const inputMessage = style({
   color: "#FF4141",
-  fontSize: "0.8rem",
+  fontSize: "0.9rem",
   marginTop: "0.5rem",
 });
 
