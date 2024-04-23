@@ -103,7 +103,7 @@ function QuizPage() {
           <div>
             <img
               className={todayBg}
-              src="../../public/images/user_background_03.png"
+              src="images/user_background_03.png"
               alt="TodayQuizBg"
             />
           </div>
