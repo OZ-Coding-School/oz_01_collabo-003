@@ -12,7 +12,6 @@ from rest_framework.response import Response
 import json
 
 
-
 class GptQuizAPIView(ListAPIView):
     serializer_class = GptQuestionAnswerDetailSerializer
     
