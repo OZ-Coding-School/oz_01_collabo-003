@@ -3,7 +3,6 @@ interface Props {
   currentQuizIndex: number;
   answers: React.MutableRefObject<string[]>;
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  focusNextInput: () => void;
 }
 function QuizAnswer({ answers, currentQuizIndex, handleKeyDown }: Props) {
   const handleAnswerChange = (index: number, answer: string) => {
