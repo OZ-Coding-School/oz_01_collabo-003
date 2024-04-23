@@ -36,7 +36,7 @@ export const weekPageTitleContainer = style({
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginBottom: "100px",
+  marginBottom: "90px",
 });
 
 export const weekPageTitle = style({

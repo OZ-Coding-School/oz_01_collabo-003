@@ -70,6 +70,7 @@ const WeekPage = () => {
     const week = ["SUN", "MON", "TUE", "WED", "TUR", "FRI", "SAT"];
     for (let i = 0; i < 7; i++) {
       const currentDate = new Date(oneWeekLater.getTime() - i * 24 * 60 * 60 * 1000);
+      if (currentDate.getDay() === 0) continue;
       const formattedDate: DateObject = {
         day: week[currentDate.getDay()],
         date: currentDate.toLocaleDateString().replace(/\./g, '').replace(/ /g, '/').replace('2024', ''),
@@ -83,7 +84,7 @@ const WeekPage = () => {
       }
       result.push(formattedDate)
     }
-    result.splice(0, 1);
+    result;
     return result.reverse();
   }
 
@@ -128,7 +129,7 @@ const WeekPage = () => {
             <p>QUIZ OF THIS WEEK</p>
           </div>
           <div className={weekPageSubtitleDate}>
-            <p>{`${date.getMonth() + 1}/${date.getDate()} ~ ${day}`}</p>
+            <p>{`${date.getMonth() + 1}/${date.getDate()} ~ ${lastDays.getDate()}`}</p>
           </div>
         </div>
 
