@@ -7,18 +7,21 @@
   position: absolute;
   top: 15px;
   transform: translate(-50%, -50%);
+  font-family: "BagelFatOne-Regular";
 
   z-index: 999;
 }
 .content h2:nth-child(1) {
-  color: transparent;
-  -webkit-text-stroke: 7px #dea1a162;
+  color: #dea1a162;
+  /* color: transparent; */
+  /* -webkit-text-stroke: 1px #dea1a162; */
   /* -webkit-text-stroke: 7px #ffffff83; */
 }
 .content h2:nth-child(2) {
-  color: rgba(158, 122, 86, 0.473);
   color: rgba(198, 176, 192, 0.356);
   color: rgba(247, 233, 242, 0.349);
+  color: rgba(219, 213, 241, 0.349);
+  color: #dea1a162;
   animation: animate 4s ease-in-out infinite;
 }
 

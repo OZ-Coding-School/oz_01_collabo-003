@@ -15,12 +15,14 @@ export const levelPageMainContainer = style({
 export const levelPageTopMenu = style({
   top: "0px",
   boxSizing: "border-box",
-  padding: "0px 50px 0px 150px",
-  alignItems: "flex-end",
+  padding: "25px 50px 0px 120px",
+  // alignItems: "flex-end",
+  alignItems: "center",
   height: "60px",
   display: "flex",
   justifyContent: "space-between",
   width: "100%",
+
   zIndex: 900,
 });
 
