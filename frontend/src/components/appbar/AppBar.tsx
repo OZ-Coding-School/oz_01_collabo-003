@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import useOnclickOutside from "../../hooks/useOnClickOutSide";
 import useAuthStore from "../../store/useAuth";
 import { nav } from "../../styles/AppBar.css";
 import {
@@ -20,7 +21,7 @@ const AppBar = () => {
   const [userFetchDate, setUserFetchDate] = useState<UserData | null>(null);
   const [isChecked, setIsChecked] = useState(false);
   const { userData, updateCount, setUserName } = useAuthStore();
-
+  const ref = useRef(null);
   const getUser = async () => {
     const data = await userData();
     setUserName(data.nickName);
@@ -47,8 +48,12 @@ const AppBar = () => {
     navigate("/");
   };
 
+  useOnclickOutside(ref, () => {
+    setIsChecked(false);
+  });
+
   return (
-    <div className="app_bar_main_container">
+    <div className="app_bar_main_container" >
       <div className={levelPageTopMenu}>
         {/* <img className={levelPageLogo} src="/images/logo.png" alt="로고" /> */}
         <p className='app_bar_logo' onClick={() => navigate('/')}>3 ENG</p>
@@ -65,7 +70,7 @@ const AppBar = () => {
           </p>
         </div>
       </div>
-      <div className={nav}>
+      <div className={nav} >
         <div className="container">
           <input type="checkbox" className="menu_icon_input" id="menu_icon" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
           <div className="menu_bar">
@@ -75,7 +80,7 @@ const AppBar = () => {
               <span className="menu_icon_bar"></span>
             </label>
           </div>
-          <div className="menu">
+          <div className="menu" ref={ref}>
             <div className="user_info">
               <div className="user_icon">
                 <img
