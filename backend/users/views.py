@@ -275,28 +275,29 @@ class GetUserAllScore(APIView):
         for i in range(7):
             # 해당 요일의 날짜 계산
             date_of_day = start_of_week + timedelta(days=i)
-            print(date_of_day.date())
-            # 해당 요일에 푼 문제들 중에서 5개 가져오기
-            quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day)[:5]
             
             # level에 따라 다른 데이터 가져오기
             if levelName == '초등학생':
-                quizzes_of_day = quizzes_of_day.filter(level='초등학생')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='초등학생')  
             elif levelName == '중학생':
-                quizzes_of_day = quizzes_of_day.filter(level='중학생')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='중학생')  
             elif levelName == '고등학생':
-                quizzes_of_day = quizzes_of_day.filter(level='고등학생')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='고등학생')  
             elif levelName == '원어민':
-                quizzes_of_day = quizzes_of_day.filter(level='원어민')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='원어민')  
             elif levelName == '토플':
-                quizzes_of_day = quizzes_of_day.filter(level='토플')  
-
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='토플')  
+            else:
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day)
+            
+            # 해당 요일에 푼 문제들 중에서 5개 가져오기
+            quizzes_of_day = quizzes_of_day[:5]
+            
             # 해당 요일에 푼 문제들의 점수 합 구하기
             total_score_of_day = quizzes_of_day.aggregate(total_score=Sum('score'))['total_score'] or 0
             # 해당 요일에 생성된 퀴즈 트라이 개수 구하기
             quiz_tries_of_day_count = QuizTry.objects.filter(user=user, createdAt__date=date_of_day).count()
-            # total_quizzes_of_day = quizzes_of_day.count()  # 해당 요일에 푼 문제 수
-            # total_score = total_score_of_day / total_quizzes_of_day if total_quizzes_of_day > 0 else 0  # 푼 문제 수가 0이면 0으로 설정
+            
             # 점수 합과 퀴즈 트라이 개수를 scores_and_quiz_tries_by_day 리스트에 추가
             scores_and_quiz_tries_by_day.append({
                 "day": date_of_day.strftime("%A"),  # 요일 문자열로 변환하여 추가
