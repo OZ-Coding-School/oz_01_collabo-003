@@ -278,15 +278,15 @@ class GetUserAllScore(APIView):
             
             # level에 따라 다른 데이터 가져오기
             if levelName == '초등학생':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='초등학생')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='초등학생')  
             elif levelName == '중학생':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='중학생')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='중학생')  
             elif levelName == '고등학생':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='고등학생')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='고등학생')  
             elif levelName == '원어민':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='원어민')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='원어민')  
             elif levelName == '토플':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, level='토플')  
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='토플')  
             else:
                 quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day)
             
