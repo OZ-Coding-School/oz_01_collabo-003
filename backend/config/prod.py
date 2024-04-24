@@ -1,7 +1,7 @@
 from .base import *
 
-DEBUG = False
-ALLOWED_HOSTS = ['https://3eng.store/']
+DEBUG = True
+ALLOWED_HOSTS = ['https://3eng.store/','3eng.store']
 
 DATABASES = {
     'default': {

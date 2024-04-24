@@ -16,17 +16,10 @@ class GptQuizAPIView(ListAPIView):
     serializer_class = GptQuestionAnswerDetailSerializer
     
     def get_queryset(self):
-        # 요청을 보낸 사용자의 아이디 가져오기
+        level = self.kwargs.get('level')
         user = self.request.user
-        
-        # GET 요청으로 전달된 quiz_try_id 가져오기
-        level = self.request.query_params.get('levelName')
-        
-        
-        # 중복되지 않는 퀴즈를 최대 5개까지 가져오기
-        user_quiz_questions = Quiz.objects.filter(quiz_try__user=user).values_list('question_id', flat=True)
+        user_quiz_questions = Quiz.objects.filter(user=user).values_list('question_id', flat=True)
         random_questions = GptQuestionAnswer.objects.filter(level=level).exclude(id__in=user_quiz_questions).order_by('?')[:5]
-        
         return random_questions
 
 

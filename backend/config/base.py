@@ -214,22 +214,22 @@ EMAIL_USE_TLS = True  # TLS 사용 여부 (SSL을 사용하는 경우 EMAIL_USE_
 EMAIL_HOST_USER = SECRET["EMAIL_HOST_USER"]  # SMTP 서버 계정 이메일
 EMAIL_HOST_PASSWORD = SECRET["EMAIL_HOST_PASSWORD"]  # SMTP 서버 계정 비밀번호
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': '/root/debug.log',  # 로그 파일의 경로와 이름을 지정합니다.
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/root/django/debug.log',  # 로그 파일의 경로와 이름을 지정합니다.
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
