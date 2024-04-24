@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { useHorizontalScroll3 } from "../hooks/useHorizontalScroll";
+import useAuthStore from "../store/useAuth";
 import {
   weekBackgroundImage01,
   weekBackgroundImage02,
@@ -31,7 +32,7 @@ interface ScoreData {
 
 const WeekPage = () => {
   const navigate = useNavigate();
-
+  const { levelName } = useAuthStore();
   const date = new Date();
   const lastDays = new Date(date.getTime() + 5 * 24 * 60 * 60 * 1000);
   // const day = lastDays.getDate();
@@ -45,54 +46,61 @@ const WeekPage = () => {
 
   const getUserScore = async () => {
     try {
-      const response = await axios.get('/api/v1/user/userscore/', {
+      const response = await axios.get("/api/v1/user/userscore/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        }
-      })
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       console.log("score", response);
       setScoreData(response.data.scores_and_quiz_tries_by_day);
     } catch (error) {
       console.log("week get 에러 : ", error);
     }
-  }
+  };
 
   useEffect(() => {
     getUserScore();
-  }, [])
-
+  }, []);
 
   const getDate = (): (string | DateObject)[] => {
-    const date = new Date()
+    const date = new Date();
     const oneWeekLater = new Date(date.getTime() + 6 * 24 * 60 * 60 * 1000);
-    const result: (string | DateObject)[] = []
+    const result: (string | DateObject)[] = [];
     const week = ["SUN", "MON", "TUE", "WED", "TUR", "FRI", "SAT"];
     for (let i = 0; i < 7; i++) {
-      const currentDate = new Date(oneWeekLater.getTime() - i * 24 * 60 * 60 * 1000);
+      const currentDate = new Date(
+        oneWeekLater.getTime() - i * 24 * 60 * 60 * 1000
+      );
       if (currentDate.getDay() === 0) continue;
       const formattedDate: DateObject = {
         day: week[currentDate.getDay()],
-        date: currentDate.toLocaleDateString().replace(/\./g, '').replace(/ /g, '/').replace('2024', ''),
+        date: currentDate
+          .toLocaleDateString()
+          .replace(/\./g, "")
+          .replace(/ /g, "/")
+          .replace("2024", ""),
         totalScore: 0,
         quizTryCount: 0,
         clickable: currentDate.getDay() === new Date().getDay(),
       };
-      const scoreDataForCurrentDate = scoreData.find((data) => data.day.toUpperCase().slice(0, 3) === formattedDate.day);
+      const scoreDataForCurrentDate = scoreData.find(
+        (data) => data.day.toUpperCase().slice(0, 3) === formattedDate.day
+      );
       if (scoreDataForCurrentDate) {
         formattedDate.totalScore = scoreDataForCurrentDate.total_score;
         formattedDate.quizTryCount = scoreDataForCurrentDate.quiz_try_count;
       }
-      result.push(formattedDate)
+      result.push(formattedDate);
     }
     result;
     return result.reverse();
-  }
+  };
 
   const handleGetData = async (day: string | DateObject) => {
-    const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+    const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
     const todayWeekDay = weekDays[new Date().getDay()];
     // 문자열인 경우 무시
-    if (typeof day === 'string') return;
+    if (typeof day === "string") return;
 
     // 클릭 가능하지 않은 경우 알림 표시
     if (!day.clickable) {
@@ -100,7 +108,7 @@ const WeekPage = () => {
       return;
     }
     try {
-      const response = await axios.get(`/api/v1/gpt/quiz/`, {
+      const response = await axios.get(`/api/v1/gpt/quiz//${levelName}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -138,13 +146,16 @@ const WeekPage = () => {
             <p>QUIZ OF THIS WEEK</p>
           </div>
           <div className={weekPageSubtitleDate}>
-            <p>{`${date.getMonth() + 1}/${date.getDate()} ~ ${lastDays.getDate()}`}</p>
+            <p>{`${
+              date.getMonth() + 1
+            }/${date.getDate()} ~ ${lastDays.getDate()}`}</p>
           </div>
         </div>
 
         <div className={weekSelectBoxContainer} ref={ref}>
           {getDate().map((day, index) => {
-            const dateObject = typeof day === 'string' ? { day: '', date: day } : day;
+            const dateObject =
+              typeof day === "string" ? { day: "", date: day } : day;
             return (
               <div
                 className={weekSelectBox}
@@ -158,7 +169,7 @@ const WeekPage = () => {
                   {/* <p>{dateObject.quizTryCount}</p> */}
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>

@@ -32,6 +32,7 @@ function QuizPage() {
   // const [answers, setAnswers] = useState<string[]>(quizs.map(() => ""));
   // const [feedback, setFeedback] = useState({});
   const { levelName } = useAuthStore();
+  console.log(levelName);
   useEffect(() => {
     setQuizs(location.state.data);
   }, [location.state.data]);
@@ -47,7 +48,7 @@ function QuizPage() {
       }
     });
   };
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   //다음문제
   const handleNextQuiz = () => {
     if (currentQuizIndex === quizs.length - 1) {
@@ -81,10 +82,11 @@ function QuizPage() {
     //문제 제출하는 로직
 
     async function FetchPostQuiz() {
+      console.log(levelName);
       setIsLoading(true);
       try {
         const request = await axios.post(
-          "/api/v1/quiz/",
+          `/api/v1/quiz/`,
           {
             quizLevel: levelName,
           },
@@ -94,14 +96,14 @@ function QuizPage() {
             },
           }
         );
+
         console.log(request.data.id);
         localStorage.setItem("id", request.data.id);
-        console.log('아이디', localStorage.setItem("id", request.data.id));
+        console.log("아이디", localStorage.setItem("id", request.data.id));
 
         if (request.status === 201) {
-
           localStorage.setItem("id", request.data.id);
-          const url = `/api/v1/gpt/feedback/${request.data.id}/`;
+          const url = `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`;
 
           const response = await axios.post(
             url,
@@ -118,12 +120,12 @@ function QuizPage() {
           );
           console.log(response.data);
           console.log(url);
-          console.log(response)
+          console.log(response);
           if (response.status === 201) {
             setIsLoading(false);
             console.log("문제,정답 보내기 성공!");
             // setFeedback(response.data);
-            navigate("/result", { state: { id: localStorage.getItem('id') } });
+            navigate("/result", { state: { id: localStorage.getItem("id") } });
             localStorage.setItem("feedback", JSON.stringify(response.data));
           } else if (response.status === 400) {
             console.log("문제,정답 보내기 실패");
@@ -131,6 +133,7 @@ function QuizPage() {
         }
       } catch (error) {
         console.log(error);
+        console.log(levelName);
       }
     }
     FetchPostQuiz();
@@ -144,46 +147,44 @@ function QuizPage() {
     // answers.current = updatedAnswers;
   };
   console.log(answers);
-  {
-
-    return (
-      <div className={quizContainer}>
-        {isLoading && <Loading />}
-        <div className={quizTitleContainer}>
-          <div>
-            <img
-              className={todayBg}
-              src="images/user_background_03.png"
-              alt="TodayQuizBg"
-            />
-          </div>
-          <p className={todayQuiz}>TODAY QUIZ</p>
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <div className={quizContainer}>
+      <div className={quizTitleContainer}>
+        <div>
+          <img
+            className={todayBg}
+            src="images/user_background_03.png"
+            alt="TodayQuizBg"
+          />
         </div>
-
-        <QuizInput
-          quizs={quizs}
-          currentQuizIndex={currentQuizIndex}
-          answers={answers}
-          setAnswers={setAnswers}
-          handleKeyDown={handleKeyDown}
-          handleAnswerChange={handleAnswerChange}
-        />
-
-        <div className={quizButtonDiv}>
-          <button
-            className={quizButton}
-            disabled={currentQuizIndex === 0}
-            onClick={handlePrevQuiz}
-          >
-            PREV
-          </button>
-
-          <button className={quizButton} onClick={handleNextQuiz}>
-            {currentQuizIndex === 4 ? " SUBMIT " : "NEXT"}
-          </button>
-        </div>
+        <p className={todayQuiz}>TODAY QUIZ</p>
       </div>
-    );
-  }
+
+      <QuizInput
+        quizs={quizs}
+        currentQuizIndex={currentQuizIndex}
+        answers={answers}
+        setAnswers={setAnswers}
+        handleKeyDown={handleKeyDown}
+        handleAnswerChange={handleAnswerChange}
+      />
+
+      <div className={quizButtonDiv}>
+        <button
+          className={quizButton}
+          disabled={currentQuizIndex === 0}
+          onClick={handlePrevQuiz}
+        >
+          PREV
+        </button>
+
+        <button className={quizButton} onClick={handleNextQuiz}>
+          {currentQuizIndex === 4 ? " SUBMIT " : "NEXT"}
+        </button>
+      </div>
+    </div>
+  );
 }
 export default QuizPage;

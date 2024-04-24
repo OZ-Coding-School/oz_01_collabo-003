@@ -16,14 +16,7 @@ import {
 // import './LevelPage.css';
 
 const LevelPage = () => {
-  const levelOneList = [
-    "초등학교",
-    "중학교",
-    "고등학교",
-    "토익",
-    "",
-    "프리토킹",
-  ];
+  const levelOneList = ["초등학생", "중학생", "고등학생", "토플", "", "원어민"];
   const navigate = useNavigate();
   const scrollRef = useHorizontalScroll();
   const scrollRef2 = useHorizontalScroll2();
@@ -31,7 +24,7 @@ const LevelPage = () => {
   const handlePostData = async (level: string) => {
     setLevelName(level);
     navigate(`/week/${level}`);
-  }
+  };
 
   return (
     <div>
