@@ -16,9 +16,9 @@ class GptQuizAPIView(ListAPIView):
     serializer_class = GptQuestionAnswerDetailSerializer
     
     def get_queryset(self):
-        level = self.kwargs.get('level')
+        level = self.kwargs.get('levelName')
         user = self.request.user
-        user_quiz_questions = Quiz.objects.filter(user=user).values_list('question_id', flat=True)
+        user_quiz_questions = Quiz.objects.filter(quiz_try__user=user).values_list('question_id', flat=True)
         random_questions = GptQuestionAnswer.objects.filter(level=level).exclude(id__in=user_quiz_questions).order_by('?')[:5]
         return random_questions
 
