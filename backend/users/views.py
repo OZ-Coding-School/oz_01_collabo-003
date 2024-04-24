@@ -291,7 +291,7 @@ class GetUserAllScore(APIView):
                 quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day)
             
             # 해당 요일에 푼 문제들 중에서 5개 가져오기
-            quizzes_of_day = quizzes_of_day[:5]
+            quizzes_of_day = quizzes_of_day
             
             # 해당 요일에 푼 문제들의 점수 합 구하기
             total_score_of_day = quizzes_of_day.aggregate(total_score=Sum('score'))['total_score'] or 0
