@@ -16,7 +16,14 @@ import {
 // import './LevelPage.css';
 
 const LevelPage = () => {
-  const levelOneList = ["초등학생", "중학생", "고등학생", "토플", "", "원어민"];
+  const levelOneList = [
+    "초등학생",
+    "중학생",
+    "고등학생",
+    "토플",
+    "3ENG",
+    "원어민",
+  ];
   const navigate = useNavigate();
   const scrollRef = useHorizontalScroll();
   const scrollRef2 = useHorizontalScroll2();
@@ -35,7 +42,9 @@ const LevelPage = () => {
           alt="배경이미지"
         />
         <div className={levelPageContainer}>
-          <h1 className={levelPageTitle}>Choose your level!</h1>
+          <h1 className={levelPageTitle} style={{ fontFamily: "Space Mono" }}>
+            Choose your level!
+          </h1>
           <div className={levelPageButtonContainer} ref={scrollRef}>
             <div className={levelPageButtonContainerOne} ref={scrollRef2}>
               {levelOneList.map((level, index) => (
@@ -43,7 +52,9 @@ const LevelPage = () => {
                   key={`menu_one${index}`}
                   number={index}
                   name={level}
-                  onClick={() => handlePostData(level)}
+                  onClick={
+                    index === 4 ? undefined : () => handlePostData(level)
+                  }
                 />
               ))}
             </div>

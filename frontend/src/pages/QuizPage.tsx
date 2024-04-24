@@ -52,6 +52,13 @@ function QuizPage() {
   //다음문제
   const handleNextQuiz = () => {
     if (currentQuizIndex === quizs.length - 1) {
+      // 현재 문제가 마지막 문제일 경우
+      const isAnswerEmpty = answers.some((answer) => answer === "");
+      if (isAnswerEmpty) {
+        // 답변이 하나라도 비어있을 경우
+        alert("답변을 모두 입력해주세요!");
+        return;
+      }
       const confirmSubmit = window.confirm(
         "마지막 문제입니다. 제출 하시겠습니까?"
       );
@@ -59,14 +66,7 @@ function QuizPage() {
         handlePostQuiz();
       }
     } else {
-      // setCurrentQuizIndex((prevIndex) => prevIndex + 1);
-      setCurrentQuizIndex((prevIndex) => {
-        if (prevIndex < quizs.length - 1) {
-          return prevIndex + 1;
-        } else {
-          return prevIndex;
-        }
-      });
+      setCurrentQuizIndex((prevIndex) => prevIndex + 1);
     }
   };
   const handlePostQuiz = () => {

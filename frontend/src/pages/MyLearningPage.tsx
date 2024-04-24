@@ -40,6 +40,7 @@ interface QuizItem {
   score: number;
   quiz_try: number;
   question: string;
+  gptanswer: string;
 }
 
 interface QuizDataItem {

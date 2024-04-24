@@ -46,12 +46,12 @@ const WeekPage = () => {
 
   const getUserScore = async () => {
     try {
-      const response = await axios.get("/api/v1/user/userscore/", {
+      const response = await axios.get(`/api/v1/user/userscore/${levelName}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log("score", response);
+      console.log("levelName", levelName), console.log("score", response);
       setScoreData(response.data.scores_and_quiz_tries_by_day);
     } catch (error) {
       console.log("week get 에러 : ", error);
@@ -86,10 +86,13 @@ const WeekPage = () => {
       const scoreDataForCurrentDate = scoreData.find(
         (data) => data.day.toUpperCase().slice(0, 3) === formattedDate.day
       );
+
       if (scoreDataForCurrentDate) {
-        formattedDate.totalScore = scoreDataForCurrentDate.total_score;
         formattedDate.quizTryCount = scoreDataForCurrentDate.quiz_try_count;
+        formattedDate.totalScore = scoreDataForCurrentDate.total_score;
+        console.log(formattedDate.totalScore);
       }
+
       result.push(formattedDate);
     }
     result;
@@ -143,10 +146,10 @@ const WeekPage = () => {
       <div className={weekMainContentContainer}>
         <div className={weekPageTitleContainer}>
           <div className={weekPageTitle}>
-            <p>QUIZ OF THIS WEEK</p>
+            <p style={{ fontFamily: "Space Mono" }}>QUIZ OF THIS WEEK</p>
           </div>
           <div className={weekPageSubtitleDate}>
-            <p>{`${
+            <p style={{ fontFamily: "Space Mono" }}>{`${
               date.getMonth() + 1
             }/${date.getDate()} ~ ${lastDays.getDate()}`}</p>
           </div>
