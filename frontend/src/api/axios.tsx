@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: "/rul",
+  baseURL: "/url",
   headers: {
     "Content-Type": "application/json",
   },
