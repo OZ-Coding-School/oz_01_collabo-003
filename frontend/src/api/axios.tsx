@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: "http://www.3eng.store/",
+  baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,7 +11,7 @@ const request = axios.create({
 const refreshToken = async () => {
   try {
     const response = await axios.post(
-      "http://www.3eng.store/api/v1/user/auth/refresh/",
+      "/api/api/v1/user/auth/refresh/",
       {
         refresh: localStorage.getItem("refreshToken"),
       }
