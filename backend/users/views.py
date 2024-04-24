@@ -258,14 +258,11 @@ class DeactivateUserAPIView(APIView):
     
     
 class GetUserAllScore(APIView):
-    def get(self, request):
+    def get(self, request, levelName):
         try:
             user = User.objects.get(id=request.user.id)
         except User.DoesNotExist:
             return Response({"message": "유저가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
-        
-        # 클라이언트에서 전달한 level 매개변수 가져오기
-        level = request.query_params.get('levelName')
 
         # 현재 날짜 가져오기
         current_date = datetime.now()
@@ -283,15 +280,15 @@ class GetUserAllScore(APIView):
             quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day)[:5]
             
             # level에 따라 다른 데이터 가져오기
-            if level == '초등학생':
+            if levelName == '초등학생':
                 quizzes_of_day = quizzes_of_day.filter(level='초등학생')  
-            elif level == '중학생':
+            elif levelName == '중학생':
                 quizzes_of_day = quizzes_of_day.filter(level='중학생')  
-            elif level == '고등학생':
+            elif levelName == '고등학생':
                 quizzes_of_day = quizzes_of_day.filter(level='고등학생')  
-            elif level == '원어민':
+            elif levelName == '원어민':
                 quizzes_of_day = quizzes_of_day.filter(level='원어민')  
-            elif level == '토플':
+            elif levelName == '토플':
                 quizzes_of_day = quizzes_of_day.filter(level='토플')  
 
             # 해당 요일에 푼 문제들의 점수 합 구하기
