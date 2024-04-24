@@ -282,12 +282,13 @@ class GetUserAllScore(APIView):
             total_score_of_day = quizzes_of_day.aggregate(total_score=Sum('score'))['total_score'] or 0
             # 해당 요일에 생성된 퀴즈 트라이 개수 구하기
             quiz_tries_of_day_count = QuizTry.objects.filter(user=user, createdAt__date=date_of_day).count()
-            # print(QuizSerializer(quizzes_of_day, many=True).data)
+            total_quizzes_of_day = quizzes_of_day.count()  # 해당 요일에 푼 문제 수
+            total_score = total_score_of_day / total_quizzes_of_day if total_quizzes_of_day > 0 else 0  # 푼 문제 수가 0이면 0으로 설정
             # 점수 합과 퀴즈 트라이 개수를 scores_and_quiz_tries_by_day 리스트에 추가
             scores_and_quiz_tries_by_day.append({
                 "day": date_of_day.strftime("%A"),  # 요일 문자열로 변환하여 추가
                 "day_": date_of_day.strftime("%m/%d"),
-                "total_score": total_score_of_day / quizzes_of_day.count() or 0,
+                "total_score": total_score,
                 "quiz_try_count": quiz_tries_of_day_count,
                 "quizzes": QuizSerializer(quizzes_of_day, many=True).data  # 해당 요일에 푼 퀴즈들도 추가
             })
