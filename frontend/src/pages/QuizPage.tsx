@@ -93,8 +93,8 @@ function QuizPage() {
         );
 
         console.log(request.data.id);
-        localStorage.setItem("id", request.data.id);
         if (request.status === 201) {
+          localStorage.setItem("id", request.data.id);
           const url = `/api/v1/gpt/feedback/${request.data.id}/`;
 
           const response = await axios.post(
@@ -112,11 +112,11 @@ function QuizPage() {
           );
           console.log(response.data);
           console.log(url);
-
-          if (response.status === 200) {
+          console.log(response)
+          if (response.status === 201) {
             console.log("문제,정답 보내기 성공!");
             setFeedback(response.data);
-            navigate("/result");
+            navigate("/result", { state: { id: localStorage.getItem('id') } });
             localStorage.setItem("feedback", JSON.stringify(response.data));
           } else if (response.status === 400) {
             console.log("문제,정답 보내기 실패");
@@ -127,7 +127,6 @@ function QuizPage() {
       }
     }
     FetchPostQuiz();
-    navigate("/result", { state: feedback });
   };
   const handleKeyDown = handleSubmitKeyPress(handleNextQuiz);
   const handleAnswerChange = (index: number, answer: string) => {

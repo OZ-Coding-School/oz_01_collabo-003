@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { quizTitleContainer } from "../styles/QuizStyle.css";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import {
   FlippedContainer,
@@ -26,7 +26,8 @@ import {
 
 function ResultPage() {
 
-
+  const location = useLocation();
+  console.log(location.state.id);
   interface result {
     id: number;
     answer: string;
@@ -36,7 +37,7 @@ function ResultPage() {
     category: number;
   }
   const [result, setResult] = useState<result[]>([]);
-  const [count, setCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [isFlipped, setIsFlipped] = useState(false);
   const totalScore = result.reduce((accumulator, currentResult) => {
     return accumulator + currentResult.score;
@@ -49,7 +50,7 @@ function ResultPage() {
   };
   const handleGetResult = () => {
     async function FetchGetResult() {
-      const url = `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`;
+      const url = `/api/v1/gpt/feedback/${location.state.id}/`;
       try {
         const response = await axios.get(
           url,
@@ -62,8 +63,8 @@ function ResultPage() {
         console.log(response.data);
         if (response.status === 200) {
           console.log("결과 가져오기 성공!");
-          setCount(prev => prev + 1);
           setResult(response.data);
+          setIsLoading(false);
         } else if (response.status === 400) {
           console.log("결과 가져오기 실패");
         }
@@ -76,13 +77,10 @@ function ResultPage() {
   };
 
   useEffect(() => {
-    if (count === 1) {
-      handleGetResult();
-    } else {
-      return;
-    }
-  }, [count]);
+    handleGetResult();
+  }, []);
 
+  if (isLoading) return <div>로딩중...</div>;
   return (
     <div className={resultContainer}>
       <div>
