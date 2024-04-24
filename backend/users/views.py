@@ -287,7 +287,7 @@ class GetUserAllScore(APIView):
             scores_and_quiz_tries_by_day.append({
                 "day": date_of_day.strftime("%A"),  # 요일 문자열로 변환하여 추가
                 "day_": date_of_day.strftime("%m/%d"),
-                "total_score": total_score_of_day / quizzes_of_day.count(),
+                "total_score": total_score_of_day / quizzes_of_day.count() or 0,
                 "quiz_try_count": quiz_tries_of_day_count,
                 "quizzes": QuizSerializer(quizzes_of_day, many=True).data  # 해당 요일에 푼 퀴즈들도 추가
             })
