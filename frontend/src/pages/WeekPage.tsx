@@ -34,14 +34,12 @@ const WeekPage = () => {
   const navigate = useNavigate();
   const { levelName } = useAuthStore();
   const date = new Date();
-  const lastDays = new Date(date.getTime() + 5 * 24 * 60 * 60 * 1000);
-  // const day = lastDays.getDate();
-  const lastDayOfWeek = lastDays.getDay(); // 토요일이 6, 일요일이 0
-  const daysToAdd = lastDayOfWeek === 0 ? 1 : 0; // 일요일인 경우에만 하루를 더해줌
-  lastDays.setDate(lastDays.getDate() + daysToAdd);
-  const todayWeak = date.getDay();
+  const today = date.getDay(); // 현재 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+  const monday = new Date(date); // 현재 날짜를 복제하여 월요일로 설정
+  monday.setDate(monday.getDate() - today + 1); // 월요일로 설정
+  const lastDays = new Date(monday.getTime() + 6 * 24 * 60 * 60 * 1000); // 다음 일요일까지의 날짜 계산
   const [scoreData, setScoreData] = useState<ScoreData[]>([]);
-  console.log("todayWeak", todayWeak);
+  console.log("todayWeek", today);
   const ref = useHorizontalScroll3();
 
   const getUserScore = async () => {
@@ -63,17 +61,12 @@ const WeekPage = () => {
   }, []);
 
   const getDate = (): (string | DateObject)[] => {
-    const date = new Date();
-    const oneWeekLater = new Date(date.getTime() + 6 * 24 * 60 * 60 * 1000);
     const result: (string | DateObject)[] = [];
-    const week = ["SUN", "MON", "TUE", "WED", "TUR", "FRI", "SAT"];
+    const week = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]; // 월요일부터 시작하도록 수정
     for (let i = 0; i < 7; i++) {
-      const currentDate = new Date(
-        oneWeekLater.getTime() - i * 24 * 60 * 60 * 1000
-      );
-      if (currentDate.getDay() === 0) continue;
+      const currentDate = new Date(monday.getTime() + i * 24 * 60 * 60 * 1000);
       const formattedDate: DateObject = {
-        day: week[currentDate.getDay()],
+        day: week[i],
         date: currentDate
           .toLocaleDateString()
           .replace(/\./g, "")
@@ -81,7 +74,7 @@ const WeekPage = () => {
           .replace("2024", ""),
         totalScore: 0,
         quizTryCount: 0,
-        clickable: currentDate.getDay() === new Date().getDay(),
+        clickable: currentDate.getDay() === today,
       };
       const scoreDataForCurrentDate = scoreData.find(
         (data) => data.day.toUpperCase().slice(0, 3) === formattedDate.day
@@ -95,13 +88,13 @@ const WeekPage = () => {
 
       result.push(formattedDate);
     }
-    result;
-    return result.reverse();
+    return result;
   };
 
   const handleGetData = async (day: string | DateObject) => {
-    const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
-    const todayWeekDay = weekDays[new Date().getDay()];
+    const todayWeekDay = ["일", "월", "화", "수", "목", "금", "토"][
+      new Date().getDay()
+    ];
     // 문자열인 경우 무시
     if (typeof day === "string") return;
 
@@ -150,8 +143,8 @@ const WeekPage = () => {
           </div>
           <div className={weekPageSubtitleDate}>
             <p style={{ fontFamily: "Space Mono" }}>{`${
-              date.getMonth() + 1
-            }/${date.getDate()} ~ ${lastDays.getDate()}`}</p>
+              monday.getMonth() + 1
+            }/${monday.getDate()} ~ ${lastDays.getDate()}`}</p>
           </div>
         </div>
 
