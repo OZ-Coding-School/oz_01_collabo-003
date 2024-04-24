@@ -30,6 +30,7 @@ const LevelPage = () => {
   const { setLevelName } = useAuthStore();
   const handlePostData = async (level: string) => {
     setLevelName(level);
+    localStorage.setItem("level", level);
     navigate(`/week/${level}`);
   };
 

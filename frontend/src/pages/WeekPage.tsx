@@ -44,7 +44,7 @@ const WeekPage = () => {
 
   const getUserScore = async () => {
     try {
-      const response = await axios.get(`/api/v1/user/userscore/${levelName}`, {
+      const response = await axios.get(`/api/v1/user/userscore/${localStorage.getItem('level')}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -142,9 +142,8 @@ const WeekPage = () => {
             <p style={{ fontFamily: "Space Mono" }}>QUIZ OF THIS WEEK</p>
           </div>
           <div className={weekPageSubtitleDate}>
-            <p style={{ fontFamily: "Space Mono" }}>{`${
-              monday.getMonth() + 1
-            }/${monday.getDate()} ~ ${lastDays.getDate()}`}</p>
+            <p style={{ fontFamily: "Space Mono" }}>{`${monday.getMonth() + 1
+              }/${monday.getDate()} ~ ${lastDays.getDate()}`}</p>
           </div>
         </div>
 
