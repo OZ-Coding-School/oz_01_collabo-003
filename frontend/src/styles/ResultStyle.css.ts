@@ -83,8 +83,9 @@ export const resultBackground = style({
   height: "400px",
   position: "absolute",
   borderRadius: "30px",
-  background:
-    "radial-gradient(circle, rgba(121,130,232,0.77) 0%, rgba(179,185,255,0.57)70%)",
+  // background:
+  //   "radial-gradient(circle, rgba(121,130,232,0.77) 0%, rgba(179,185,255,0.57)70%)",
+  background: "#b3b9ff91;",
   filter: "blur(2.5px)",
 });
 export const front = style({
