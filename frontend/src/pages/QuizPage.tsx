@@ -77,7 +77,7 @@ function QuizPage() {
           }
         );
         if (request.status === 201) {
-          const url = `/api/v1/gpt/feedback/${localStorage.getItem(request.data.id)}/`;
+          const url = `/api/v1/gpt/feedback/${request.data.id}/`;
           const response = await axios.post(
             url,
             {
