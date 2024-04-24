@@ -11,7 +11,6 @@ import {
 
 import { useState } from "react";
 import axios from "../api/axios";
-import { handleSubmitKeyPress } from "../utils/keyDownHandler";
 import Input from "./Input";
 
 type Props = {
@@ -87,7 +86,7 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
     }
   };
   // 비밀번호에서 엔터 키 누르면 회원가입 버튼 눌림
-  const handlePasswordConfirmKeyDown = handleSubmitKeyPress(handleLogin);
+  // const handlePasswordConfirmKeyDown = handleSubmitKeyPress(handleLogin);
   return (
     <div className={signInContainer} data-signin={signin}>
       <form className={formContainer} onSubmit={handleLogin}>
@@ -106,7 +105,7 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
           value={logInPw}
           onChange={(e) => setLogInPw(e.target.value)}
           required
-          onKeyDown={handlePasswordConfirmKeyDown}
+        // onKeyDown={handlePasswordConfirmKeyDown}
         >
           Password
         </Input>
