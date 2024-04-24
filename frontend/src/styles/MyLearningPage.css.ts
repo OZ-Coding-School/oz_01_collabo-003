@@ -266,7 +266,7 @@ export const myLearningPageContentComponent = style({
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  width: "576px",
+  width: "40%",
   height: "100%",
   padding: "80px 40px",
   borderRadius: "50px",
@@ -275,8 +275,9 @@ export const myLearningPageContentComponent = style({
   boxShadow: "0 2px 5px 0 rgba(0, 0, 0, 0.1)",
   zIndex: 999,
   "@media": {
-    "screen and (max-width: 1540px)": {
+    "screen and (max-width: 1350px)": {
       position: "absolute",
+      width: "570px",
       top: "0",
       left: "50%",
       transform: "translateX(-50%)",
