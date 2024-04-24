@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import QuizInput from "../components/QuizInput";
+import useAuthStore from "../store/useAuth";
 import {
   quizButton,
   quizButtonDiv,
@@ -28,7 +29,7 @@ function QuizPage() {
   const answers = useRef<string[]>(Array(5).fill(""));
   const [quizs, setQuizs] = useState<QuizDetail[]>([]);
   const [feedback, setFeedback] = useState({});
-
+  const { levelName } = useAuthStore();
   useEffect(() => {
     setQuizs(location.state.data);
   }, [location.state.data]);
@@ -61,15 +62,13 @@ function QuizPage() {
       quizs.map((quiz) => quiz.id)
     );
     //문제 제출하는 로직
+
     async function FetchPostQuiz() {
-      const url = `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`;
       try {
-        const response = await axios.post(
-          url,
+        const request = await axios.post(
+          "/api/v1/quiz/",
           {
-            question: quizs.map((quiz) => quiz.question),
-            answer: answers,
-            orderNum: quizs.map((quiz) => quiz.id),
+            quizLevel: levelName,
           },
           {
             headers: {
@@ -77,27 +76,43 @@ function QuizPage() {
             },
           }
         );
-        console.log(response.data);
-        console.log(url);
+        if (request.status === 201) {
+          const url = `/api/v1/gpt/feedback/${localStorage.getItem(request.data.id)}/`;
+          const response = await axios.post(
+            url,
+            {
+              question: quizs.map((quiz) => quiz.question),
+              answer: answers,
+              orderNum: quizs.map((quiz) => quiz.id),
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          );
+          console.log(response.data);
+          console.log(url);
 
-        if (response.status === 200) {
-          console.log("문제,정답 보내기 성공!");
-          setFeedback(response.data);
-          navigate("/result");
-          localStorage.setItem("feedback", JSON.stringify(response.data));
-        } else if (response.status === 400) {
-          console.log("문제,정답 보내기 실패");
+          if (response.status === 200) {
+            console.log("문제,정답 보내기 성공!");
+            setFeedback(response.data);
+            navigate("/result");
+            localStorage.setItem("feedback", JSON.stringify(response.data));
+          } else if (response.status === 400) {
+            console.log("문제,정답 보내기 실패");
+          }
         }
+
       } catch (error) {
         console.log(error);
-        console.log(url);
       }
     }
     FetchPostQuiz();
     navigate("/result", { state: feedback });
   };
   const handleKeyDown = handleSubmitKeyPress(handleNextQuiz);
- 
+
   {
     return (
       <div className={quizContainer}>

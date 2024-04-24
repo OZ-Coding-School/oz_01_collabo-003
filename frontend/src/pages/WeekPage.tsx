@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { useHorizontalScroll3 } from "../hooks/useHorizontalScroll";
 import {
@@ -41,8 +41,6 @@ const WeekPage = () => {
   const todayWeak = date.getDay();
   const [scoreData, setScoreData] = useState<ScoreData[]>([]);
   console.log("todayWeak", todayWeak);
-  const location = useLocation();
-  console.log("location", location.state.data);
   const ref = useHorizontalScroll3();
 
   const getUserScore = async () => {
@@ -113,7 +111,6 @@ const WeekPage = () => {
         navigate("/quiz", {
           state: {
             data: response.data,
-            id: location.state.data,
             day: day,
           },
         });

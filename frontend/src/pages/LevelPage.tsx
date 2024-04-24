@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import axios from "../api/axios";
 import LevelSelectButtonOne from "../components/levelpagebutton/LevelSelectButtonOne";
 import {
   useHorizontalScroll,
   useHorizontalScroll2,
 } from "../hooks/useHorizontalScroll";
+import useAuthStore from "../store/useAuth";
 import {
   levelPageBackgroundImage,
   levelPageButtonContainer,
@@ -27,34 +27,11 @@ const LevelPage = () => {
   const navigate = useNavigate();
   const scrollRef = useHorizontalScroll();
   const scrollRef2 = useHorizontalScroll2();
-
+  const { setLevelName } = useAuthStore();
   const handlePostData = async (level: string) => {
-    try {
-      const response = await axios.post(
-        "/api/v1/quiz/",
-        {
-          quizLevel: level,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
-      console.log("level", response);
-      localStorage.setItem("id", response.data.id);
-      if (response.status === 201) {
-        navigate(`/week/${level}`, {
-          state: {
-            level,
-            data: response.data.id,
-          },
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    setLevelName(level);
+    navigate(`/week/${level}`);
+  }
 
   return (
     <div>
