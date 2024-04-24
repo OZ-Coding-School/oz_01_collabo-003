@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import Loading from "../components/Loading";
 import QuizInput from "../components/QuizInput";
 import useAuthStore from "../store/useAuth";
 import {
@@ -46,6 +47,7 @@ function QuizPage() {
       }
     });
   };
+  const [isLoading, setIsLoading] = useState(false);
   //다음문제
   const handleNextQuiz = () => {
     if (currentQuizIndex === quizs.length - 1) {
@@ -79,6 +81,7 @@ function QuizPage() {
     //문제 제출하는 로직
 
     async function FetchPostQuiz() {
+      setIsLoading(true);
       try {
         const request = await axios.post(
           "/api/v1/quiz/",
@@ -94,7 +97,9 @@ function QuizPage() {
         console.log(request.data.id);
         localStorage.setItem("id", request.data.id);
         console.log('아이디', localStorage.setItem("id", request.data.id));
+
         if (request.status === 201) {
+
           localStorage.setItem("id", request.data.id);
           const url = `/api/v1/gpt/feedback/${request.data.id}/`;
 
@@ -115,6 +120,7 @@ function QuizPage() {
           console.log(url);
           console.log(response)
           if (response.status === 201) {
+            setIsLoading(false);
             console.log("문제,정답 보내기 성공!");
             // setFeedback(response.data);
             navigate("/result", { state: { id: localStorage.getItem('id') } });
@@ -139,8 +145,10 @@ function QuizPage() {
   };
   console.log(answers);
   {
+
     return (
       <div className={quizContainer}>
+        {isLoading && <Loading />}
         <div className={quizTitleContainer}>
           <div>
             <img
