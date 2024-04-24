@@ -79,7 +79,7 @@ const AppBar = () => {
             onChange={() => setIsChecked(!isChecked)}
           />
           <div className="menu_bar">
-            <label htmlFor="menu_icon" className="menu_icon">
+            <label htmlFor="menu_icon" className="menu_icon" ref={ref}>
               <span className="menu_icon_bar"></span>
               <span className="menu_icon_bar"></span>
               <span className="menu_icon_bar"></span>
