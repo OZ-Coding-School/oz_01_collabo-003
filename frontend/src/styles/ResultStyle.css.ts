@@ -142,17 +142,59 @@ export const FlippedContainer = style({
   overflowY: "scroll",
   overflowX: "hidden",
   width: "100%",
-  textAlign: "center",
-  height: "280px",
+  textAlign: "left",
+  height: "70%",
+
   zIndex: 999,
   position: "absolute",
   top: "30px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
 });
 export const qiuzDiv = style({
   textAlign: "center",
   marginBottom: "2rem",
+  width: "80%",
+  position: "relative",
+  background: "#ffffff5d",
+  // border: "1px solid #647BDF",
+  borderRadius: "30px",
+  padding: "10px",
 });
+export const resultNum = style({
+  width: "60%",
+  fontSize: "1.2rem",
 
+  margin: "0 auto 10px auto",
+  background: "white",
+  // border: "1px solid #647BDF",
+  borderRadius: "10px",
+});
+export const border = style({
+  // width: "80%",
+  borderTop: "1px solid #4a4444",
+  marginTop: "5px",
+  marginBottom: "10px",
+  position: "absolute",
+  bottom: -30,
+  left: "50%",
+  transform: "translateX(-50%)",
+});
+export const resultAnswer = style({
+  width: "70%",
+  margin: "auto",
+  display: "flex",
+  textAlign: "left",
+});
+export const resultMargin = style({
+  width: "30%",
+  textAlign: "center",
+  marginBottom: "10px",
+});
+export const feedBack = style({
+  width: "70%",
+});
 export const resultButtonDiv = style({
   position: "relative",
   top: -80,
@@ -160,6 +202,7 @@ export const resultButtonDiv = style({
   display: "flex",
   justifyContent: "space-evenly",
 });
+
 export const resultAgainButton = style({
   position: "relative",
   zIndex: 1000,
@@ -177,12 +220,3 @@ export const resultDetailButton = style([
   resultAgainButton,
   { border: "2px solid #647BDF", backgroundColor: "white", color: "#647BDF" },
 ]);
-
-// export const resultDogImg = style({
-//   position: "absolute",
-//   zIndex: 999,
-//   transform: "rotate(5deg)",
-//   width: "350px",
-//   top: -180,
-//   left: 530,
-// });

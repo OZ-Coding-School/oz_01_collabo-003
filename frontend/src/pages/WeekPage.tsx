@@ -44,11 +44,14 @@ const WeekPage = () => {
 
   const getUserScore = async () => {
     try {
-      const response = await axios.get(`/api/v1/user/userscore/${localStorage.getItem('level')}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      const response = await axios.get(
+        `/api/v1/user/userscore/${localStorage.getItem("level")}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
       console.log("levelName", levelName), console.log("score", response);
       setScoreData(response.data.scores_and_quiz_tries_by_day);
     } catch (error) {
@@ -62,8 +65,8 @@ const WeekPage = () => {
 
   const getDate = (): (string | DateObject)[] => {
     const result: (string | DateObject)[] = [];
-    const week = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]; // 월요일부터 시작하도록 수정
-    for (let i = 0; i < 7; i++) {
+    const week = ["MON", "TUE", "WED", "THU", "FRI", "SAT"]; // 월요일부터 시작하도록 수정
+    for (let i = 0; i < 6; i++) {
       const currentDate = new Date(monday.getTime() + i * 24 * 60 * 60 * 1000);
       const formattedDate: DateObject = {
         day: week[i],
@@ -100,7 +103,7 @@ const WeekPage = () => {
 
     // 클릭 가능하지 않은 경우 알림 표시
     if (!day.clickable) {
-      alert(`${todayWeekDay}요일이 아닙니다.`);
+      alert(`오늘은 ${todayWeekDay}요일 입니다!`);
       return;
     }
     try {
@@ -142,8 +145,9 @@ const WeekPage = () => {
             <p style={{ fontFamily: "Space Mono" }}>QUIZ OF THIS WEEK</p>
           </div>
           <div className={weekPageSubtitleDate}>
-            <p style={{ fontFamily: "Space Mono" }}>{`${monday.getMonth() + 1
-              }/${monday.getDate()} ~ ${lastDays.getDate()}`}</p>
+            <p style={{ fontFamily: "Space Mono" }}>{`${
+              monday.getMonth() + 1
+            }/${monday.getDate()} ~ ${lastDays.getDate()}`}</p>
           </div>
         </div>
 

@@ -6,18 +6,23 @@ import axios from "../api/axios";
 import {
   FlippedContainer,
   back,
+  border,
   card,
+  feedBack,
   flip,
   flipped,
   front,
   qiuzDiv,
   resultAgainButton,
+  resultAnswer,
   resultBackground,
   resultBg,
   resultButtonDiv,
   resultCongratulation,
   resultContainer,
   resultDetailButton,
+  resultMargin,
+  resultNum,
   resultPageDetail,
   resultScoreBox,
   score,
@@ -37,12 +42,13 @@ function ResultPage() {
     gptanswer: string;
   }
   const [result, setResult] = useState<result[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); //고치기
   const [isFlipped, setIsFlipped] = useState(false);
+  
   const totalScore = result.reduce((accumulator, currentResult) => {
     return accumulator + currentResult.score;
   }, 0);
-
+  console.log(result);
   const navigate = useNavigate();
 
   const handleDetailButtonClick = () => {
@@ -110,12 +116,25 @@ function ResultPage() {
               </div>
               <div className={back}>
                 <div className={FlippedContainer}>
-                  {result.map((item, index) => (
+                  {result.map((item, index: number) => (
                     <div className={qiuzDiv} key={index}>
-                      <p>{item.category}</p>
-                      <p>답변: {item.answer}</p>
-                      <p>정답: {item.gptanswer}</p>
-                      <p>피드백:{item.feedback}</p>
+                      <p className={resultNum}>문제{index + 1}</p>
+
+                      {/* <p>{item.category}</p> */}
+                      <p className={resultAnswer}>
+                        <span className={resultMargin}>답 &nbsp; 변:</span>{" "}
+                        <span className={feedBack}>{item.answer}</span>
+                      </p>
+                      <p className={resultAnswer}>
+                        <span className={resultMargin}>정 &nbsp; 답: </span>
+                        <span className={feedBack}> {item.gptanswer}</span>
+                      </p>
+                      <p className={resultAnswer}>
+                        {" "}
+                        <span className={resultMargin}>피드백:</span>
+                        <span className={feedBack}>{item.feedback}</span>
+                      </p>
+                      <p className={border}></p>
                     </div>
                   ))}
                 </div>

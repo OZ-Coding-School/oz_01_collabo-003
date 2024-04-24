@@ -201,7 +201,7 @@ export const levelPageButtonOne = style({
   },
   ":hover": {
     transform: "scale(1.08)",
-    // boxShadow: "5px 5px 0 0 #F4F8F1",
+    boxShadow: "5px 5px 0 0 #F4F8F1",
     backgroundColor: "#FEE5E5",
     // backgroundColor: "#FEF8D5",
   },

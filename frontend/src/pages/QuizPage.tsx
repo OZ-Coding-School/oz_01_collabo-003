@@ -147,44 +147,47 @@ function QuizPage() {
     // answers.current = updatedAnswers;
   };
   console.log(answers);
-  return isLoading ? (
-    <Loading />
-  ) : (
-    <div className={quizContainer}>
-      <div className={quizTitleContainer}>
-        <div>
-          <img
-            className={todayBg}
-            src="images/user_background_03.png"
-            alt="TodayQuizBg"
-          />
+
+  return (
+    <>
+      {isLoading && <Loading />}{" "}
+      {/* 로딩 중일 때만 Loading 컴포넌트를 표시합니다. */}
+      <div className={quizContainer}>
+        <div className={quizTitleContainer}>
+          <div>
+            <img
+              className={todayBg}
+              src="images/user_background_03.png"
+              alt="TodayQuizBg"
+            />
+          </div>
+          <p className={todayQuiz}>TODAY QUIZ</p>
         </div>
-        <p className={todayQuiz}>TODAY QUIZ</p>
+
+        <QuizInput
+          quizs={quizs}
+          currentQuizIndex={currentQuizIndex}
+          answers={answers}
+          setAnswers={setAnswers}
+          handleKeyDown={handleKeyDown}
+          handleAnswerChange={handleAnswerChange}
+        />
+
+        <div className={quizButtonDiv}>
+          <button
+            className={quizButton}
+            disabled={currentQuizIndex === 0}
+            onClick={handlePrevQuiz}
+          >
+            PREV
+          </button>
+
+          <button className={quizButton} onClick={handleNextQuiz}>
+            {currentQuizIndex === 4 ? " SUBMIT " : "NEXT"}
+          </button>
+        </div>
       </div>
-
-      <QuizInput
-        quizs={quizs}
-        currentQuizIndex={currentQuizIndex}
-        answers={answers}
-        setAnswers={setAnswers}
-        handleKeyDown={handleKeyDown}
-        handleAnswerChange={handleAnswerChange}
-      />
-
-      <div className={quizButtonDiv}>
-        <button
-          className={quizButton}
-          disabled={currentQuizIndex === 0}
-          onClick={handlePrevQuiz}
-        >
-          PREV
-        </button>
-
-        <button className={quizButton} onClick={handleNextQuiz}>
-          {currentQuizIndex === 4 ? " SUBMIT " : "NEXT"}
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
 export default QuizPage;
