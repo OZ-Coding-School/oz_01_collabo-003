@@ -25,9 +25,7 @@ import {
 } from "../styles/ResultStyle.css";
 
 function ResultPage() {
-  useEffect(() => {
-    handleGetResult();
-  }, [localStorage.getItem("id")]);
+
 
   interface result {
     id: number;
@@ -37,8 +35,8 @@ function ResultPage() {
     score: number;
     category: number;
   }
-
   const [result, setResult] = useState<result[]>([]);
+  const [count, setCount] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const totalScore = result.reduce((accumulator, currentResult) => {
     return accumulator + currentResult.score;
@@ -55,7 +53,6 @@ function ResultPage() {
       try {
         const response = await axios.get(
           url,
-
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -63,11 +60,10 @@ function ResultPage() {
           }
         );
         console.log(response.data);
-
         if (response.status === 200) {
           console.log("결과 가져오기 성공!");
+          setCount(prev => prev + 1);
           setResult(response.data);
-          console.log(url);
         } else if (response.status === 400) {
           console.log("결과 가져오기 실패");
         }
@@ -78,6 +74,15 @@ function ResultPage() {
     }
     FetchGetResult();
   };
+
+  useEffect(() => {
+    if (count === 1) {
+      handleGetResult();
+    } else {
+      return;
+    }
+  }, [count]);
+
   return (
     <div className={resultContainer}>
       <div>

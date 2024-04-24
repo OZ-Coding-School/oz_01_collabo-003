@@ -138,9 +138,9 @@ const MyLearningPage = () => {
                   const formattedDate = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
                   return (
                     <div key={index} className={learningBox01Content} data-click={selectedDataIndex === index ? isClicked : null} onClick={(e) => handleCheckAndGetData(e, data, index)}>
-                      <p>{`${formattedDate}|`}</p>
-                      <p>{data.quiz_try.quizLevel.replace("학교", "")}</p>
-                      <p>{`|${averageScore}점`}</p>
+                      <p>{`${formattedDate} | `}</p>
+                      <p>&nbsp;{data.quiz_try.quizLevel.replace("학교", "")}&nbsp;</p>
+                      <p>{`| ${averageScore}점`}</p>
                     </div>
                   )
                 })
