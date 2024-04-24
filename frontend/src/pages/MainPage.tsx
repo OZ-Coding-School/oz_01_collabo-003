@@ -22,7 +22,7 @@ function Main() {
             </div>
             <div>
               <div>새로운 퀴즈</div>
-            </div>
+            </div> 
             <div>
               <div>재밌는 공부</div>
             </div>

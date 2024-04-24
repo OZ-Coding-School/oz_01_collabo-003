@@ -26,7 +26,7 @@ import {
 
 function ResultPage() {
   useEffect(() => {
-    handleSubmit();
+    handleGetResult();
   }, []);
 
   interface result {
@@ -39,18 +39,18 @@ function ResultPage() {
   }
 
   const [result, setResult] = useState<result[]>([]);
+  const [isFlipped, setIsFlipped] = useState(false);
   const totalScore = result.reduce((accumulator, currentResult) => {
     return accumulator + currentResult.score;
   }, 0);
-  console.log(result);
-  const [isFlipped, setIsFlipped] = useState(false);
+
   const navigate = useNavigate();
 
   const handleDetailButtonClick = () => {
     setIsFlipped(!isFlipped);
   };
-  const handleSubmit = () => {
-    async function FetchPostQuiz() {
+  const handleGetResult = () => {
+    async function FetchGetResult() {
       const url = `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`;
       try {
         const response = await axios.get(
@@ -65,19 +65,18 @@ function ResultPage() {
         console.log(response.data);
 
         if (response.status === 200) {
-          console.log("문제,정답 보내기 성공!");
+          console.log("결과 가져오기 성공!");
           setResult(response.data);
-          localStorage.setItem("feedback", JSON.stringify(response.data));
           console.log(url);
         } else if (response.status === 400) {
-          console.log("문제,정답 보내기 실패");
+          console.log("결과 가져오기 실패");
         }
       } catch (error) {
         console.log(error);
         console.log(url);
       }
     }
-    FetchPostQuiz();
+    FetchGetResult();
   };
   return (
     <div className={resultContainer}>

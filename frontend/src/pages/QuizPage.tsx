@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import QuizInput from "../components/QuizInput";
@@ -25,9 +25,10 @@ function QuizPage() {
   const location = useLocation();
 
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
-  // const [answers, setAnswers] = useState<string[]>(Array(5).fill(""));
-  const answers = useRef<string[]>(Array(5).fill(""));
+  const [answers, setAnswers] = useState<string[]>(Array(5).fill(""));
+  // const answers = useRef<string[]>(Array(5).fill(""));
   const [quizs, setQuizs] = useState<QuizDetail[]>([]);
+  // const [answers, setAnswers] = useState<string[]>(quizs.map(() => ""));
   const [feedback, setFeedback] = useState({});
   const { levelName } = useAuthStore();
   useEffect(() => {
@@ -37,6 +38,13 @@ function QuizPage() {
   //이전문제
   const handlePrevQuiz = () => {
     setCurrentQuizIndex((prevIndex) => prevIndex - 1);
+    setCurrentQuizIndex((prevIndex) => {
+      if (prevIndex > 0) {
+        return prevIndex - 1;
+      } else {
+        return prevIndex;
+      }
+    });
   };
   //다음문제
   const handleNextQuiz = () => {
@@ -48,7 +56,14 @@ function QuizPage() {
         handlePostQuiz();
       }
     } else {
-      setCurrentQuizIndex((prevIndex) => prevIndex + 1);
+      // setCurrentQuizIndex((prevIndex) => prevIndex + 1);
+      setCurrentQuizIndex((prevIndex) => {
+        if (prevIndex < quizs.length - 1) {
+          return prevIndex + 1;
+        } else {
+          return prevIndex;
+        }
+      });
     }
   };
   const handlePostQuiz = () => {
@@ -112,7 +127,14 @@ function QuizPage() {
     navigate("/result", { state: feedback });
   };
   const handleKeyDown = handleSubmitKeyPress(handleNextQuiz);
-
+  const handleAnswerChange = (index: number, answer: string) => {
+    const updatedAnswers = [...answers];
+    // const updatedAnswers = [...answers.current];
+    updatedAnswers[index] = answer;
+    setAnswers(updatedAnswers);
+    // answers.current = updatedAnswers;
+  };
+  console.log(answers);
   {
     return (
       <div className={quizContainer}>
@@ -131,8 +153,9 @@ function QuizPage() {
           quizs={quizs}
           currentQuizIndex={currentQuizIndex}
           answers={answers}
+          setAnswers={setAnswers}
           handleKeyDown={handleKeyDown}
-
+          handleAnswerChange={handleAnswerChange}
         />
 
         <div className={quizButtonDiv}>

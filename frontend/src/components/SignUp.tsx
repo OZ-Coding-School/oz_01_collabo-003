@@ -9,7 +9,7 @@ import {
   title,
 } from "../styles/LoginStyle.css";
 import fetchValidation from "../utils/fetchValidation";
-import { handleEnterKeyPress, handleSubmitKeyPress } from "../utils/keyDownHandler";
+import { handleEnterKeyPress } from "../utils/keyDownHandler";
 import DuplicateInput from "./DuplicateInput";
 import Input from "./Input";
 type Props = {
@@ -170,7 +170,7 @@ function SignUp({ signin, setSignIn }: Props) {
   // 닉네임에서 엔터 키 누르면 중복확인
   const handleNickNamePress = handleEnterKeyPress(fetchNickNameDoubleCheck);
   // 비밀번호에서 엔터 키 누르면 회원가입 버튼 눌림
-  const handlePasswordConfirmKeyDown = handleSubmitKeyPress(handleFormSubmit);
+  // const handlePasswordConfirmKeyDown = handleSubmitKeyPress(handleFormSubmit);
 
   return (
     <div className={signUpContainer} data-signin={signin}>
@@ -217,7 +217,7 @@ function SignUp({ signin, setSignIn }: Props) {
             required
             ErrorMessage={passwordCheckMessage}
             onPaste={(e) => e.preventDefault()}
-            onKeyDown={handlePasswordConfirmKeyDown}
+            // onKeyDown={handlePasswordConfirmKeyDown}
           >
             Password Check
           </Input>

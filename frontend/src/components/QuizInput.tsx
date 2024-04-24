@@ -15,9 +15,10 @@ interface QuizDetail {
 interface QuizInputProps {
   quizs: QuizDetail[];
   currentQuizIndex: number;
-  answers: React.MutableRefObject<string[]>;
+  answers: string[];
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-
+  setAnswers: React.Dispatch<React.SetStateAction<string[]>>;
+  handleAnswerChange: (index: number, answer: string) => void;
 }
 
 function QuizInput({
@@ -25,7 +26,8 @@ function QuizInput({
   currentQuizIndex,
   answers,
   handleKeyDown,
-
+  // setAnswers,
+  handleAnswerChange,
 }: QuizInputProps) {
   return (
     <>
@@ -40,9 +42,10 @@ function QuizInput({
                 <div className={questionInput}>{quiz.question}</div>
                 <QuizAnswer
                   answers={answers}
+                  // setAnswers={setAnswers}
                   currentQuizIndex={currentQuizIndex}
                   handleKeyDown={handleKeyDown}
-
+                  handleAnswerChange={handleAnswerChange}
                 />
               </div>
             </div>

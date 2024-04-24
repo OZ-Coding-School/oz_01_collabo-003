@@ -9,10 +9,13 @@ export const handleEnterKeyPress = (
     }
   };
 };
-export const handleSubmitKeyPress = (callback: React.FormEventHandler) => {
+export const handleSubmitKeyPress = (
+  callback: (e: React.KeyboardEvent<HTMLInputElement>) => void
+) => {
   return (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      callback(e as unknown as React.MouseEvent<HTMLButtonElement, MouseEvent>);
+      e.preventDefault();
+      callback(e);
     }
   };
 };
