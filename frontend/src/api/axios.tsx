@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: "http://www.3eng.store/",
+  baseURL: "http://175.45.201.45",
   headers: {
     "Content-Type": "application/json",
   },
