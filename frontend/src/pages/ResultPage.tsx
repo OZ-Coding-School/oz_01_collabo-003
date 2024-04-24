@@ -27,7 +27,7 @@ import {
 function ResultPage() {
   useEffect(() => {
     handleGetResult();
-  }, []);
+  }, [localStorage.getItem("id")]);
 
   interface result {
     id: number;

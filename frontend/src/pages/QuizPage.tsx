@@ -91,8 +91,12 @@ function QuizPage() {
             },
           }
         );
+
+        console.log(request.data.id);
+        localStorage.setItem("id", request.data.id);
         if (request.status === 201) {
           const url = `/api/v1/gpt/feedback/${request.data.id}/`;
+
           const response = await axios.post(
             url,
             {
@@ -118,7 +122,6 @@ function QuizPage() {
             console.log("문제,정답 보내기 실패");
           }
         }
-
       } catch (error) {
         console.log(error);
       }
