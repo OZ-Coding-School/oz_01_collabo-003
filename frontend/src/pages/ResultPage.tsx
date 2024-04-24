@@ -50,7 +50,7 @@ function ResultPage() {
   };
   const handleGetResult = () => {
     async function FetchGetResult() {
-      const url = `/api/v1/gpt/feedback/${location.state.id}/`;
+      const url = `/api/v1/gpt/feedback/${location.state.id ? location.state.id : localStorage.getItem('id')}/`;
       try {
         const response = await axios.get(
           url,
