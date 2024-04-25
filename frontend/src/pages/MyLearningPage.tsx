@@ -245,7 +245,7 @@ const MyLearningPage = () => {
               </div>
               <div className={learningBox03TitleContainer}>
                 <p className={learningBox03Title}>평균점수</p>
-                <p className={learningBox03Title}>{averageScore}점</p>
+                <p className={learningBox03Title}>{averageScore ? averageScore : '0'}점</p>
               </div>
             </div>
           )}
