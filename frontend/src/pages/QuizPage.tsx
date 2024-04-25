@@ -126,7 +126,7 @@ function QuizPage() {
             console.log("문제,정답 보내기 성공!");
             // setFeedback(response.data);
             navigate("/result", { state: { id: localStorage.getItem("id") } });
-            localStorage.setItem("feedback", JSON.stringify(response.data));
+            // localStorage.setItem("feedback", JSON.stringify(response.data));
           } else if (response.status === 400) {
             console.log("문제,정답 보내기 실패");
           }

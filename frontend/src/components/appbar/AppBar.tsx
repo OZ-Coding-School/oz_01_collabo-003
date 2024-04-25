@@ -70,7 +70,7 @@ const AppBar = () => {
         </div>
       </div>
       <div className={nav}>
-        <div className="container">
+        <div className="container" ref={ref}>
           <input
             type="checkbox"
             className="menu_icon_input"
@@ -79,13 +79,13 @@ const AppBar = () => {
             onChange={() => setIsChecked(!isChecked)}
           />
           <div className="menu_bar">
-            <label htmlFor="menu_icon" className="menu_icon" ref={ref}>
+            <label htmlFor="menu_icon" className="menu_icon">
               <span className="menu_icon_bar"></span>
               <span className="menu_icon_bar"></span>
               <span className="menu_icon_bar"></span>
             </label>
           </div>
-          <div className="menu" ref={ref}>
+          <div className="menu">
             <div className="user_info">
               <div className="user_icon">
                 <img
