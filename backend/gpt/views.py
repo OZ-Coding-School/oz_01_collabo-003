@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from .manager import GptManager
 from .models import GptQuestionAnswer
@@ -40,8 +39,6 @@ class FeedbackView(APIView):
                 feedback_str = GptManager.generate_feedback(question, answer)
                 feedback = json.loads(feedback_str)
                 
-                # 피드백을 데이터베이스에 저장합니다.
-                # 여기서 quiz_try는 특정 유저의 quiz_try 인스턴스를 가져와야합니다.
                 # quiz_try_id에 해당하는 인스턴스를 가져오거나 새로 생성합니다.
                 quiz_try_instance = get_object_or_404(QuizTry, id=quiz_try_id)
                 

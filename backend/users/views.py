@@ -19,6 +19,8 @@ from django.db.models import Sum
 from datetime import datetime, timedelta
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.forms import SetPasswordForm
+
+
 # 회원가입 기능
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
@@ -31,6 +33,7 @@ class RegisterAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
+# 이메일 유효성 검사
 class EmailValidAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
@@ -42,6 +45,7 @@ class EmailValidAPIView(APIView):
             return Response({"message": "이메일이 정상입니다."}, status=status.HTTP_200_OK)
 
 
+# 닉네임 유효성 검사
 class NickNameValidAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
@@ -53,7 +57,6 @@ class NickNameValidAPIView(APIView):
             return Response({"message": "닉네임이 정상입니다."}, status=status.HTTP_200_OK)
 
 
-    
 # 로그인 기능
 class LoginAPIView(TokenObtainPairView):
     permission_classes = [AllowAny]
@@ -85,7 +88,6 @@ class LoginAPIView(TokenObtainPairView):
 # 로그아웃 기능  
 class LogoutAPIvie(APIView):
     def post(self, request):
-            # 토큰을 따로 DB에 저장을 안 하기 때문에 블랙리스트방식을 못 써서 클라이언트측에서 토큰을 삭제하는 방식으로 해야함
         return Response(
             {
                 "message": "로그아웃 성공",
@@ -94,7 +96,7 @@ class LogoutAPIvie(APIView):
         )
 
 
-# 유저 정보 업데이트
+# 유저 정보 업데이트/가져오기
 class MyInfo(APIView):
     def get(self, request):
         user = User.objects.get(id=request.user.id)   
@@ -111,7 +113,6 @@ class MyInfo(APIView):
             if 'nickname' in serializer.errors:
                 return Response({'error': 'Nickname already exists.'}, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 
 # refresh 토큰 재발급 커스텀 유효성 실패시 다시 발급 
@@ -139,7 +140,9 @@ class RefreshTokenView(APIView):
         except Exception as e:
             # refresh 토큰이 유효하지 않은 경우
             return Response({"message": f"유효하지 않는 토큰입니다{e}"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
+
+# 특정유저의 퀴즈 데이터 가져오기
 class GetUserDataAPIView(APIView):
     def get(self, request):
         try:
@@ -180,8 +183,9 @@ class GetUserDataAPIView(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
-    
 
+
+# 비밀번호 초기화
 class PasswordResetAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
@@ -215,7 +219,9 @@ class PasswordResetAPIView(APIView):
             return Response({"message": "비밀번호 재설정 이메일을 보냈습니다."}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "이메일 주소를 제출해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
-        
+
+
+# 비밀번호 초기화 폼 비밀번호 유효성 검사 기능
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     form_class = SetPasswordForm
 
@@ -233,18 +239,13 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         return response
         
 
+# 회원 탈퇴시 계정 비활성화
 class DeactivateUserAPIView(APIView):
     # 계정 비활성화 함수
     def deactivate_user(self,user):
         user.deletedAt = timezone.now()
         user.save()
         
-    # 계정 30일뒤 삭제 함수
-    def delete_inactive_users():
-        thirty_days_ago = timezone.now() - timezone.timedelta(days=30)
-        inactive_users = User.objects.filter(deleteAt__lt=thirty_days_ago)
-        inactive_users.delete()
-
     def post(self, request):
         try:
             user = User.objects.get(id=request.user.id)
@@ -255,8 +256,9 @@ class DeactivateUserAPIView(APIView):
         self.deactivate_user(user)
         
         return Response({"message": "사용자가 성공적으로 비활성화되었습니다."}, status=status.HTTP_200_OK)
-    
-    
+
+
+# 유저 요일별 총 점수 가져오기
 class GetUserAllScore(APIView):
     def get(self, request, levelName):
         try:
@@ -277,20 +279,9 @@ class GetUserAllScore(APIView):
             date_of_day = start_of_week + timedelta(days=i)
             
             # level에 따라 다른 데이터 가져오기
-            if levelName == '초등학생':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='초등학생')  
-            elif levelName == '중학생':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='중학생')  
-            elif levelName == '고등학생':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='고등학생')  
-            elif levelName == '원어민':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='원어민')  
-            elif levelName == '토플':
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='토플')  
-            else:
-                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day)
+            quizzes_of_day = self.level_filter(levelName,user,date_of_day)
             
-            # 해당 요일에 푼 문제들 중에서 5개 가져오기
+            # 해당 요일에 푼 문제들 가져오기
             quizzes_of_day = quizzes_of_day
             
             # 해당 요일에 푼 문제들의 점수 합 구하기
@@ -314,3 +305,19 @@ class GetUserAllScore(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
+
+    def level_filter(self, levelName, user, date_of_day):
+            if levelName == '초등학생':
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='초등학생')  
+            elif levelName == '중학생':
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='중학생')  
+            elif levelName == '고등학생':
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='고등학생')  
+            elif levelName == '원어민':
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='원어민')  
+            elif levelName == '토플':
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day, quiz_try__quizLevel='토플')  
+            else:
+                quizzes_of_day = Quiz.objects.filter(quiz_try__user=user, quiz_try__createdAt__date=date_of_day)
+            
+            return quizzes_of_day
