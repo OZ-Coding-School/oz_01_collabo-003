@@ -11,7 +11,7 @@ const request = axios.create({
 const refreshToken = async () => {
   try {
     const response = await axios.post(
-      "http://www.3eng.store/api/v1/user/auth/refresh/",
+      "https://www.3eng.store/api/v1/user/auth/refresh/",
       {
         refresh: localStorage.getItem("refreshToken"),
       }
