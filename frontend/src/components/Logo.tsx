@@ -5,7 +5,11 @@ function Logo() {
   return (
     <>
       <div className={mainLogoLayout}>
-        <img src="img/logo_red.png" alt="logo_red.png" className={logoPink} />
+        <img
+          src="images/logo_red.png"
+          alt="logo_red.png"
+          className={logoPink}
+        />
         <section>
           <div className="content">
             <h2>3ENG</h2>
@@ -13,7 +17,7 @@ function Logo() {
           </div>
         </section>
         <img
-          src="img/logo_yellow.png"
+          src="images/logo_yellow.png"
           alt="logo_yellow.png"
           className={logoYel}
         />

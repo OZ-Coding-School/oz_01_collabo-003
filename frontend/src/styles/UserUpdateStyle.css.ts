@@ -1,7 +1,8 @@
 import { style } from "@vanilla-extract/css";
 export const infoLayout = style({
   display: "flex",
-  width: "calc(100% + 65px)",
+  width: "100%",
+  paddingLeft: "65px",
   height: "calc(100vh - 60px)",
 
   position: "relative",
@@ -45,7 +46,7 @@ export const userLogoBg = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  backgroundImage: `url('../../public/images/user_background_03.png')`,
+  backgroundImage: `url('images/user_background_03.png')`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "contain",
   "@media": {
@@ -126,7 +127,7 @@ export const userImgDiv = style({
     },
   },
 });
-export const userImgsrc = style({
+export const userImgSrc = style({
   overflow: "hidden",
   objectFit: "cover",
   height: "100%",

@@ -9,9 +9,28 @@ function Main() {
   const handleClick = () => {
     navigate("/auth/login-signup");
   };
+  console.log(
+    `
+  %c  Welcome to 3ENG!  
+  %c  ██████╗ ███████╗███╗   ██╗ ██████╗ 
+  %c  ╚════██╗██╔════╝████╗  ██║██╔════╝ 
+  %c   █████╔╝█████╗  ██╔██╗ ██║██║  ███╗
+  %c   ╚═══██╗██╔══╝  ██║╚██╗██║██║   ██║
+  %c  ██████╔╝███████╗██║ ╚████║╚██████╔╝
+  %c  ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝    
+           
+  `,
+    "color: #48063b; font-style: italic; font-size:10px;   ",
+    "color:#abafd6",
+    "color:#ababe8",
+    "color:#9e9edc",
+    "color:#8989c1",
+    "color:#8181b6",
+    "color:#7676a9"
+  );
   return (
     <div className={mainLayout}>
-      <img src="img/icon_blue.png" alt="icon_blue" className={iconBlue} />
+      <img src="images/icon_blue.png" alt="icon_blue" className={iconBlue} />
       <Logo />
       <div className={textLayout}>
         <div id="container">

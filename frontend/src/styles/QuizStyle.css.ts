@@ -2,8 +2,8 @@ import { style } from "@vanilla-extract/css";
 
 export const quizContainer = style({
   height: "calc(100vh - 60px)",
-  width: "calc(100% + 65px)",
-  padding: "20px 100px ",
+  width: "100%",
+  padding: "20px 0px 20px 65px ",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -11,8 +11,6 @@ export const quizContainer = style({
 });
 export const quizTitleContainer = style({
   position: "relative",
-  // width: "80%",
-
   height: "auto",
   display: "flex",
   flexDirection: "column",
@@ -39,11 +37,13 @@ export const todayQuiz = style({
 export const questionNumbers = style({
   fontSize: "1.3rem",
   transform: "translateY(-20px)",
+  textAlign: "center",
 });
 export const question = style({
   paddingBottom: "2rem",
-  width: "80%",
+  width: "100%",
   textAlign: "center",
+  fontSize: "1.2rem",
 });
 export const quizAnswerDiv = style({
   display: "flex",
@@ -54,7 +54,8 @@ export const quizAnswerDiv = style({
 });
 
 export const quizInput = style({
-  fontSize: "1rem",
+  // fontSize: "1rem",
+  fontSize: "1.3rem",
   width: "60%",
   padding: "2rem 0rem",
   border: "0.5px solid #000000",

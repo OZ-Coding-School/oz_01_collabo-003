@@ -4,7 +4,7 @@ import { logoLayout } from "./LayoutStyle.css";
 export const logoBgDiv = [
   logoLayout,
   style({
-    backgroundImage: `url("/img/bg1.png")`,
+    backgroundImage: `url("/images/bg1.png")`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
   }),
@@ -21,14 +21,14 @@ export const input = style({
   borderRadius: "12px",
   backgroundColor: "#efefef",
   padding: "1rem",
-  fontSize: "1rem",
+  fontSize: "1.2rem",
   paddingLeft: "1.5rem",
   marginTop: "0.5rem",
   outlineColor: "#AFAFAF",
 });
 export const inputLabel = style({
   color: "#8D9188",
-  fontSize: "0.8rem",
+  fontSize: "1rem",
 });
 export const duplicateInputDiv = style({
   position: "relative",
@@ -38,8 +38,10 @@ export const duplicateCheckBtn = style({
   position: "absolute",
   width: "80px",
   right: "10px",
+  top: "3px",
   transform: "translateY(54%)",
   backgroundColor: "#D9D9D9",
+  // zIndex: 999,
   // backgroundColor: "white",
   // backgroundColor: "#D4D8FF",
   color: "#8C8888",
@@ -72,6 +74,7 @@ export const signUpContainer = style({
   top: "0",
   height: "100%",
   transition: "all 0.6s ease-in-out",
+
   left: "0",
   width: "50%",
   opacity: "0",
@@ -100,6 +103,7 @@ export const signInContainer = style({
   top: 0,
   height: "100%",
   transition: "all 0.6s ease-in-out",
+
   left: 0,
   width: "50%",
   zIndex: 2,
@@ -118,7 +122,7 @@ export const signInContainer = style({
       width: "100vw",
       zIndex: 999,
       opacity: "1",
-      // transition: "none",
+      transition: "none",
     },
   },
 });
@@ -133,6 +137,7 @@ export const formContainer = style({
   height: "100%",
 
   width: "70%",
+  zIndex: 999,
 });
 
 export const title = style({
@@ -166,6 +171,12 @@ export const button = style({
     },
   },
 });
+export const disabledButton = style([
+  button,
+  {
+    backgroundColor: "#838ade9d",
+  },
+]);
 export const elseButton = style({
   borderRadius: "20px",
   fontSize: "1rem",
@@ -190,11 +201,12 @@ export const elseButton = style({
   },
   "@media": {
     "screen and (min-width: 900px)": { display: "none" },
+    "screen and (max-width: 900px)": { fontSize: "0.8rem" },
   },
 });
 export const inputMessage = style({
   color: "#FF4141",
-  fontSize: "0.8rem",
+  fontSize: "0.9rem",
   marginTop: "0.5rem",
 });
 
@@ -227,6 +239,11 @@ export const overlayContainer = style({
   selectors: {
     [`&[data-signin="false"]`]: {
       transform: "translateX(-100%)",
+    },
+  },
+  "@media": {
+    "screen and (max-width: 900px)": {
+      display: "none",
     },
   },
 });
@@ -268,7 +285,7 @@ export const overlayPanel = style({
 });
 
 export const leftOverlayPanel = style({
-  backgroundImage: "url('../public/img/bg3.png')",
+  backgroundImage: "url('/images/bg3.png')",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   transform: "translateX(-20%)",
@@ -280,7 +297,7 @@ export const leftOverlayPanel = style({
 });
 
 export const rightOverlayPanel = style({
-  backgroundImage: "url('../public/img/bg3.png')",
+  backgroundImage: "url('/images/bg3.png')",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   right: "0",

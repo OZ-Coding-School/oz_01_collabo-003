@@ -1,145 +1,178 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import Loading from "../components/Loading";
+import QuizInput from "../components/QuizInput";
+import useAuthStore from "../store/useAuth";
 import {
-  question,
-  questionInput,
-  questionNumbers,
-  quizAnswerDiv,
   quizButton,
   quizButtonDiv,
   quizContainer,
-  quizInput,
   quizTitleContainer,
   todayBg,
   todayQuiz,
 } from "../styles/QuizStyle.css";
+import { handleSubmitKeyPress } from "../utils/keyDownHandler";
 interface QuizDetail {
   id: number;
   question: string;
   category: string;
   level: string;
 }
-const accessToken = localStorage.getItem("accessToken");
+
 function QuizPage() {
+  // console.log("리렌더링된다");
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<string[]>(Array(5).fill(""));
+  // const answers = useRef<string[]>(Array(5).fill(""));
   const [quizs, setQuizs] = useState<QuizDetail[]>([]);
-  const [feedback, setFeedback] = useState({});
-  //location으로 문제 받아오기
-
-  const location = useLocation();
-  console.log("quiz", location.state.data);
-  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
-
+  // const [answers, setAnswers] = useState<string[]>(quizs.map(() => ""));
+  // const [feedback, setFeedback] = useState({});
+  const { levelName } = useAuthStore();
+  // console.log(levelName);
   useEffect(() => {
-    if (Array.isArray(location.state.data)) {
-      const allQuizzes = location.state.data;
-      const randomQuizs: QuizDetail[] = [];
-
-      while (randomQuizs.length < 5) {
-        const randomIndex = Math.floor(Math.random() * allQuizzes.length);
-        if (!selectedIndexes.includes(randomIndex)) {
-          randomQuizs.push(allQuizzes[randomIndex]);
-          setSelectedIndexes([...selectedIndexes, randomIndex]);
-        }
-      }
-
-      setQuizs(randomQuizs);
-    }
+    setQuizs(location.state.data);
   }, [location.state.data]);
 
   //이전문제
   const handlePrevQuiz = () => {
     setCurrentQuizIndex((prevIndex) => prevIndex - 1);
+    setCurrentQuizIndex((prevIndex) => {
+      if (prevIndex > 0) {
+        return prevIndex - 1;
+      } else {
+        return prevIndex;
+      }
+    });
   };
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   //다음문제
   const handleNextQuiz = () => {
     if (currentQuizIndex === quizs.length - 1) {
+      // 현재 문제가 마지막 문제일 경우
+      const isAnswerEmpty = answers.some((answer) => answer === "");
+      if (isAnswerEmpty) {
+        // 답변이 하나라도 비어있을 경우
+        alert("답변을 모두 입력해주세요!");
+        return;
+      }
       const confirmSubmit = window.confirm(
         "마지막 문제입니다. 제출 하시겠습니까?"
       );
       if (confirmSubmit) {
-        handleSubmit();
+        handlePostQuiz();
       }
     } else {
       setCurrentQuizIndex((prevIndex) => prevIndex + 1);
     }
   };
-  const handleSubmit = () => {
-    //문제랑 정답 보내는 로직
+  const handlePostQuiz = () => {
+    // console.log(
+    //   "문제",
+    //   quizs.map((quiz) => quiz.question)
+    // );
+    // console.log("답변", answers);
+    // console.log(
+    //   "정답",
+    //   quizs.map((quiz) => quiz.id)
+    // );
+    //문제 제출하는 로직
+
     async function FetchPostQuiz() {
+      // console.log(levelName);
+      setIsLoading(true);
       try {
-        const response = await axios.post(
-          `/api/v1/gpt/feedback/`,
+        const request = await axios.post(
+          `/api/v1/quiz/`,
           {
-            question: quizs,
-            answer: answers,
+            quizLevel: levelName,
           },
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           }
         );
-        console.log(response.data);
 
-        if (response.status === 200) {
-          console.log("문제,정답 보내기 성공!");
-          setFeedback(response.data);
-          localStorage.setItem("feedback", JSON.stringify(response.data));
-        } else if (response.status === 400) {
-          console.log("문제,정답 보내기 실패");
+        // console.log(request.data.id);
+        localStorage.setItem("id", request.data.id);
+        // console.log("아이디", localStorage.setItem("id", request.data.id));
+
+        if (request.status === 201) {
+          localStorage.setItem("id", request.data.id);
+          const url = `/api/v1/gpt/feedback/${localStorage.getItem("id")}/`;
+
+          const response = await axios.post(
+            url,
+            {
+              question: quizs.map((quiz) => quiz.question),
+              answer: answers,
+              orderNum: quizs.map((quiz) => quiz.id),
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          );
+          // console.log(response.data);
+          // console.log(url);
+          // console.log(response);
+          if (response.status === 201) {
+            setIsLoading(false);
+            // console.log("문제,정답 보내기 성공!");
+            // setFeedback(response.data);
+            navigate("/result", { state: { id: localStorage.getItem("id") } });
+            // localStorage.setItem("feedback", JSON.stringify(response.data));
+          } else if (response.status === 400) {
+            // console.log("문제,정답 보내기 실패");
+          }
         }
       } catch (error) {
         console.log(error);
+        // console.log(levelName);
       }
     }
     FetchPostQuiz();
-    navigate("/result", { state: feedback });
   };
+  const handleKeyDown = handleSubmitKeyPress(handleNextQuiz);
   const handleAnswerChange = (index: number, answer: string) => {
     const updatedAnswers = [...answers];
+    // const updatedAnswers = [...answers.current];
     updatedAnswers[index] = answer;
     setAnswers(updatedAnswers);
+    // answers.current = updatedAnswers;
   };
-  {
-    return (
+  // console.log(answers);
+
+  return (
+    <>
+      {isLoading && <Loading />}{" "}
+      {/* 로딩 중일 때만 Loading 컴포넌트를 표시합니다. */}
       <div className={quizContainer}>
         <div className={quizTitleContainer}>
           <div>
             <img
               className={todayBg}
-              src="../../public/images/user_background_03.png"
+              src="images/user_background_03.png"
               alt="TodayQuizBg"
             />
           </div>
           <p className={todayQuiz}>TODAY QUIZ</p>
         </div>
 
-        {quizs.map(
-          (quiz, id) =>
-            // 현재 퀴즈 인덱스와 매핑되는 퀴즈를 보여줌
-            id === currentQuizIndex && (
-              <>
-                <p className={questionNumbers}>{}/5</p>
-                <p className={question}>{quiz.category}</p>
-                <div className={quizAnswerDiv}>
-                  <div className={questionInput}>{quiz.question}</div>
-                  <input
-                    className={quizInput}
-                    type="text"
-                    placeholder="정답을 입력하세요"
-                    value={answers[currentQuizIndex]}
-                    onChange={(e) =>
-                      handleAnswerChange(currentQuizIndex, e.target.value)
-                    }
-                  />
-                </div>
-              </>
-            )
-        )}
+        <QuizInput
+          quizs={quizs}
+          currentQuizIndex={currentQuizIndex}
+          answers={answers}
+          setAnswers={setAnswers}
+          handleKeyDown={handleKeyDown}
+          handleAnswerChange={handleAnswerChange}
+        />
+
         <div className={quizButtonDiv}>
           <button
             className={quizButton}
@@ -154,7 +187,7 @@ function QuizPage() {
           </button>
         </div>
       </div>
-    );
-  }
+    </>
+  );
 }
 export default QuizPage;
