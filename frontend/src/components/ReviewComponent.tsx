@@ -56,7 +56,7 @@ const ReviewComponent = ({
     Array(detailUserData?.quizzes?.length).fill(0)
   );
   const ref = useRef(null);
-  console.log("디테일 데이터", detailUserData);
+  // console.log("디테일 데이터", detailUserData);
 
   useEffect(() => {
     setInputValues(Array(detailUserData?.quizzes?.length).fill(""));
@@ -84,7 +84,7 @@ const ReviewComponent = ({
     setErrors(newErrors);
 
     setCounts((prev) => {
-      console.log(inputValues);
+      // console.log(inputValues);
       if (inputValues[index] === "") return prev;
       return prev.map((count, idx) =>
         idx === index ? (count >= 4 ? 0 : count + 1) : count

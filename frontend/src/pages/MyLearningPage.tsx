@@ -85,12 +85,12 @@ const MyLearningPage = () => {
       });
       setUserData(response.data);
       setIsLoading(false);
-      console.log("나의 학습공간", response);
+      // console.log("나의 학습공간", response);
     } catch (error) {
       console.log("학습공간 에러", error);
     }
   };
-  console.log("유저데이터", userData);
+  // console.log("유저데이터", userData);
   // 브라우저 사이즈에 따라 카드 클릭 상태 초기화
   useEffect(() => {
     getUserData();
@@ -108,7 +108,7 @@ const MyLearningPage = () => {
     };
   }, []);
 
-  console.log("카드 클릭", onCardClicked);
+  // console.log("카드 클릭", onCardClicked);
   const handleCheckAndGetData = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     getData: QuizDataItem,
@@ -118,7 +118,7 @@ const MyLearningPage = () => {
     setIsClicked(true);
     setDetailUserData(getData);
     setSelectedDataIndex(index);
-    console.log("1111");
+    // console.log("1111");
   };
 
   const handleCardClick = () => {
@@ -245,7 +245,9 @@ const MyLearningPage = () => {
               </div>
               <div className={learningBox03TitleContainer}>
                 <p className={learningBox03Title}>평균점수</p>
-                <p className={learningBox03Title}>{averageScore ? averageScore : '0'}점</p>
+                <p className={learningBox03Title}>
+                  {averageScore ? averageScore : "0"}점
+                </p>
               </div>
             </div>
           )}

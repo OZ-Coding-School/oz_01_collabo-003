@@ -31,7 +31,7 @@ import {
 
 function ResultPage() {
   const location = useLocation();
-  console.log(location.state.id);
+  // console.log(location.state.id);
   interface result {
     id: number;
     answer: string;
@@ -44,11 +44,11 @@ function ResultPage() {
   const [result, setResult] = useState<result[]>([]);
   const [isLoading, setIsLoading] = useState(false); //고치기
   const [isFlipped, setIsFlipped] = useState(false);
-  
+
   const totalScore = result.reduce((accumulator, currentResult) => {
     return accumulator + currentResult.score;
   }, 0);
-  console.log(result);
+  // console.log(result);
   const navigate = useNavigate();
 
   const handleDetailButtonClick = () => {
@@ -65,17 +65,17 @@ function ResultPage() {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response.data);
+        // console.log(response.data);
         if (response.status === 200) {
-          console.log("결과 가져오기 성공!");
+          // console.log("결과 가져오기 성공!");
           setResult(response.data);
           setIsLoading(false);
         } else if (response.status === 400) {
-          console.log("결과 가져오기 실패");
+          // console.log("결과 가져오기 실패");
         }
       } catch (error) {
         console.log(error);
-        console.log(url);
+        // console.log(url);
       }
     }
     FetchGetResult();

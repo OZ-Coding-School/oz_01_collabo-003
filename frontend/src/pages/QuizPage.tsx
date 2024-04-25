@@ -21,7 +21,7 @@ interface QuizDetail {
 }
 
 function QuizPage() {
-  console.log("리렌더링된다");
+  // console.log("리렌더링된다");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,7 +32,7 @@ function QuizPage() {
   // const [answers, setAnswers] = useState<string[]>(quizs.map(() => ""));
   // const [feedback, setFeedback] = useState({});
   const { levelName } = useAuthStore();
-  console.log(levelName);
+  // console.log(levelName);
   useEffect(() => {
     setQuizs(location.state.data);
   }, [location.state.data]);
@@ -70,19 +70,19 @@ function QuizPage() {
     }
   };
   const handlePostQuiz = () => {
-    console.log(
-      "문제",
-      quizs.map((quiz) => quiz.question)
-    );
-    console.log("답변", answers);
-    console.log(
-      "정답",
-      quizs.map((quiz) => quiz.id)
-    );
+    // console.log(
+    //   "문제",
+    //   quizs.map((quiz) => quiz.question)
+    // );
+    // console.log("답변", answers);
+    // console.log(
+    //   "정답",
+    //   quizs.map((quiz) => quiz.id)
+    // );
     //문제 제출하는 로직
 
     async function FetchPostQuiz() {
-      console.log(levelName);
+      // console.log(levelName);
       setIsLoading(true);
       try {
         const request = await axios.post(
@@ -97,9 +97,9 @@ function QuizPage() {
           }
         );
 
-        console.log(request.data.id);
+        // console.log(request.data.id);
         localStorage.setItem("id", request.data.id);
-        console.log("아이디", localStorage.setItem("id", request.data.id));
+        // console.log("아이디", localStorage.setItem("id", request.data.id));
 
         if (request.status === 201) {
           localStorage.setItem("id", request.data.id);
@@ -118,22 +118,22 @@ function QuizPage() {
               },
             }
           );
-          console.log(response.data);
-          console.log(url);
-          console.log(response);
+          // console.log(response.data);
+          // console.log(url);
+          // console.log(response);
           if (response.status === 201) {
             setIsLoading(false);
-            console.log("문제,정답 보내기 성공!");
+            // console.log("문제,정답 보내기 성공!");
             // setFeedback(response.data);
             navigate("/result", { state: { id: localStorage.getItem("id") } });
             // localStorage.setItem("feedback", JSON.stringify(response.data));
           } else if (response.status === 400) {
-            console.log("문제,정답 보내기 실패");
+            // console.log("문제,정답 보내기 실패");
           }
         }
       } catch (error) {
         console.log(error);
-        console.log(levelName);
+        // console.log(levelName);
       }
     }
     FetchPostQuiz();
@@ -146,7 +146,7 @@ function QuizPage() {
     setAnswers(updatedAnswers);
     // answers.current = updatedAnswers;
   };
-  console.log(answers);
+  // console.log(answers);
 
   return (
     <>

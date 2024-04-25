@@ -29,7 +29,7 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
   //로그인 버튼 클릭 시 실행되는 함수
   const handleLogin: React.MouseEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    console.log("id :", logInEmail, "/password:", logInPw);
+    // console.log("id :", logInEmail, "/password:", logInPw);
     // setLogInEmail("");
     // setLogInPw("");
 
@@ -55,14 +55,14 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
             }
           )
           .then((response) => {
-            console.log(response);
+            // console.log(response);
             if (response.status === 200) {
-              console.log("로그인 성공!");
+              // console.log("로그인 성공!");
               navigate("/level");
               //로컬스토리지에 엑세스토큰 넣기
               const accessToken = response.data.access_token;
 
-              console.log("Access Token:", accessToken);
+              // console.log("Access Token:", accessToken);
               localStorage.setItem("accessToken", accessToken);
               localStorage.setItem("refreshToken", response.data.refresh_token);
             }
@@ -70,11 +70,11 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
           .catch((error) => {
             if (error.response.status === 400) {
               setLoginErrorMessage("이메일 또는 비밀번호가 잘못되었습니다");
-              console.log(error);
+              // console.log(error);
             } else if (error.response.status === 409) {
               alert("이미 탈퇴한 사용자입니다");
             } else {
-              console.log(error);
+              // console.log(error);
               alert(
                 "로그인을 하는 중 오류가 발생하였습니다. 다시 시도해주세요"
               );
@@ -105,7 +105,7 @@ function Login({ signin, setSignIn, setPassWordModalOpen }: Props) {
           value={logInPw}
           onChange={(e) => setLogInPw(e.target.value)}
           required
-        // onKeyDown={handlePasswordConfirmKeyDown}
+          // onKeyDown={handlePasswordConfirmKeyDown}
         >
           Password
         </Input>

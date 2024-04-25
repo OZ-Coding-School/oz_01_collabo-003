@@ -19,7 +19,7 @@ const PassWordModal = ({
   const [email, setEmail] = useState("");
   const [isEmailSended, setIsEmailSended] = useState(false);
   const handleResetPassword = () => {
-    console.log("비밀번호재설정");
+    // console.log("비밀번호재설정");
     fetchPasswordRest();
   };
   const outerBoxRef = useRef(null);
@@ -47,7 +47,7 @@ const PassWordModal = ({
             email: email,
           })
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             if (response.status === 200) {
               alert("작성하신 이메일로 비밀번호 재설정 링크가 전송되었습니다");
               setPassWordModalOpen(false);
@@ -61,7 +61,7 @@ const PassWordModal = ({
             }
           });
       } catch (err) {
-        console.log("err:", err);
+        // console.log("err:", err);
         alert(
           "비밀번호 재설정 링크를 전송하는 과정에서 오류가 발생하였습니다 "
         );

@@ -20,7 +20,7 @@ const refreshToken = async () => {
     localStorage.setItem("accessToken", newAccessToken);
     return newAccessToken;
   } catch (error) {
-    console.log("리프레시 토큰 에러", error);
+    console.error("리프레시 토큰 에러", error);
     throw error;
   }
 };
@@ -52,7 +52,7 @@ request.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return request(originalRequest);
       } catch (error) {
-        console.log("리프레시 토큰 에러", error);
+        console.error("리프레시 토큰 에러", error);
         throw error;
       }
     }

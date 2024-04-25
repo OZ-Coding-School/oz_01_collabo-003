@@ -150,7 +150,7 @@ function SignUp({ signin, setSignIn }: Props) {
           nickName: nickName,
           password: password,
         });
-        console.log(response.data);
+        // console.log(response.data);
         if (response.status === 201) {
           // console.log("회원가입 성공!");
           alert(`환영합니다 ${nickName} 님!`);

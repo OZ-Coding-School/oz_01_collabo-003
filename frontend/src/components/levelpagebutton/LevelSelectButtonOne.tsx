@@ -10,7 +10,7 @@ export type Props = {
 };
 
 const LevelSelectButtonOne = ({ name, onClick, number }: Props) => {
-  console.log("넘버", number);
+  // console.log("넘버", number);
   return (
     <div className={levelPageButtonOne} data-index={number} onClick={onClick}>
       <p className={levelPageButtonText} data-index={number}>

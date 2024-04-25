@@ -39,7 +39,7 @@ const WeekPage = () => {
   monday.setDate(monday.getDate() - today + 1); // 월요일로 설정
   const lastDays = new Date(monday.getTime() + 6 * 24 * 60 * 60 * 1000); // 다음 일요일까지의 날짜 계산
   const [scoreData, setScoreData] = useState<ScoreData[]>([]);
-  console.log("todayWeek", today);
+  // console.log("todayWeek", today);
   const ref = useHorizontalScroll3();
 
   const getUserScore = async () => {
@@ -52,7 +52,7 @@ const WeekPage = () => {
           },
         }
       );
-      console.log("levelName", levelName), console.log("score", response);
+      // console.log("levelName", levelName), console.log("score", response);
       setScoreData(response.data.scores_and_quiz_tries_by_day);
     } catch (error) {
       console.log("week get 에러 : ", error);
@@ -86,7 +86,7 @@ const WeekPage = () => {
       if (scoreDataForCurrentDate) {
         formattedDate.quizTryCount = scoreDataForCurrentDate.quiz_try_count;
         formattedDate.totalScore = scoreDataForCurrentDate.total_score;
-        console.log(formattedDate.totalScore);
+        // console.log(formattedDate.totalScore);
       }
 
       result.push(formattedDate);
@@ -112,7 +112,7 @@ const WeekPage = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log("week", response.data);
+      // console.log("week", response.data);
       if (response.status === 200) {
         if (response.data.length === 0) return alert("문제가 없습니다.");
         navigate("/quiz", {

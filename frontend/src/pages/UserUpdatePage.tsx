@@ -56,7 +56,7 @@ function UserUpdatePage() {
         },
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         console.log("회원정보 가져오기 성공!");
         setNickName(response.data.nickName);
@@ -82,7 +82,7 @@ function UserUpdatePage() {
         // withCredentials: true,
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         alert("탈퇴성공..");
         navigate("/");
@@ -104,7 +104,7 @@ function UserUpdatePage() {
   }
   //회원정보수정요청함수
   async function handleChangeUserInfo() {
-    console.log(passwordCheckMessage, passwordMessage, userNameMessage);
+    // console.log(passwordCheckMessage, passwordMessage, userNameMessage);
     if (
       passwordCheckMessage === "" &&
       passwordMessage === "" &&
@@ -132,7 +132,7 @@ function UserUpdatePage() {
               },
             }
           );
-          console.log(response.data);
+          // console.log(response.data);
           if (response.status === 200) {
             console.log("회원정보 수정 성공!");
             alert("회원정보가 수정되었습니다!");
@@ -188,7 +188,7 @@ function UserUpdatePage() {
           nickName: nickName,
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (response.status === 200) {
             setUserNameMessage("");
             setIsUserName(false);

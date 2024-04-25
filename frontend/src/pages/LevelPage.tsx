@@ -24,6 +24,7 @@ const LevelPage = () => {
     "3ENG",
     "원어민",
   ];
+
   const navigate = useNavigate();
   const scrollRef = useHorizontalScroll();
   const scrollRef2 = useHorizontalScroll2();
