@@ -41,6 +41,10 @@ AI 기술을 활용하여 사용자 맞춤형 학습 경험을 제공합니다.
 
 ## 🧰 사용 스택
 
+### :wrench: System Architecture
+
+<img src="https://github.com/OZ-Coding-School/oz_01_collabo-003/assets/94848819/d2e1cee8-8008-4a29-a76a-cdf22a23d54b"/>
+
 ### FE
 <div align=center>
 
@@ -66,6 +70,7 @@ AI 기술을 활용하여 사용자 맞춤형 학습 경험을 제공합니다.
   <img src="https://img.shields.io/badge/nginx-006272?style=for-the-badge&logo=nginx&logoColor=green">
   <img src="https://img.shields.io/badge/naver-03C75A?style=for-the-badge&logo=naver&logoColor=white">
   <img src="https://img.shields.io/badge/openai-412991?style=for-the-badge&logo=openai&logoColor=white">
+  <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
   <br>
 </div>
 
