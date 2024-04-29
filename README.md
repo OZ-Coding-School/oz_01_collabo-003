@@ -17,8 +17,8 @@ AI 기술을 활용하여 사용자 맞춤형 학습 경험을 제공합니다.
 ## 🗣️ 프로젝트 발표 영상 & 발표 문서
 
 > ### 🗓️ 2024.04-.01 - 2024.04.25
-> ### [📺 발표 영상 예시]()
-> ### [📑 발표 문서 예시]()
+> ### [📺 발표 영상](https://drive.google.com/file/d/1iB3WScb1EYIq1zvhURsamtRVxevvaB8e/view?usp=sharing)
+> ### [📑 발표 문서](https://drive.google.com/file/d/16-NozQRW1q76KYxRPC0rpNdcetNitZ1_/view?usp=sharing)
 
 ---
 
@@ -82,23 +82,27 @@ AI 기술을 활용하여 사용자 맞춤형 학습 경험을 제공합니다.
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
   <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
   <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+</div> 
 
 
 --- 
+<div align=center>
+  
+  ## :busts_in_silhouette: 팀 동료
+  
+  ### FE
+  
+  | <a href=https://github.com/alsendrha><img src="https://avatars.githubusercontent.com/u/95726561?v=4" width=100px/><br/><sub><b>@alsendrha</b></sub></a><br/> | <a href=https://github.com/hayeon010904><img src="https://avatars.githubusercontent.com/u/153696152?v=4" width=100px/><br/><sub><b>@hayeon010904</b></sub></a><br/> |
+  |:-----------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------:|
+  |                                          김민영                     |                         이하연                                           |
+  
+  ### BE
+  
+  | <a href=https://github.com/Fillsogood><img src="https://avatars.githubusercontent.com/u/94848819?v=4" width=100px/><br/><sub><b>@Fillsogood</b></sub></a><br/> | <a href=https://github.com/krbibi><img src="https://avatars.githubusercontent.com/u/153698028?v=4" width=100px/><br/><sub><b>@krbibi</b></sub></a><br/> |
+  |:------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
+  |                                          유경록                                         |                                     방승윤                                                |
+</div>
 
-## :busts_in_silhouette: 팀 동료
-
-### FE
-
-| <a href=https://github.com/alsendrha><img src="https://avatars.githubusercontent.com/u/95726561?v=4" width=100px/><br/><sub><b>@alsendrha</b></sub></a><br/> | <a href=https://github.com/hayeon010904><img src="https://avatars.githubusercontent.com/u/153696152?v=4" width=100px/><br/><sub><b>@hayeon010904</b></sub></a><br/> |
-|:-----------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------:|
-|                                          김민영                                       |                                      이하연                                                 |
-
-### BE
-
-| <a href=https://github.com/Fillsogood><img src="https://avatars.githubusercontent.com/u/94848819?v=4" width=100px/><br/><sub><b>@Fillsogood</b></sub></a><br/> | <a href=https://github.com/krbibi><img src="https://avatars.githubusercontent.com/u/153698028?v=4" width=100px/><br/><sub><b>@krbibi</b></sub></a><br/> |
-|:------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
-|                                          유경록                                         |                                     방승윤                                                |
 ## 📑 프로젝트 규칙
 
 ### Branch Strategy
@@ -148,12 +152,12 @@ AI 기술을 활용하여 사용자 맞춤형 학습 경험을 제공합니다.
 
 
 ## :clipboard: Documents
-> [📜 API 명세서 예시](https://docs.google.com/spreadsheets/d/1AFH4YLLzGhbERokrpfJSNKmwvdgEW6aDj527PBqrBYU/edit?usp=sharing)
+> [📜 API 명세서](https://docs.google.com/spreadsheets/d/1AFH4YLLzGhbERokrpfJSNKmwvdgEW6aDj527PBqrBYU/edit?usp=sharing)
 > 
-> [📜 요구사항 정의서 예시](https://docs.google.com/spreadsheets/d/1OP0FVODe2idKG4V0u2JSUjmSk9_bUywuGgOMqm4-iiY/edit#gid=428803499)
+> [📜 요구사항 정의서](https://docs.google.com/spreadsheets/d/1OP0FVODe2idKG4V0u2JSUjmSk9_bUywuGgOMqm4-iiY/edit#gid=428803499)
 > 
-> [📜 ERD 예시](https://drive.google.com/file/d/1aVbnp8wHraSHzdpaGnompj59LrIaRu1Y/view?usp=sharing)
+> [📜 ERD](https://drive.google.com/file/d/1aVbnp8wHraSHzdpaGnompj59LrIaRu1Y/view?usp=sharing)
 > 
-> [📜 테이블 명세서 예시](https://docs.google.com/spreadsheets/d/117PKxWDHYBFpPntIc3Rmew0J8Wqyk5Be6GOj7CLBG_I/edit#gid=0)
+> [📜 테이블 명세서](https://docs.google.com/spreadsheets/d/117PKxWDHYBFpPntIc3Rmew0J8Wqyk5Be6GOj7CLBG_I/edit#gid=0)
 >
-> [📜 화면 정의서 예시](https://docs.google.com/document/d/1Fj5Zg160QXKXRCxc1pOEj9sHkaZl9NVLxNT559AX05M/edit)
+> [📜 화면 정의서](https://docs.google.com/document/d/1Fj5Zg160QXKXRCxc1pOEj9sHkaZl9NVLxNT559AX05M/edit)
