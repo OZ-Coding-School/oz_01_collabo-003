@@ -151,7 +151,7 @@ export const learningBox01ContentTitle = style({
 
 export const learningBox01ContentBox = style({
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "column-reverse",
   alignItems: "center",
   width: "100%",
   height: "100%",
